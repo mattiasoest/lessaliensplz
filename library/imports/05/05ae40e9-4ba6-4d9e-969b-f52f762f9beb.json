@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "desert-backgorund",
+    "texture": "5a2d591d-dcf3-4cab-be33-06ef31f21335",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      256,
+      272
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      256,
+      272
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}
