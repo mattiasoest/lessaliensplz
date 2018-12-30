@@ -1,5 +1,5 @@
 (function() {"use strict";var __module = CC_EDITOR ? module : {exports:{}};var __filename = 'preview-scripts/assets/Script/PlayerControl.js';var __require = CC_EDITOR ? function (request) {return cc.require(request, require);} : function (request) {return cc.require(request, __filename);};function __define (exports, require, module) {"use strict";
-cc._RF.push(module, '5876eqkI9FAZ4iTPktPRGg4', 'PlayerControl', __filename);
+cc._RF.push(module, '8623eOQMhdFqZqaPvHjT6/f', 'PlayerControl', __filename);
 // Script/PlayerControl.ts
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -13,6 +13,8 @@ var PlayerControl = /** @class */ (function (_super) {
         _this.accRight = false;
         _this.accUp = false;
         _this.accDown = false;
+        _this.isLeftAnimPlaying = false;
+        _this.isRightAnimPlaying = false;
         // X / Y bounds for the player
         _this.leftBound = 0;
         _this.rightBound = 0;
@@ -21,10 +23,11 @@ var PlayerControl = /** @class */ (function (_super) {
         _this.xSpeed = 0;
         _this.ySpeed = 0;
         _this.cvs = null;
+        _this.animations = null;
         _this.game = null;
         // Constants
         _this.X_ACCELERATION = 3200;
-        _this.Y_ACCELERATION = 1800;
+        _this.Y_ACCELERATION = 2000;
         _this.MAX_SPEED = 200;
         _this.DAMP = 0.8;
         return _this;
@@ -32,6 +35,7 @@ var PlayerControl = /** @class */ (function (_super) {
     // LIFE-CYCLE CALLBACKS:
     PlayerControl.prototype.onLoad = function () {
         this.cvs = cc.find("Canvas");
+        this.animations = this.getComponent(cc.Animation);
         this.leftBound = -this.cvs.width / 2;
         this.rightBound = this.cvs.width / 2;
         this.upperBound = 0;
@@ -83,9 +87,17 @@ var PlayerControl = /** @class */ (function (_super) {
     PlayerControl.prototype.onKeyDown = function (event) {
         switch (event.keyCode) {
             case cc.macro.KEY.left:
+                if (!this.isLeftAnimPlaying) {
+                    this.isLeftAnimPlaying = true;
+                    this.animations.play("PlayerLeft");
+                }
                 this.accLeft = true;
                 break;
             case cc.macro.KEY.right:
+                if (!this.isRightAnimPlaying) {
+                    this.isRightAnimPlaying = true;
+                    this.animations.play("PlayerRight");
+                }
                 this.accRight = true;
                 break;
             case cc.macro.KEY.up:
@@ -101,9 +113,13 @@ var PlayerControl = /** @class */ (function (_super) {
     PlayerControl.prototype.onKeyUp = function (event) {
         switch (event.keyCode) {
             case cc.macro.KEY.left:
+                this.isLeftAnimPlaying = false;
+                this.animations.play("PlayerNormal");
                 this.accLeft = false;
                 break;
             case cc.macro.KEY.right:
+                this.isRightAnimPlaying = false;
+                this.animations.play("PlayerNormal");
                 this.accRight = false;
                 break;
             case cc.macro.KEY.up:
@@ -116,6 +132,16 @@ var PlayerControl = /** @class */ (function (_super) {
                 this.game.spawnBlueLaser();
                 break;
         }
+    };
+    // ============== Animation trigger functions ==============
+    //These gets called after the main animation is finished (left/right animation)
+    // To keep the fire from the engine fired up while in a tilted state. 
+    PlayerControl.prototype.playMaxLeftFrames = function () {
+        console.log("TRIGGEERRR LLULLLL");
+        this.animations.play("PlayerLeftMax");
+    };
+    PlayerControl.prototype.playMaxRightFrames = function () {
+        this.animations.play("PlayerRightMax");
     };
     PlayerControl = __decorate([
         ccclass

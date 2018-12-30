@@ -112,16 +112,6 @@
     "_id": ""
   },
   {
-    "__type__": "9bdafbCKyJFLb+0z7vIgZyO",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_id": ""
-  },
-  {
     "__type__": "cc.Animation",
     "_name": "",
     "_objFlags": 0,
@@ -182,6 +172,16 @@
       "width": 155,
       "height": 129
     },
+    "_id": ""
+  },
+  {
+    "__type__": "9acbcqEilhC0YfW02UrMAh1",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
     "_id": ""
   },
   {

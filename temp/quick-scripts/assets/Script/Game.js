@@ -1,5 +1,5 @@
 (function() {"use strict";var __module = CC_EDITOR ? module : {exports:{}};var __filename = 'preview-scripts/assets/Script/Game.js';var __require = CC_EDITOR ? function (request) {return cc.require(request, require);} : function (request) {return cc.require(request, __filename);};function __define (exports, require, module) {"use strict";
-cc._RF.push(module, 'b2626S8HNdFw6z1S05i96WS', 'Game', __filename);
+cc._RF.push(module, 'cd1abOgYhVGeqoIDDxg2Ykh', 'Game', __filename);
 // Script/Game.ts
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -9,18 +9,18 @@ var Game = /** @class */ (function (_super) {
     function Game() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         // CONSTANTS
-        _this.ASTEROID_SPAWN_RATE = 1.9;
+        _this.ASTEROID_SPAWN_RATE = 0.9;
         _this.COIN_SPAWN_RATE = 4;
-        _this.AMMO_SPAWN_RATE = 2.5;
+        _this.AMMO_SPAWN_RATE = 7.1;
         _this.AMMO_PER_BOX = 4;
         // NORMAL INSTANCE VARIABLES
-        _this.currentAmmo = 2;
+        _this.currentAmmo = _this.AMMO_PER_BOX;
         _this.coinScore = 0;
         _this.coinSound = null;
-        _this.ammoPickupSound = null;
         _this.time = 0;
         _this.gravity = -70;
         _this.cvs = null;
+        _this.scheduler = null;
         _this.scoreLabel = null;
         _this.timeLabel = null;
         _this.ammoLabel = null;
@@ -29,16 +29,22 @@ var Game = /** @class */ (function (_super) {
         _this.playerLaser = null;
         _this.asteroid = null;
         _this.playerAmmo = null;
+        _this.noAmmoSound = null;
+        _this.ammoPickupSound = null;
+        _this.rockExpSound = null;
+        _this.boomSound = null;
         return _this;
     }
     Game.prototype.onLoad = function () {
         this.cvs = cc.find("Canvas");
+        // Setup physics engine.
         var physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
         this.coinSound = this.getComponent(cc.AudioSource);
         // Push reference of the game object
         this.player.getComponent('PlayerControl').game = this;
+        this.scheduler = cc.director.getScheduler();
         // Setup auto-generation of objects dynamically during gameplay
         this.setCoinScheduler();
         this.setAsteroidScheduler();
@@ -52,6 +58,23 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.update = function (dt) {
         this.time += dt;
         this.timeLabel.string = "Time: " + this.parseTime(this.time);
+    };
+    Game.prototype.resetGame = function () {
+        this.playBoomSound();
+        this.coinScore = 0;
+        this.currentAmmo = this.AMMO_PER_BOX;
+        this.time = 0;
+        // Update the labels aswell, so we render w/ the new data
+        this.scoreLabel.string = "Coins: " + this.coinScore;
+        this.ammoLabel.string = "Ammo: " + this.currentAmmo;
+        this.timeLabel.string = "Time: " + this.time;
+        console.log("LENGTH" + this.node.getComponents("Prefab").length);
+    };
+    Game.prototype.playRockExplosion = function () {
+        cc.audioEngine.play(this.rockExpSound, false, 0.8);
+    };
+    Game.prototype.playBoomSound = function () {
+        cc.audioEngine.play(this.boomSound, false, 0.5);
     };
     Game.prototype.generateRandomPos = function () {
         var randomX = Math.random() * this.cvs.width / 2;
@@ -69,7 +92,7 @@ var Game = /** @class */ (function (_super) {
     };
     Game.prototype.addAmmo = function () {
         this.currentAmmo += this.AMMO_PER_BOX;
-        // this.ammoPickupSound.play();
+        cc.audioEngine.play(this.ammoPickupSound, false, 1);
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
     };
     Game.prototype.parseTime = function (toBeParsed) {
@@ -84,6 +107,12 @@ var Game = /** @class */ (function (_super) {
         newCoin.getComponent('Coin').game = this;
     };
     Game.prototype.spawnBlueLaser = function () {
+        if (this.currentAmmo <= 0) {
+            cc.audioEngine.play(this.noAmmoSound, false, 1);
+            return;
+        }
+        this.currentAmmo--;
+        this.ammoLabel.string = "Ammo: " + this.currentAmmo;
         var newLaser = cc.instantiate(this.playerLaser);
         newLaser.setPosition(this.player.x, this.player.y - this.player.height);
         // Leave a reference to the game object.
@@ -93,9 +122,6 @@ var Game = /** @class */ (function (_super) {
         body.linearVelocity = cc.v2(0, 350);
         this.node.addChild(newLaser);
         laserObject.playLaserSound();
-        if (this.currentAmmo > 0) {
-            this.currentAmmo--;
-        }
     };
     Game.prototype.spawnAsteroid = function () {
         var newAsteroid = cc.instantiate(this.asteroid);
@@ -104,7 +130,8 @@ var Game = /** @class */ (function (_super) {
         pos.x *= 0.77;
         newAsteroid.setPosition(pos);
         var body = newAsteroid.getComponent(cc.RigidBody);
-        body.linearVelocity = cc.v2(20 * this.generateRandomSign(), -220);
+        var yVel = 170 + Math.random() * -150;
+        body.linearVelocity = cc.v2(20 * this.generateRandomSign(), -250);
         // Leave a reference to the game object.
         newAsteroid.getComponent('Asteroid').game = this;
     };
@@ -119,13 +146,13 @@ var Game = /** @class */ (function (_super) {
     };
     // ========== SCHEDULERS ==========
     Game.prototype.setCoinScheduler = function () {
-        cc.director.getScheduler().schedule(this.spawnCoin, this, this.COIN_SPAWN_RATE, false);
+        this.scheduler.schedule(this.spawnCoin, this, this.COIN_SPAWN_RATE, false);
     };
     Game.prototype.setAsteroidScheduler = function () {
-        cc.director.getScheduler().schedule(this.spawnAsteroid, this, this.ASTEROID_SPAWN_RATE, false);
+        this.scheduler.schedule(this.spawnAsteroid, this, this.ASTEROID_SPAWN_RATE, false);
     };
     Game.prototype.setAmmocheduler = function () {
-        cc.director.getScheduler().schedule(this.spawnAmmo, this, this.AMMO_SPAWN_RATE, false);
+        this.scheduler.schedule(this.spawnAmmo, this, this.AMMO_SPAWN_RATE, false);
     };
     __decorate([
         property(cc.Label)
@@ -151,6 +178,18 @@ var Game = /** @class */ (function (_super) {
     __decorate([
         property(cc.Prefab)
     ], Game.prototype, "playerAmmo", void 0);
+    __decorate([
+        property(cc.AudioClip)
+    ], Game.prototype, "noAmmoSound", void 0);
+    __decorate([
+        property(cc.AudioClip)
+    ], Game.prototype, "ammoPickupSound", void 0);
+    __decorate([
+        property(cc.AudioClip)
+    ], Game.prototype, "rockExpSound", void 0);
+    __decorate([
+        property(cc.AudioClip)
+    ], Game.prototype, "boomSound", void 0);
     Game = __decorate([
         ccclass
     ], Game);

@@ -1,6 +1,6 @@
 "use strict";
 cc._RF.push(module, '376bdpP5V9PiaUcTdLmsYFh', 'Ammo');
-// Script/Ammo.ts
+// Script/Gameplay/Ammo.ts
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
@@ -17,8 +17,8 @@ var Ammo = /** @class */ (function (_super) {
         this.cvs = cc.find("Canvas");
         this.lowerBound = -this.cvs.height * 0.62;
     };
-    Ammo.prototype.start = function () {
-    };
+    // start () {
+    // }
     Ammo.prototype.update = function (dt) {
         if (cc.isValid(this.node)) {
             if (this.node.y <= this.lowerBound) {

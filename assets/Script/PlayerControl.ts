@@ -10,6 +10,8 @@ export default class PlayerControl extends cc.Component {
     private accRight: boolean = false;
     private accUp: boolean = false;
     private accDown: boolean = false;
+    private isLeftAnimPlaying: boolean = false;
+    private isRightAnimPlaying: boolean = false;
 
     // X / Y bounds for the player
     private leftBound: number = 0;
@@ -21,17 +23,19 @@ export default class PlayerControl extends cc.Component {
     private ySpeed: number = 0;
 
     private cvs: cc.Node  = null;
+    private animations : cc.Animation = null;
 
     game : Game = null;
     // Constants
     private readonly X_ACCELERATION: number = 3200;
-    private readonly Y_ACCELERATION: number = 1800;
+    private readonly Y_ACCELERATION: number = 2000;
     private readonly MAX_SPEED: number = 200;
     private readonly DAMP: number = 0.8;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.cvs = cc.find("Canvas");
+        this.animations = this.getComponent(cc.Animation);
         this.leftBound = -this.cvs.width / 2;
         this.rightBound = this.cvs.width / 2;
         this.upperBound = 0;
@@ -39,7 +43,6 @@ export default class PlayerControl extends cc.Component {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     }
-
 
     // start () {
     // }
@@ -88,9 +91,17 @@ export default class PlayerControl extends cc.Component {
     onKeyDown(event: cc.Event.EventKeyboard) {
         switch(event.keyCode) {
             case cc.macro.KEY.left:
+                if (!this.isLeftAnimPlaying) {
+                    this.isLeftAnimPlaying = true;
+                    this.animations.play("PlayerLeft");
+                }
                 this.accLeft = true;
                 break;
             case cc.macro.KEY.right:
+            if (!this.isRightAnimPlaying) {
+                this.isRightAnimPlaying = true;
+                this.animations.play("PlayerRight");
+                }
                 this.accRight = true;
                 break;
             case cc.macro.KEY.up:
@@ -107,9 +118,13 @@ export default class PlayerControl extends cc.Component {
     onKeyUp(event: cc.Event.EventKeyboard) {
         switch(event.keyCode) {
             case cc.macro.KEY.left:
+                this.isLeftAnimPlaying = false;
+                this.animations.play("PlayerNormal");
                 this.accLeft = false;
                 break;
             case cc.macro.KEY.right:
+                this.isRightAnimPlaying = false;
+                this.animations.play("PlayerNormal");
                 this.accRight = false;
                 break;
             case cc.macro.KEY.up:
@@ -122,5 +137,17 @@ export default class PlayerControl extends cc.Component {
                 this.game.spawnBlueLaser();
                 break;
         }
+    }
+
+    // ============== Animation trigger functions ==============
+    //These gets called after the main animation is finished (left/right animation)
+    // To keep the fire from the engine fired up while in a tilted state. 
+    playMaxLeftFrames() {
+        console.log("TRIGGEERRR LLULLLL");
+        this.animations.play("PlayerLeftMax");
+    }
+
+    playMaxRightFrames() {
+        this.animations.play("PlayerRightMax");
     }
 }

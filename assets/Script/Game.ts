@@ -3,19 +3,19 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Game extends cc.Component {
     // CONSTANTS
-    private readonly ASTEROID_SPAWN_RATE: number = 1.9;
+    private readonly ASTEROID_SPAWN_RATE: number = 0.9;
     private readonly COIN_SPAWN_RATE: number = 4;
-    private readonly AMMO_SPAWN_RATE: number = 2.5;
+    private readonly AMMO_SPAWN_RATE: number = 7.1;
     private readonly AMMO_PER_BOX: number = 4;
 
     // NORMAL INSTANCE VARIABLES
-    private currentAmmo: number = 2;
+    private currentAmmo: number = this.AMMO_PER_BOX;
     private coinScore: number = 0;
     private coinSound: cc.AudioSource = null;
-    private ammoPickupSound: cc.AudioSource = null;
     private time: number = 0;
     private gravity: number = -70;
     private cvs: cc.Node = null;
+    private scheduler : cc.Scheduler = null;
 
     @property(cc.Label)
     scoreLabel: cc.Label = null;
@@ -27,31 +27,44 @@ export default class Game extends cc.Component {
     ammoLabel: cc.Label = null;
 
     @property(cc.Prefab)
-    coin: cc.Prefab = null
+    coin: cc.Prefab = null;
 
     @property(cc.Node)
-    player: cc.Node = null
+    player: cc.Node = null;
 
     @property(cc.Prefab)
-    playerLaser: cc.Prefab = null
+    playerLaser: cc.Prefab = null;
 
     @property(cc.Prefab)
-    asteroid: cc.Prefab = null
+    asteroid: cc.Prefab = null;
 
     @property(cc.Prefab)
-    playerAmmo: cc.Prefab = null
+    playerAmmo: cc.Prefab = null;
+
+    @property(cc.AudioClip)
+    noAmmoSound: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
+    ammoPickupSound: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
+    rockExpSound: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
+    boomSound: cc.AudioClip = null;
 
     onLoad () {
         this.cvs =  cc.find("Canvas");
+
+        // Setup physics engine.
         let physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
 
-
         this.coinSound = this.getComponent(cc.AudioSource);
         // Push reference of the game object
         this.player.getComponent('PlayerControl').game = this;
-
+        this.scheduler = cc.director.getScheduler();
         // Setup auto-generation of objects dynamically during gameplay
         this.setCoinScheduler();
         this.setAsteroidScheduler();
@@ -67,6 +80,27 @@ export default class Game extends cc.Component {
     update (dt) {
         this.time+= dt;
         this.timeLabel.string = "Time: " + this.parseTime(this.time);
+    }
+
+    resetGame() {
+        this.playBoomSound();
+        this.coinScore = 0;
+        this.currentAmmo = this.AMMO_PER_BOX;
+        this.time = 0;
+
+        // Update the labels aswell, so we render w/ the new data
+        this.scoreLabel.string = "Coins: " + this.coinScore;
+        this.ammoLabel.string = "Ammo: " + this.currentAmmo;
+        this.timeLabel.string = "Time: " + this.time;
+        console.log("LENGTH" + this.node.getComponents("Prefab").length);
+    }
+
+    playRockExplosion() {
+        cc.audioEngine.play(this.rockExpSound, false, 0.8);
+    }
+
+    playBoomSound() {
+        cc.audioEngine.play(this.boomSound, false, 0.5);
     }
 
     generateRandomPos() {
@@ -88,7 +122,7 @@ export default class Game extends cc.Component {
 
     addAmmo() {
         this.currentAmmo += this.AMMO_PER_BOX;
-        // this.ammoPickupSound.play();
+        cc.audioEngine.play(this.ammoPickupSound, false, 1);
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
     }
 
@@ -107,6 +141,12 @@ export default class Game extends cc.Component {
     }
 
     spawnBlueLaser() {
+        if (this.currentAmmo <= 0) {
+            cc.audioEngine.play(this.noAmmoSound, false, 1);
+            return;
+        }
+        this.currentAmmo--;
+        this.ammoLabel.string = "Ammo: " + this.currentAmmo;
         const newLaser = cc.instantiate(this.playerLaser);
         newLaser.setPosition(this.player.x, this.player.y - this.player.height);
 
@@ -118,9 +158,6 @@ export default class Game extends cc.Component {
         body.linearVelocity = cc.v2(0, 350);
         this.node.addChild(newLaser);
         laserObject.playLaserSound();
-        if (this.currentAmmo > 0) {
-            this.currentAmmo--;
-        }
     }
 
     spawnAsteroid() {
@@ -131,7 +168,8 @@ export default class Game extends cc.Component {
         newAsteroid.setPosition(pos);
 
         const body = newAsteroid.getComponent(cc.RigidBody)
-        body.linearVelocity = cc.v2(20 * this.generateRandomSign(), -220)
+        const yVel = 170 + Math.random() * -150;
+        body.linearVelocity = cc.v2(20 * this.generateRandomSign(), -250)
         // Leave a reference to the game object.
         newAsteroid.getComponent('Asteroid').game = this;
     }
@@ -148,14 +186,14 @@ export default class Game extends cc.Component {
 
     // ========== SCHEDULERS ==========
     setCoinScheduler() {
-        cc.director.getScheduler().schedule(this.spawnCoin, this, this.COIN_SPAWN_RATE, false);
+        this.scheduler.schedule(this.spawnCoin, this, this.COIN_SPAWN_RATE, false);
     }
 
     setAsteroidScheduler() {
-        cc.director.getScheduler().schedule(this.spawnAsteroid, this, this.ASTEROID_SPAWN_RATE, false);
+        this.scheduler.schedule(this.spawnAsteroid, this, this.ASTEROID_SPAWN_RATE, false);
     }
 
     setAmmocheduler() {
-        cc.director.getScheduler().schedule(this.spawnAmmo, this, this.AMMO_SPAWN_RATE, false);
+        this.scheduler.schedule(this.spawnAmmo, this, this.AMMO_SPAWN_RATE, false);
     }
 }

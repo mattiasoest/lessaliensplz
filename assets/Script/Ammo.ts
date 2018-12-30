@@ -1,4 +1,4 @@
-import Game from "./Game";
+import Game from "../Game";
 
 const {ccclass, property} = cc._decorator;
 
@@ -13,9 +13,8 @@ export default class Ammo extends cc.Component {
         this.lowerBound = -this.cvs.height * 0.62;
     }
 
-    start () {
-
-    }
+    // start () {
+    // }
 
     update (dt) {
         if (cc.isValid(this.node)) {

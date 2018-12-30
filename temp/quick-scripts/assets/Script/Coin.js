@@ -19,9 +19,6 @@ var Coin = /** @class */ (function (_super) {
     // LIFE-CYCLE CALLBACKS:
     Coin.prototype.onLoad = function () {
         this.cvs = cc.find("Canvas");
-        this.manager.enabled = true;
-        this.manager.enabledDebugDraw = true;
-        this.manager.enabledDrawBoundingBox = true;
         this.lowerBound = -this.cvs.height * 0.62;
     };
     Coin.prototype.start = function () {
@@ -30,8 +27,6 @@ var Coin = /** @class */ (function (_super) {
         // If it has not been destroyed and cocos trying to free its memory.
         if (cc.isValid(this.node)) {
             this.node.y -= this.coinSpeed * dt;
-            // Not been picked up by the player
-            // if (this.getPlayerDistance() < this.hitbox) {
             var player = this.game.player;
             // This is an ugly hack for the collision detection
             // Tried to adjust  parameters until it had a good feel. 

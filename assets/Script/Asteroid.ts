@@ -1,13 +1,17 @@
+import Game from "./Game";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Asteroid extends cc.Component {
     private rotationSpeed: number = 100;
     private velocity: number = 100;
     // LIFE-CYCLE CALLBACKS:
     private rotationDir = 1;
     private lowerBound: number = 0;
     private cvs: cc.Node = null;
+
+    game: Game = null;
 
     onLoad () {
         this.cvs = cc.find("Canvas");
@@ -38,12 +42,15 @@ export default class NewClass extends cc.Component {
     }
     onBeginContact(contact, selfCollider, otherCollider) {
         if (otherCollider.node.name === "LaserBlue") {
+            this.game.playRockExplosion();
             selfCollider.node.destroy();
             otherCollider.node.destroy();
         }
         else if (otherCollider.node.name === "Player") {
             console.log("PLAYER ASTEROID CONTACT");
-                selfCollider.node.destroy();
+            this.game.resetGame();
+            // this.game.playExplosion();
+            selfCollider.node.destroy();
                 // otherCollider.node.destroy();
             }
     }
