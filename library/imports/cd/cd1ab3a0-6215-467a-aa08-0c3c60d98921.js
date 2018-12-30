@@ -9,7 +9,7 @@ var Game = /** @class */ (function (_super) {
     function Game() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         // CONSTANTS
-        _this.ASTEROID_SPAWN_RATE = 0.9;
+        _this.ASTEROID_SPAWN_RATE = 1;
         _this.COIN_SPAWN_RATE = 4;
         _this.AMMO_SPAWN_RATE = 7.1;
         _this.AMMO_PER_BOX = 4;
@@ -73,6 +73,9 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.playRockExplosion = function () {
         cc.audioEngine.play(this.rockExpSound, false, 0.8);
     };
+    Game.prototype.playExplosionAnimation = function () {
+        // this.player.getComponent(cc.Animation).play("Explosion");
+    };
     Game.prototype.playBoomSound = function () {
         cc.audioEngine.play(this.boomSound, false, 0.5);
     };
@@ -130,8 +133,8 @@ var Game = /** @class */ (function (_super) {
         pos.x *= 0.77;
         newAsteroid.setPosition(pos);
         var body = newAsteroid.getComponent(cc.RigidBody);
-        var yVel = 170 + Math.random() * -150;
-        body.linearVelocity = cc.v2(20 * this.generateRandomSign(), -250);
+        var yVel = -50 + Math.random() * -220;
+        body.linearVelocity = cc.v2(20 * this.generateRandomSign(), yVel);
         // Leave a reference to the game object.
         newAsteroid.getComponent('Asteroid').game = this;
     };

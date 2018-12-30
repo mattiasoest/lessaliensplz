@@ -1,4 +1,4 @@
-import Game from "../Game";
+import Game from "./Game";
 
 const {ccclass, property} = cc._decorator;
 

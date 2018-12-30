@@ -127,7 +127,7 @@
     },
     "_clips": [
       {
-        "__uuid__": "efcc48e5-8555-4f28-819b-ce3f363add77"
+        "__uuid__": "a7b14946-4770-4c92-9c2e-604a3c57d5f3"
       }
     ],
     "playOnLoad": true,
@@ -206,8 +206,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 5,
-      "height": 12
+      "width": 12,
+      "height": 16
     },
     "_id": ""
   },

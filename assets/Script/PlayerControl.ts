@@ -22,6 +22,7 @@ export default class PlayerControl extends cc.Component {
     private xSpeed: number = 0;
     private ySpeed: number = 0;
 
+    private flySound: cc.AudioSource = null;
     private cvs: cc.Node  = null;
     private animations : cc.Animation = null;
 
@@ -35,6 +36,7 @@ export default class PlayerControl extends cc.Component {
 
     onLoad () {
         this.cvs = cc.find("Canvas");
+        this.flySound = this.getComponent(cc.AudioSource);
         this.animations = this.getComponent(cc.Animation);
         this.leftBound = -this.cvs.width / 2;
         this.rightBound = this.cvs.width / 2;
@@ -92,6 +94,7 @@ export default class PlayerControl extends cc.Component {
         switch(event.keyCode) {
             case cc.macro.KEY.left:
                 if (!this.isLeftAnimPlaying) {
+                    this.flySound.play();
                     this.isLeftAnimPlaying = true;
                     this.animations.play("PlayerLeft");
                 }
@@ -99,6 +102,7 @@ export default class PlayerControl extends cc.Component {
                 break;
             case cc.macro.KEY.right:
             if (!this.isRightAnimPlaying) {
+                this.flySound.play();
                 this.isRightAnimPlaying = true;
                 this.animations.play("PlayerRight");
                 }
@@ -143,7 +147,6 @@ export default class PlayerControl extends cc.Component {
     //These gets called after the main animation is finished (left/right animation)
     // To keep the fire from the engine fired up while in a tilted state. 
     playMaxLeftFrames() {
-        console.log("TRIGGEERRR LLULLLL");
         this.animations.play("PlayerLeftMax");
     }
 

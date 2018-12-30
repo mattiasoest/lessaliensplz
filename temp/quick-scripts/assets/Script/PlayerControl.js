@@ -22,6 +22,7 @@ var PlayerControl = /** @class */ (function (_super) {
         _this.lowerBound = 0;
         _this.xSpeed = 0;
         _this.ySpeed = 0;
+        _this.flySound = null;
         _this.cvs = null;
         _this.animations = null;
         _this.game = null;
@@ -35,6 +36,7 @@ var PlayerControl = /** @class */ (function (_super) {
     // LIFE-CYCLE CALLBACKS:
     PlayerControl.prototype.onLoad = function () {
         this.cvs = cc.find("Canvas");
+        this.flySound = this.getComponent(cc.AudioSource);
         this.animations = this.getComponent(cc.Animation);
         this.leftBound = -this.cvs.width / 2;
         this.rightBound = this.cvs.width / 2;
@@ -88,6 +90,7 @@ var PlayerControl = /** @class */ (function (_super) {
         switch (event.keyCode) {
             case cc.macro.KEY.left:
                 if (!this.isLeftAnimPlaying) {
+                    this.flySound.play();
                     this.isLeftAnimPlaying = true;
                     this.animations.play("PlayerLeft");
                 }
@@ -95,6 +98,7 @@ var PlayerControl = /** @class */ (function (_super) {
                 break;
             case cc.macro.KEY.right:
                 if (!this.isRightAnimPlaying) {
+                    this.flySound.play();
                     this.isRightAnimPlaying = true;
                     this.animations.play("PlayerRight");
                 }
@@ -137,7 +141,6 @@ var PlayerControl = /** @class */ (function (_super) {
     //These gets called after the main animation is finished (left/right animation)
     // To keep the fire from the engine fired up while in a tilted state. 
     PlayerControl.prototype.playMaxLeftFrames = function () {
-        console.log("TRIGGEERRR LLULLLL");
         this.animations.play("PlayerLeftMax");
     };
     PlayerControl.prototype.playMaxRightFrames = function () {

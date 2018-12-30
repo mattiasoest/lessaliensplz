@@ -3,7 +3,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Game extends cc.Component {
     // CONSTANTS
-    private readonly ASTEROID_SPAWN_RATE: number = 0.9;
+    private readonly ASTEROID_SPAWN_RATE: number = 1;
     private readonly COIN_SPAWN_RATE: number = 4;
     private readonly AMMO_SPAWN_RATE: number = 7.1;
     private readonly AMMO_PER_BOX: number = 4;
@@ -99,6 +99,10 @@ export default class Game extends cc.Component {
         cc.audioEngine.play(this.rockExpSound, false, 0.8);
     }
 
+    playExplosionAnimation() {
+        // this.player.getComponent(cc.Animation).play("Explosion");
+    }
+
     playBoomSound() {
         cc.audioEngine.play(this.boomSound, false, 0.5);
     }
@@ -168,8 +172,8 @@ export default class Game extends cc.Component {
         newAsteroid.setPosition(pos);
 
         const body = newAsteroid.getComponent(cc.RigidBody)
-        const yVel = 170 + Math.random() * -150;
-        body.linearVelocity = cc.v2(20 * this.generateRandomSign(), -250)
+        const yVel = -50 + Math.random() * -220;
+        body.linearVelocity = cc.v2(20 * this.generateRandomSign(), yVel)
         // Leave a reference to the game object.
         newAsteroid.getComponent('Asteroid').game = this;
     }

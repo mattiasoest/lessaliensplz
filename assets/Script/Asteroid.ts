@@ -43,15 +43,32 @@ export default class Asteroid extends cc.Component {
     onBeginContact(contact, selfCollider, otherCollider) {
         if (otherCollider.node.name === "LaserBlue") {
             this.game.playRockExplosion();
-            selfCollider.node.destroy();
+            // this.node.rotation = 0;
+            // Turn off just the hitbox since we will destroy the whole node after we are done with the animation.
+            this.node.getComponent(cc.RigidBody).enabledContactListener = false;
+            this.getComponent(cc.Animation).play("ExplosionLarger");
+            // Gets destroyed by the trigger function destroySelf
             otherCollider.node.destroy();
         }
-        else if (otherCollider.node.name === "Player") {
+        if (otherCollider.node.name === "Player") {
             console.log("PLAYER ASTEROID CONTACT");
+            // ====== TODO FIX
+            this.node.getComponent(cc.RigidBody).enabledContactListener = false;
+            this.getComponent(cc.Animation).play("ExplosionLarger");
+            // ======
             this.game.resetGame();
-            // this.game.playExplosion();
-            selfCollider.node.destroy();
+            this.game.playExplosionAnimation();
+            // selfCollider.node.destroy();
                 // otherCollider.node.destroy();
             }
+    }
+
+
+    // Trigger functions for animation triggers
+    destroySelf() {
+        this.node.destroy();
+    }
+    selfScale() {
+        this.node.setScale(1.4);
     }
 }

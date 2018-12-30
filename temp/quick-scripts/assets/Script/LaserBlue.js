@@ -1,6 +1,6 @@
 (function() {"use strict";var __module = CC_EDITOR ? module : {exports:{}};var __filename = 'preview-scripts/assets/Script/LaserBlue.js';var __require = CC_EDITOR ? function (request) {return cc.require(request, require);} : function (request) {return cc.require(request, __filename);};function __define (exports, require, module) {"use strict";
 cc._RF.push(module, '57af1WCawNKqa1Z6WuIFHUH', 'LaserBlue', __filename);
-// Script/Gameplay/LaserBlue.ts
+// Script/LaserBlue.ts
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
@@ -22,6 +22,14 @@ var LaserBlue = /** @class */ (function (_super) {
             if (this.node.y > cc.find("Canvas").height * 0.4) {
                 this.node.destroy();
             }
+        }
+    };
+    LaserBlue.prototype.onBeginContact = function (contact, selfCollider, otherCollider) {
+        if (otherCollider.node.name === "Asteroid") {
+            this.game.playRockExplosion();
+            this.getComponent(cc.Animation).play("Explosion");
+            // selfCollider.node.destroy();
+            otherCollider.node.destroy();
         }
     };
     LaserBlue.prototype.playLaserSound = function () {

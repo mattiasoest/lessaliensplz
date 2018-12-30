@@ -120,7 +120,11 @@
     },
     "_enabled": true,
     "_defaultClip": null,
-    "_clips": [],
+    "_clips": [
+      {
+        "__uuid__": "567550e9-cc64-4cfe-9a22-41dfeb239849"
+      }
+    ],
     "playOnLoad": false,
     "_id": ""
   },
@@ -169,8 +173,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 155,
-      "height": 129
+      "width": 90,
+      "height": 90
     },
     "_id": ""
   },

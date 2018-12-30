@@ -21,6 +21,15 @@ export default class LaserBlue extends cc.Component {
             }
         }
     }
+    
+    onBeginContact(contact, selfCollider, otherCollider) {
+        if (otherCollider.node.name === "Asteroid") {
+            this.game.playRockExplosion();
+            this.getComponent(cc.Animation).play("Explosion");
+            // selfCollider.node.destroy();
+            otherCollider.node.destroy();
+        }
+    }
 
     playLaserSound() {
         this.playerFireSound.play();

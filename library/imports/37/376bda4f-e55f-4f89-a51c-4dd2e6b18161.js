@@ -1,6 +1,6 @@
 "use strict";
 cc._RF.push(module, '376bdpP5V9PiaUcTdLmsYFh', 'Ammo');
-// Script/Gameplay/Ammo.ts
+// Script/Ammo.ts
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
