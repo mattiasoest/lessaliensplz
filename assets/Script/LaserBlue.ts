@@ -34,5 +34,4 @@ export default class LaserBlue extends cc.Component {
     playLaserSound() {
         this.playerFireSound.play();
     }
-
 }

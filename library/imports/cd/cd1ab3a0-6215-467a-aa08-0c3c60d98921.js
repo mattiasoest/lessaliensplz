@@ -13,6 +13,7 @@ var Game = /** @class */ (function (_super) {
         _this.COIN_SPAWN_RATE = 4;
         _this.AMMO_SPAWN_RATE = 7.1;
         _this.AMMO_PER_BOX = 4;
+        _this.ENEMY_SPAWN_RATE = 8;
         // NORMAL INSTANCE VARIABLES
         _this.currentAmmo = _this.AMMO_PER_BOX;
         _this.coinScore = 0;
@@ -28,6 +29,9 @@ var Game = /** @class */ (function (_super) {
         _this.player = null;
         _this.playerLaser = null;
         _this.asteroid = null;
+        _this.bigEnemy = null;
+        _this.medEnemy = null;
+        _this.smallEnemy = null;
         _this.playerAmmo = null;
         _this.noAmmoSound = null;
         _this.ammoPickupSound = null;
@@ -48,9 +52,11 @@ var Game = /** @class */ (function (_super) {
         // Setup auto-generation of objects dynamically during gameplay
         this.setCoinScheduler();
         this.setAsteroidScheduler();
-        this.setAmmocheduler();
+        this.setAmmoScheduler();
+        this.setEnemyScheduler();
     };
     Game.prototype.start = function () {
+        this.spawnRandomEnemy();
         this.spawnAmmo();
         this.spawnAsteroid();
         this.spawnCoin();
@@ -68,13 +74,14 @@ var Game = /** @class */ (function (_super) {
         this.scoreLabel.string = "Coins: " + this.coinScore;
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
         this.timeLabel.string = "Time: " + this.time;
-        console.log("LENGTH" + this.node.getComponents("Prefab").length);
+        // ACTUALLY RESETS EVERYTHING...... 
+        // cc.director.loadScene('Gameplay');
     };
     Game.prototype.playRockExplosion = function () {
         cc.audioEngine.play(this.rockExpSound, false, 0.8);
     };
     Game.prototype.playExplosionAnimation = function () {
-        // this.player.getComponent(cc.Animation).play("Explosion");
+        this.player.getComponent(cc.Animation).play("Explosion");
     };
     Game.prototype.playBoomSound = function () {
         cc.audioEngine.play(this.boomSound, false, 0.5);
@@ -83,7 +90,7 @@ var Game = /** @class */ (function (_super) {
         var randomX = Math.random() * this.cvs.width / 2;
         // set sign value
         randomX *= this.generateRandomSign();
-        return new cc.Vec2(randomX, this.cvs.height);
+        return cc.v2(randomX, this.cvs.height);
     };
     Game.prototype.generateRandomSign = function () {
         return Math.random() <= 0.5 ? -1 : 1;
@@ -134,7 +141,8 @@ var Game = /** @class */ (function (_super) {
         newAsteroid.setPosition(pos);
         var body = newAsteroid.getComponent(cc.RigidBody);
         var yVel = -50 + Math.random() * -220;
-        body.linearVelocity = cc.v2(20 * this.generateRandomSign(), yVel);
+        var xVel = (Math.random() + 1) * 20 * this.generateRandomSign();
+        body.linearVelocity = cc.v2(xVel, yVel);
         // Leave a reference to the game object.
         newAsteroid.getComponent('Asteroid').game = this;
     };
@@ -147,6 +155,34 @@ var Game = /** @class */ (function (_super) {
         // Leave a reference to the game object.
         newAmmoBox.getComponent('Ammo').game = this;
     };
+    Game.prototype.spawnRandomEnemy = function () {
+        var newEnemy = null;
+        var random = Math.random();
+        var xSpeed = 0;
+        var ySpeed = 0;
+        if (random < 0.33) {
+            newEnemy = cc.instantiate(this.smallEnemy);
+            newEnemy.getComponent('EnemySmall').game = this;
+            xSpeed = 220;
+            ySpeed = -110;
+        }
+        else if (random <= 0.67) {
+            newEnemy = cc.instantiate(this.medEnemy);
+            newEnemy.getComponent('EnemyMedium').game = this;
+            xSpeed = 120;
+            ySpeed = -90;
+        }
+        else {
+            newEnemy = cc.instantiate(this.bigEnemy);
+            newEnemy.getComponent('EnemyBig').game = this;
+            xSpeed = 40;
+            ySpeed = -60;
+        }
+        this.node.addChild(newEnemy);
+        newEnemy.setPosition(this.generateRandomPos());
+        var body = newEnemy.getComponent(cc.RigidBody);
+        body.linearVelocity = cc.v2(xSpeed * this.generateRandomSign(), ySpeed);
+    };
     // ========== SCHEDULERS ==========
     Game.prototype.setCoinScheduler = function () {
         this.scheduler.schedule(this.spawnCoin, this, this.COIN_SPAWN_RATE, false);
@@ -154,8 +190,11 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.setAsteroidScheduler = function () {
         this.scheduler.schedule(this.spawnAsteroid, this, this.ASTEROID_SPAWN_RATE, false);
     };
-    Game.prototype.setAmmocheduler = function () {
+    Game.prototype.setAmmoScheduler = function () {
         this.scheduler.schedule(this.spawnAmmo, this, this.AMMO_SPAWN_RATE, false);
+    };
+    Game.prototype.setEnemyScheduler = function () {
+        this.scheduler.schedule(this.spawnRandomEnemy, this, this.ENEMY_SPAWN_RATE, false);
     };
     __decorate([
         property(cc.Label)
@@ -178,6 +217,15 @@ var Game = /** @class */ (function (_super) {
     __decorate([
         property(cc.Prefab)
     ], Game.prototype, "asteroid", void 0);
+    __decorate([
+        property(cc.Prefab)
+    ], Game.prototype, "bigEnemy", void 0);
+    __decorate([
+        property(cc.Prefab)
+    ], Game.prototype, "medEnemy", void 0);
+    __decorate([
+        property(cc.Prefab)
+    ], Game.prototype, "smallEnemy", void 0);
     __decorate([
         property(cc.Prefab)
     ], Game.prototype, "playerAmmo", void 0);

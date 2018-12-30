@@ -31,7 +31,7 @@ var Coin = /** @class */ (function (_super) {
             // This is an ugly hack for the collision detection
             // Tried to adjust  parameters until it had a good feel. 
             // Wanted to do oldschool collision before I started using the physics engine
-            // So the Coin objects are NOT hooked up to the physics engine
+            // So the Coin objects are currently NOT hooked up to the physics engine
             if (this.node.y - this.hitboxRadius / 2 < player.y - player.height / 2 && this.node.y + this.hitboxRadius > player.y - player.height * 1.5) {
                 if (this.node.x < player.x + player.width && this.node.x > player.x - player.width) {
                     this.game.updateCoinScore();

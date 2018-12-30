@@ -5,10 +5,10 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Asteroid extends cc.Component {
     private rotationSpeed: number = 100;
-    private velocity: number = 100;
-    // LIFE-CYCLE CALLBACKS:
     private rotationDir = 1;
     private lowerBound: number = 0;
+    private leftBound: number = 0;
+    private rightBound: number = 0;
     private cvs: cc.Node = null;
 
     game: Game = null;
@@ -16,27 +16,28 @@ export default class Asteroid extends cc.Component {
     onLoad () {
         this.cvs = cc.find("Canvas");
         this.lowerBound = -this.cvs.height * 0.62;
+        this.leftBound = -this.cvs.width / 2 - 40;
+        this.rightBound = this.cvs.width / 2 + 40;
         this.node.setScale(0.3);
         this.rotationDir *= Math.random() < 0.5 ? -1 : 1;
-        if (Math.random() < 0.65) {
-            this.rotationSpeed *= 2;
-            this.velocity *= 1.5;
-        }
-        else {
-            this.rotationSpeed *= 4.2;
-            this.velocity *= 2.2 
-        }
     }
 
-    start () {
-
-    }
+    // start () {}
 
     update (dt) {
         if (cc.isValid(this.node)) {
             this.node.rotation += this.rotationSpeed * dt * this.rotationDir;
             if (this.node.y <= this.lowerBound) {
                 this.node.destroy();
+            }
+            else {
+                // X-Screen bounds
+                if (this.node.x <= this.leftBound || this.node.x >= this.rightBound) {
+                this.node.getComponent(cc.RigidBody);
+                // Invert x-velocity so it bounces back
+                let body = this.node.getComponent(cc.RigidBody);
+                body.linearVelocity = cc.v2(body.linearVelocity.x * -1, body.linearVelocity.y);
+                }
             }
         }
     }
@@ -63,8 +64,7 @@ export default class Asteroid extends cc.Component {
             }
     }
 
-
-    // Trigger functions for animation triggers
+    // ============== Animation trigger functions ==============
     destroySelf() {
         this.node.destroy();
     }

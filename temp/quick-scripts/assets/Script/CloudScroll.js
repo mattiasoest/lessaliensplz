@@ -10,7 +10,7 @@ var CloudScroll = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.lowBound = -252;
         _this.resetPos = 3134;
-        _this.scrollSpeed = 115;
+        _this.scrollSpeed = 130;
         return _this;
     }
     // onLoad () {}

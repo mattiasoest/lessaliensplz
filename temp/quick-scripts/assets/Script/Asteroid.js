@@ -9,10 +9,10 @@ var Asteroid = /** @class */ (function (_super) {
     function Asteroid() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.rotationSpeed = 100;
-        _this.velocity = 100;
-        // LIFE-CYCLE CALLBACKS:
         _this.rotationDir = 1;
         _this.lowerBound = 0;
+        _this.leftBound = 0;
+        _this.rightBound = 0;
         _this.cvs = null;
         _this.game = null;
         return _this;
@@ -20,24 +20,26 @@ var Asteroid = /** @class */ (function (_super) {
     Asteroid.prototype.onLoad = function () {
         this.cvs = cc.find("Canvas");
         this.lowerBound = -this.cvs.height * 0.62;
+        this.leftBound = -this.cvs.width / 2 - 40;
+        this.rightBound = this.cvs.width / 2 + 40;
         this.node.setScale(0.3);
         this.rotationDir *= Math.random() < 0.5 ? -1 : 1;
-        if (Math.random() < 0.65) {
-            this.rotationSpeed *= 2;
-            this.velocity *= 1.5;
-        }
-        else {
-            this.rotationSpeed *= 4.2;
-            this.velocity *= 2.2;
-        }
     };
-    Asteroid.prototype.start = function () {
-    };
+    // start () {}
     Asteroid.prototype.update = function (dt) {
         if (cc.isValid(this.node)) {
             this.node.rotation += this.rotationSpeed * dt * this.rotationDir;
             if (this.node.y <= this.lowerBound) {
                 this.node.destroy();
+            }
+            else {
+                // X-Screen bounds
+                if (this.node.x <= this.leftBound || this.node.x >= this.rightBound) {
+                    this.node.getComponent(cc.RigidBody);
+                    // Invert x-velocity so it bounces back
+                    var body = this.node.getComponent(cc.RigidBody);
+                    body.linearVelocity = cc.v2(body.linearVelocity.x * -1, body.linearVelocity.y);
+                }
             }
         }
     };
@@ -63,7 +65,7 @@ var Asteroid = /** @class */ (function (_super) {
             // otherCollider.node.destroy();
         }
     };
-    // Trigger functions for animation triggers
+    // ============== Animation trigger functions ==============
     Asteroid.prototype.destroySelf = function () {
         this.node.destroy();
     };

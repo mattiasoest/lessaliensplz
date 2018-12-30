@@ -7,6 +7,7 @@ export default class Game extends cc.Component {
     private readonly COIN_SPAWN_RATE: number = 4;
     private readonly AMMO_SPAWN_RATE: number = 7.1;
     private readonly AMMO_PER_BOX: number = 4;
+    private readonly ENEMY_SPAWN_RATE: number = 8;
 
     // NORMAL INSTANCE VARIABLES
     private currentAmmo: number = this.AMMO_PER_BOX;
@@ -39,6 +40,15 @@ export default class Game extends cc.Component {
     asteroid: cc.Prefab = null;
 
     @property(cc.Prefab)
+    bigEnemy: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    medEnemy: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    smallEnemy: cc.Prefab = null;
+
+    @property(cc.Prefab)
     playerAmmo: cc.Prefab = null;
 
     @property(cc.AudioClip)
@@ -68,10 +78,12 @@ export default class Game extends cc.Component {
         // Setup auto-generation of objects dynamically during gameplay
         this.setCoinScheduler();
         this.setAsteroidScheduler();
-        this.setAmmocheduler();
+        this.setAmmoScheduler();
+        this.setEnemyScheduler();
     }
 
     start () {
+        this.spawnRandomEnemy();
         this.spawnAmmo();
         this.spawnAsteroid();
         this.spawnCoin();
@@ -92,7 +104,8 @@ export default class Game extends cc.Component {
         this.scoreLabel.string = "Coins: " + this.coinScore;
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
         this.timeLabel.string = "Time: " + this.time;
-        console.log("LENGTH" + this.node.getComponents("Prefab").length);
+        // ACTUALLY RESETS EVERYTHING...... 
+        // cc.director.loadScene('Gameplay');
     }
 
     playRockExplosion() {
@@ -100,7 +113,7 @@ export default class Game extends cc.Component {
     }
 
     playExplosionAnimation() {
-        // this.player.getComponent(cc.Animation).play("Explosion");
+        this.player.getComponent(cc.Animation).play("Explosion");
     }
 
     playBoomSound() {
@@ -111,7 +124,7 @@ export default class Game extends cc.Component {
         let randomX = Math.random() * this.cvs.width / 2;
         // set sign value
         randomX *= this.generateRandomSign();
-        return new cc.Vec2(randomX, this.cvs.height);
+        return cc.v2(randomX, this.cvs.height);
     }
 
     generateRandomSign() {
@@ -173,7 +186,8 @@ export default class Game extends cc.Component {
 
         const body = newAsteroid.getComponent(cc.RigidBody)
         const yVel = -50 + Math.random() * -220;
-        body.linearVelocity = cc.v2(20 * this.generateRandomSign(), yVel)
+        let xVel = (Math.random() + 1) * 20  * this.generateRandomSign();
+        body.linearVelocity = cc.v2(xVel , yVel);
         // Leave a reference to the game object.
         newAsteroid.getComponent('Asteroid').game = this;
     }
@@ -182,10 +196,41 @@ export default class Game extends cc.Component {
         const newAmmoBox = cc.instantiate(this.playerAmmo);
         this.node.addChild(newAmmoBox);
         newAmmoBox.setPosition(this.generateRandomPos());
-        const body = newAmmoBox.getComponent(cc.RigidBody)
-        body.linearVelocity = cc.v2(0, -95)
+        const body = newAmmoBox.getComponent(cc.RigidBody);
+        body.linearVelocity = cc.v2(0, -95);
         // Leave a reference to the game object.
         newAmmoBox.getComponent('Ammo').game = this;
+    }
+
+    spawnRandomEnemy() {
+        let newEnemy = null;
+        const random = Math.random();
+        let xSpeed = 0;
+        let ySpeed = 0;
+        if (random < 0.33) {
+            newEnemy = cc.instantiate(this.smallEnemy);
+            newEnemy.getComponent('EnemySmall').game = this;
+            xSpeed = 220;
+            ySpeed = -110;
+        }
+        else if (random <= 0.67) {
+            newEnemy = cc.instantiate(this.medEnemy);
+            newEnemy.getComponent('EnemyMedium').game = this;
+            xSpeed = 120
+            ySpeed = -90;
+        }
+        else {
+            newEnemy = cc.instantiate(this.bigEnemy);
+            newEnemy.getComponent('EnemyBig').game = this;
+            xSpeed = 40;
+            ySpeed = -60;
+        }
+
+        this.node.addChild(newEnemy);
+        newEnemy.setPosition(this.generateRandomPos());
+        const body = newEnemy.getComponent(cc.RigidBody);
+        body.linearVelocity = cc.v2(xSpeed * this.generateRandomSign(), ySpeed);
+
     }
 
     // ========== SCHEDULERS ==========
@@ -197,7 +242,11 @@ export default class Game extends cc.Component {
         this.scheduler.schedule(this.spawnAsteroid, this, this.ASTEROID_SPAWN_RATE, false);
     }
 
-    setAmmocheduler() {
+    setAmmoScheduler() {
         this.scheduler.schedule(this.spawnAmmo, this, this.AMMO_SPAWN_RATE, false);
+    }
+
+    setEnemyScheduler() {
+        this.scheduler.schedule(this.spawnRandomEnemy, this, this.ENEMY_SPAWN_RATE, false);
     }
 }

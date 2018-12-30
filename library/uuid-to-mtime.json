@@ -135,18 +135,18 @@
     "relativePath": "Animation"
   },
   "c9707d23-a325-4dec-9acc-34d6bfc4d4cc": {
-    "asset": 1546165053811,
-    "meta": 1546165053819,
+    "asset": 1546198191277,
+    "meta": 1546198191284,
     "relativePath": "Animation/PlayerAnimation/PlayerNormal.anim"
   },
   "b3e0ba7b-2a35-4449-aa97-8acaf77dd1fc": {
-    "asset": 1546165864810,
-    "meta": 1546165864821,
+    "asset": 1546198196143,
+    "meta": 1546198196152,
     "relativePath": "Animation/PlayerAnimation/PlayerRight.anim"
   },
   "6c5881f0-c14c-4a1b-9567-1826ab16781e": {
-    "asset": 1546165044667,
-    "meta": 1546165044673,
+    "asset": 1546198201677,
+    "meta": 1546198201681,
     "relativePath": "Animation/PlayerAnimation/PlayerLeftMax.anim"
   },
   "3fb23d99-af0e-4ede-a94e-82b910a4c1f4": {
@@ -505,8 +505,8 @@
     "relativePath": "Animation/PlayerAmmo.anim"
   },
   "78ebf929-e657-483e-a7b6-478af6ef84bb": {
-    "asset": 1546189652076,
-    "meta": 1546189652082,
+    "asset": 1546196667570,
+    "meta": 1546196667589,
     "relativePath": "Scene/Gameplay.fire"
   },
   "5ebd0091-add8-40b7-bf0d-6e1f41c59592": {
@@ -529,29 +529,14 @@
     "meta": 1546161593513,
     "relativePath": "Sound/rock-explosion.wav"
   },
-  "9a919ea1-00b6-435c-aac6-8cee36ac3c7a": {
-    "asset": 1546161916153,
-    "meta": 1546161942034,
-    "relativePath": "Script/BgScroll.ts"
-  },
-  "4467ede8-4c42-4d40-bcc9-4ed3e3b8edf5": {
-    "asset": 1546161913647,
-    "meta": 1546161942062,
-    "relativePath": "Script/CloudScroll.ts"
-  },
-  "8fe30910-ad51-4913-8e15-6dda889c9bb4": {
-    "asset": 1546161910934,
-    "meta": 1546161942139,
-    "relativePath": "Script/Coin.ts"
-  },
   "877a492a-4b39-4ce8-8c34-e67c70040d0d": {
     "asset": 1546162389369,
     "meta": 1546162389392,
     "relativePath": "Sound/boom.wav"
   },
   "166c48a3-b7a3-4a9b-85f4-763b4c2d9481": {
-    "asset": 1546165309140,
-    "meta": 1546165309148,
+    "asset": 1546198207475,
+    "meta": 1546198207480,
     "relativePath": "Animation/PlayerAnimation/PlayerLeft.anim"
   },
   "22e8d0ca-6475-4e0c-9aef-152626c2fd21": {
@@ -560,8 +545,8 @@
     "relativePath": "Animation/PlayerAnimation"
   },
   "eee9967b-ce12-4362-8b17-9b2d9090c12d": {
-    "asset": 1546165907363,
-    "meta": 1546165907375,
+    "asset": 1546198214797,
+    "meta": 1546198214807,
     "relativePath": "Animation/PlayerAnimation/PlayerRightMax.anim"
   },
   "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
@@ -659,39 +644,24 @@
     "meta": 1546185300850,
     "relativePath": "Animation/Explosion.anim"
   },
-  "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
-    "asset": 1546184333016,
-    "meta": 1546184381937,
-    "relativePath": "Script/Game.ts"
-  },
-  "57af1582-6b03-4aa9-ad59-e96b88147507": {
-    "asset": 1546184904978,
-    "meta": 1546184906500,
-    "relativePath": "Script/LaserBlue.ts"
-  },
   "567550e9-cc64-4cfe-9a22-41dfeb239849": {
     "asset": 1546186664617,
     "meta": 1546186664641,
     "relativePath": "Animation/ExplosionLarger.anim"
   },
-  "9acbca84-8a58-42d1-87d6-d3652b300875": {
-    "asset": 1546188155071,
-    "meta": 1546188155849,
-    "relativePath": "Script/Asteroid.ts"
-  },
   "fdaed899-5fb3-47f7-8f8e-863ccbc3b797": {
-    "asset": 1546188568031,
-    "meta": 1546188568038,
+    "asset": 1546193059172,
+    "meta": 1546193059179,
     "relativePath": "Prefab/EnemyBig.prefab"
   },
   "0fe07dd6-1192-43ec-bc3d-e13d62993a90": {
-    "asset": 1546188787899,
-    "meta": 1546188787907,
+    "asset": 1546196447131,
+    "meta": 1546196447158,
     "relativePath": "Prefab/EnemySmall.prefab"
   },
   "a3d056de-95d0-4ba9-b52f-e4284060a032": {
-    "asset": 1546188661368,
-    "meta": 1546188661374,
+    "asset": 1546193035151,
+    "meta": 1546193035157,
     "relativePath": "Prefab/EnemyMedium.prefab"
   },
   "298a3f64-e0e4-4a43-ac05-2b41c46e1f4a": {
@@ -719,9 +689,64 @@
     "meta": 1546189464766,
     "relativePath": "Script/Ammo.ts"
   },
+  "8fe30910-ad51-4913-8e15-6dda889c9bb4": {
+    "asset": 1546189838540,
+    "meta": 1546189844972,
+    "relativePath": "Script/Coin.ts"
+  },
+  "a0812d76-cad3-4bab-a034-b8fdcfb6aa58": {
+    "asset": 1546192638409,
+    "meta": 1546192640483,
+    "relativePath": "Script/EnemyBig.ts"
+  },
+  "4a12556b-4979-459a-9614-1675bebb31ce": {
+    "asset": 1546192676593,
+    "meta": 1546192713697,
+    "relativePath": "Script/EnemyMedium.ts"
+  },
+  "84db2c5e-4028-4271-9fa9-bcb0bb8a7439": {
+    "asset": 1546193562604,
+    "meta": 1546193562609,
+    "relativePath": "Animation/HitAnimation.anim"
+  },
+  "dc6551d7-fb57-4d87-81c8-c1b145a193a5": {
+    "asset": 1546194313340,
+    "meta": 1546194315929,
+    "relativePath": "Script/EnemySmall.ts"
+  },
+  "57af1582-6b03-4aa9-ad59-e96b88147507": {
+    "asset": 1546196729211,
+    "meta": 1546196730329,
+    "relativePath": "Script/LaserBlue.ts"
+  },
   "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
-    "asset": 1546189571267,
-    "meta": 1546189572345,
+    "asset": 1546196739237,
+    "meta": 1546196814341,
     "relativePath": "Script/PlayerControl.ts"
+  },
+  "9acbca84-8a58-42d1-87d6-d3652b300875": {
+    "asset": 1546197341940,
+    "meta": 1546197352464,
+    "relativePath": "Script/Asteroid.ts"
+  },
+  "1abed3a3-2d81-46b8-930a-ebf044d798eb": {
+    "asset": 1546197343217,
+    "meta": 1546197352547,
+    "relativePath": "Script/Enemy.ts"
+  },
+  "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
+    "asset": 1546197560085,
+    "meta": 1546197566606,
+    "relativePath": "Script/Game.ts"
+  },
+  "9a919ea1-00b6-435c-aac6-8cee36ac3c7a": {
+    "asset": 1546197645935,
+    "meta": 1546197648034,
+    "relativePath": "Script/BgScroll.ts"
+  },
+  "4467ede8-4c42-4d40-bcc9-4ed3e3b8edf5": {
+    "asset": 1546197651292,
+    "meta": 1546197651941,
+    "relativePath": "Script/CloudScroll.ts"
   }
 }

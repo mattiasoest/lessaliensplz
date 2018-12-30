@@ -71,11 +71,6 @@ var PlayerControl = /** @class */ (function (_super) {
         else if (this.accUp) {
             this.ySpeed += this.Y_ACCELERATION * dt;
         }
-        // cap the speed
-        // if (Math.abs(this.xSpeed) > this.maxSpeed) {
-        //     console.log("MAXLOOOL");
-        //     this.xSpeed = Math.sign(this.xSpeed);
-        // }
         this.node.y += this.ySpeed * dt;
         this.ySpeed *= this.DAMP;
         // Y-Screen bounds
@@ -138,7 +133,7 @@ var PlayerControl = /** @class */ (function (_super) {
         }
     };
     // ============== Animation trigger functions ==============
-    //These gets called after the main animation is finished (left/right animation)
+    // These gets called after the main animation is finished (left/right animation)
     // To keep the fire from the engine fired up while in a tilted state. 
     PlayerControl.prototype.playMaxLeftFrames = function () {
         this.animations.play("PlayerLeftMax");

@@ -9,7 +9,7 @@ var BgScroll = /** @class */ (function (_super) {
     function BgScroll() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.lowBound = -66;
-        _this.scrollSpeed = 15;
+        _this.scrollSpeed = 30;
         return _this;
     }
     // onLoad () {}

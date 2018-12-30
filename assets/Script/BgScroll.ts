@@ -4,12 +4,11 @@ const {ccclass, property} = cc._decorator;
 export default class BgScroll extends cc.Component {
     
     private readonly lowBound: number = -66;
-    private readonly scrollSpeed: number = 15;
+    private readonly scrollSpeed: number = 30;
 
     // onLoad () {}
 
     // start () {
-
     // }
 
     update (dt) {
