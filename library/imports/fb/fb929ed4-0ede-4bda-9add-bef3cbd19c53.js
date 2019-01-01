@@ -41,9 +41,13 @@ var LaserRed = /** @class */ (function (_super) {
     LaserRed.prototype.onBeginContact = function (contact, selfCollider, otherCollider) {
         if (otherCollider.node.name === "Player") {
             this.game.playRockExplosion();
-            this.game.resetGame();
-            otherCollider.getComponent(cc.Animation).play("Explosion");
             selfCollider.node.destroy();
+            if (!this.game.player.getComponent("PlayerControl").isInvincible()) {
+                this.game.resetGame();
+                this.game.playPlayerExplosionAnimation();
+                // selfCollider.node.destroy();
+                // otherCollider.node.destroy();
+            }
             // otherCollider.node.destroy();
         }
     };

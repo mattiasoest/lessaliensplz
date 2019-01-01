@@ -10,10 +10,11 @@ var Game = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         // CONSTANTS
         _this.ASTEROID_SPAWN_RATE = 1.5;
-        _this.COIN_SPAWN_RATE = 1.8;
+        _this.COIN_SPAWN_RATE = 1.55;
         _this.AMMO_SPAWN_RATE = 7.1;
         _this.AMMO_PER_BOX = 8;
         _this.ENEMY_SPAWN_RATE = 8;
+        _this.INVINCIBLE_DURATION = 5;
         // NORMAL INSTANCE VARIABLES
         _this.currentAmmo = _this.AMMO_PER_BOX;
         _this.coinScore = 0;
@@ -22,6 +23,7 @@ var Game = /** @class */ (function (_super) {
         _this.gravity = -70;
         _this.cvs = null;
         _this.scheduler = null;
+        _this.invincibleParticleObject = null;
         _this.scoreLabel = null;
         _this.timeLabel = null;
         _this.ammoLabel = null;
@@ -34,6 +36,7 @@ var Game = /** @class */ (function (_super) {
         _this.medEnemy = null;
         _this.smallEnemy = null;
         _this.playerAmmo = null;
+        _this.invincibleEffect = null;
         _this.noAmmoSound = null;
         _this.ammoPickupSound = null;
         _this.rockExpSound = null;
@@ -43,6 +46,8 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.onLoad = function () {
         this.cvs = cc.find("Canvas");
         // Setup physics engine.
+        this.invincibleParticleObject = this.invincibleEffect.getComponent("InvincibleEffect");
+        this.invincibleParticleObject.setDuration(this.INVINCIBLE_DURATION);
         var physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
@@ -81,7 +86,7 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.playRockExplosion = function () {
         cc.audioEngine.play(this.rockExpSound, false, 0.8);
     };
-    Game.prototype.playExplosionAnimation = function () {
+    Game.prototype.playPlayerExplosionAnimation = function () {
         this.player.getComponent(cc.Animation).play("Explosion");
     };
     Game.prototype.playBoomSound = function () {
@@ -99,6 +104,11 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.updateCoinScore = function () {
         this.coinScore++;
         this.coinSound.play();
+        if (this.coinScore >= 5) {
+            this.coinScore = 0;
+            this.invincibleParticleObject.startParticleEffect();
+            this.player.getComponent("PlayerControl").makeInvincible();
+        }
         this.scoreLabel.string = "Coins: " + this.coinScore;
     };
     Game.prototype.addAmmo = function () {
@@ -188,6 +198,9 @@ var Game = /** @class */ (function (_super) {
         this.node.addChild(newEnemy);
         newEnemy.setPosition(this.generateRandomPos());
     };
+    Game.prototype.getInvincibleDuration = function () {
+        return this.INVINCIBLE_DURATION;
+    };
     // ========== SCHEDULERS ==========
     Game.prototype.setCoinScheduler = function () {
         this.scheduler.schedule(this.spawnCoin, this, this.COIN_SPAWN_RATE, false);
@@ -237,6 +250,9 @@ var Game = /** @class */ (function (_super) {
     __decorate([
         property(cc.Prefab)
     ], Game.prototype, "playerAmmo", void 0);
+    __decorate([
+        property(cc.ParticleSystem)
+    ], Game.prototype, "invincibleEffect", void 0);
     __decorate([
         property(cc.AudioClip)
     ], Game.prototype, "noAmmoSound", void 0);

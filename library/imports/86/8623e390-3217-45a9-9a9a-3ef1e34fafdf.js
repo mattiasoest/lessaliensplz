@@ -25,15 +25,17 @@ var PlayerControl = /** @class */ (function (_super) {
         _this.flySound = null;
         _this.cvs = null;
         _this.animations = null;
+        _this.isCurrentlyInvincible = false;
+        _this.invincibleTimer = 0;
+        _this.audioId = 0;
+        _this.invincibleSound = null;
         _this.game = null;
         // Constants
         _this.X_ACCELERATION = 3200;
         _this.Y_ACCELERATION = 2000;
-        _this.MAX_SPEED = 200;
         _this.DAMP = 0.8;
         return _this;
     }
-    // LIFE-CYCLE CALLBACKS:
     PlayerControl.prototype.onLoad = function () {
         this.cvs = cc.find("Canvas");
         this.flySound = this.getComponent(cc.AudioSource);
@@ -46,9 +48,17 @@ var PlayerControl = /** @class */ (function (_super) {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     };
-    // start () {
-    // }
+    PlayerControl.prototype.start = function () {
+    };
     PlayerControl.prototype.update = function (dt) {
+        if (this.isCurrentlyInvincible) {
+            this.invincibleTimer += dt;
+            if (this.invincibleTimer >= this.game.getInvincibleDuration()) {
+                cc.audioEngine.stop(this.audioId);
+                this.isCurrentlyInvincible = false;
+                this.invincibleTimer = 0;
+            }
+        }
         // === X-AXIS ===
         if (this.accLeft) {
             this.xSpeed -= this.X_ACCELERATION * dt;
@@ -133,6 +143,13 @@ var PlayerControl = /** @class */ (function (_super) {
                 break;
         }
     };
+    PlayerControl.prototype.makeInvincible = function () {
+        this.audioId = cc.audioEngine.play(this.invincibleSound, true, 0.4);
+        this.isCurrentlyInvincible = true;
+    };
+    PlayerControl.prototype.isInvincible = function () {
+        return this.isCurrentlyInvincible;
+    };
     // ============== Animation trigger functions ==============
     // These gets called after the main animation is finished (left/right animation)
     // To keep the fire from the engine fired up while in a tilted state. 
@@ -142,6 +159,9 @@ var PlayerControl = /** @class */ (function (_super) {
     PlayerControl.prototype.playMaxRightFrames = function () {
         this.animations.play("PlayerRightMax");
     };
+    __decorate([
+        property(cc.AudioClip)
+    ], PlayerControl.prototype, "invincibleSound", void 0);
     PlayerControl = __decorate([
         ccclass
     ], PlayerControl);

@@ -1,4 +1,5 @@
 import Game from "./Game";
+import InvincibleEffect from "./InvincibleEffect";
 
 const {ccclass, property} = cc._decorator;
 
@@ -25,14 +26,20 @@ export default class PlayerControl extends cc.Component {
     private flySound: cc.AudioSource = null;
     private cvs: cc.Node  = null;
     private animations : cc.Animation = null;
+    private isCurrentlyInvincible: boolean = false;
+    private invincibleTimer: number = 0;
+    private audioId = 0;
+
+    @property(cc.AudioClip)
+    invincibleSound: cc.AudioClip = null;
 
     game : Game = null;
+
+
     // Constants
     private readonly X_ACCELERATION: number = 3200;
     private readonly Y_ACCELERATION: number = 2000;
-    private readonly MAX_SPEED: number = 200;
     private readonly DAMP: number = 0.8;
-    // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.cvs = cc.find("Canvas");
@@ -47,10 +54,19 @@ export default class PlayerControl extends cc.Component {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     }
 
-    // start () {
-    // }
+    start () {
+    }
 
     update (dt) {
+        if (this.isCurrentlyInvincible) {
+            this.invincibleTimer += dt;
+            if (this.invincibleTimer >= this.game.getInvincibleDuration()) {
+                cc.audioEngine.stop(this.audioId);
+                this.isCurrentlyInvincible = false;
+                this.invincibleTimer = 0;
+            }
+        }
+
         // === X-AXIS ===
         if (this.accLeft) {
             this.xSpeed -= this.X_ACCELERATION * dt;
@@ -138,6 +154,15 @@ export default class PlayerControl extends cc.Component {
                 this.game.spawnBlueLaser();
                 break;
         }
+    }
+
+    makeInvincible() {
+        this.audioId = cc.audioEngine.play(this.invincibleSound, true, 0.4);
+        this.isCurrentlyInvincible = true;
+    }
+
+    isInvincible() {
+        return this.isCurrentlyInvincible;
     }
 
     // ============== Animation trigger functions ==============

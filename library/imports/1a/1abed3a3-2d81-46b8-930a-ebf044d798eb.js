@@ -75,14 +75,13 @@ var Enemy = /** @class */ (function (_super) {
             }
         }
         if (otherCollider.node.name === "Player") {
-            // ====== TODO FIX
+            this.game.playRockExplosion();
             this.node.getComponent(cc.RigidBody).enabledContactListener = false;
             this.getComponent(cc.Animation).play("Explosion");
-            // ======
-            this.game.resetGame();
-            this.game.playExplosionAnimation();
-            // selfCollider.node.destroy();
-            // otherCollider.node.destroy();
+            if (!this.game.player.getComponent("PlayerControl").isInvincible()) {
+                this.game.resetGame();
+                this.game.playPlayerExplosionAnimation();
+            }
         }
     };
     Enemy.prototype.setLaserScheduler = function (fireRate, initiateLaser) {

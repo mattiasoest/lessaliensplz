@@ -1,13 +1,16 @@
+import InvincibleEffect from "./InvincibleEffect";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Game extends cc.Component {
     // CONSTANTS
     private readonly ASTEROID_SPAWN_RATE: number = 1.5;
-    private readonly COIN_SPAWN_RATE: number = 1.8;
+    private readonly COIN_SPAWN_RATE: number = 1.55;
     private readonly AMMO_SPAWN_RATE: number = 7.1;
     private readonly AMMO_PER_BOX: number = 8;
     private readonly ENEMY_SPAWN_RATE: number = 8;
+    private readonly INVINCIBLE_DURATION: number = 5;
 
     // NORMAL INSTANCE VARIABLES
     private currentAmmo: number = this.AMMO_PER_BOX;
@@ -17,6 +20,7 @@ export default class Game extends cc.Component {
     private gravity: number = -70;
     private cvs: cc.Node = null;
     private scheduler : cc.Scheduler = null;
+    private invincibleParticleObject: InvincibleEffect = null;
 
     @property(cc.Label)
     scoreLabel: cc.Label = null;
@@ -54,6 +58,9 @@ export default class Game extends cc.Component {
     @property(cc.Prefab)
     playerAmmo: cc.Prefab = null;
 
+    @property(cc.ParticleSystem)
+    invincibleEffect: cc.ParticleSystem = null;
+
     @property(cc.AudioClip)
     noAmmoSound: cc.AudioClip = null;
 
@@ -68,8 +75,9 @@ export default class Game extends cc.Component {
 
     onLoad () {
         this.cvs =  cc.find("Canvas");
-
         // Setup physics engine.
+        this.invincibleParticleObject = this.invincibleEffect.getComponent("InvincibleEffect");
+        this.invincibleParticleObject.setDuration(this.INVINCIBLE_DURATION);
         let physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
@@ -115,7 +123,7 @@ export default class Game extends cc.Component {
         cc.audioEngine.play(this.rockExpSound, false, 0.8);
     }
 
-    playExplosionAnimation() {
+    playPlayerExplosionAnimation() {
         this.player.getComponent(cc.Animation).play("Explosion");
     }
 
@@ -137,6 +145,11 @@ export default class Game extends cc.Component {
     updateCoinScore() {
         this.coinScore++;
         this.coinSound.play();
+        if (this.coinScore >= 5) {
+            this.coinScore = 0;
+            this.invincibleParticleObject.startParticleEffect();
+            this.player.getComponent("PlayerControl").makeInvincible();
+        }
         this.scoreLabel.string = "Coins: " + this.coinScore;
     }
 
@@ -238,6 +251,10 @@ export default class Game extends cc.Component {
 
         this.node.addChild(newEnemy);
         newEnemy.setPosition(this.generateRandomPos());
+    }
+
+    getInvincibleDuration() {
+        return this.INVINCIBLE_DURATION;
     }
 
     // ========== SCHEDULERS ==========

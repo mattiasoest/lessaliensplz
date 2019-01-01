@@ -30,7 +30,7 @@
     "relativePath": "Scene"
   },
   "4734c20c-0db8-4eb2-92ea-e692f4d70934": {
-    "asset": 1546235714077,
+    "asset": 1546351570214,
     "meta": 1546017408101,
     "relativePath": "Script"
   },
@@ -200,7 +200,7 @@
     "relativePath": "Animation/Coin.anim"
   },
   "64d99177-ce4b-4eae-a6f2-344559525d71": {
-    "asset": 1546242207560,
+    "asset": 1546338628728,
     "meta": 1546081835161,
     "relativePath": "Sound"
   },
@@ -505,8 +505,8 @@
     "relativePath": "Animation/PlayerAmmo.anim"
   },
   "78ebf929-e657-483e-a7b6-478af6ef84bb": {
-    "asset": 1546343503745,
-    "meta": 1546343503751,
+    "asset": 1546358793123,
+    "meta": 1546358793130,
     "relativePath": "Scene/Gameplay.fire"
   },
   "5ebd0091-add8-40b7-bf0d-6e1f41c59592": {
@@ -724,16 +724,6 @@
     "meta": 1546242207571,
     "relativePath": "Sound/laser-mini.wav"
   },
-  "9acbca84-8a58-42d1-87d6-d3652b300875": {
-    "asset": 1546319771273,
-    "meta": 1546319772189,
-    "relativePath": "Script/Asteroid.ts"
-  },
-  "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
-    "asset": 1546320713629,
-    "meta": 1546320714746,
-    "relativePath": "Script/PlayerControl.ts"
-  },
   "57af1582-6b03-4aa9-ad59-e96b88147507": {
     "asset": 1546321637957,
     "meta": 1546321638996,
@@ -744,39 +734,69 @@
     "meta": 1546335516258,
     "relativePath": "Sound/laser-med.wav"
   },
-  "fb929ed4-0ede-4bda-9add-bef3cbd19c53": {
-    "asset": 1546338503726,
-    "meta": 1546338504594,
-    "relativePath": "Script/LaserRed.ts"
-  },
   "f543501b-c5a7-4231-b6d7-cddfa8f3992a": {
     "asset": 1546338628719,
     "meta": 1546338628740,
     "relativePath": "Sound/laser-big.wav"
   },
-  "4a12556b-4979-459a-9614-1675bebb31ce": {
-    "asset": 1546343376376,
-    "meta": 1546343380013,
-    "relativePath": "Script/EnemyMedium.ts"
+  "063f1d92-988b-4895-9fde-630100ab3aaa": {
+    "asset": 1546352720985,
+    "meta": 1546352720991,
+    "relativePath": "Prefab/InvincibleEffect.prefab"
   },
-  "a0812d76-cad3-4bab-a034-b8fdcfb6aa58": {
-    "asset": 1546343398652,
-    "meta": 1546343399700,
-    "relativePath": "Script/EnemyBig.ts"
+  "05190984-c081-4536-a867-e96c363a6add": {
+    "asset": 1546356736012,
+    "meta": 1546356832115,
+    "relativePath": "Script/InvincibleEffect.ts"
   },
-  "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
-    "asset": 1546343463491,
-    "meta": 1546343465699,
-    "relativePath": "Script/Game.ts"
-  },
-  "dc6551d7-fb57-4d87-81c8-c1b145a193a5": {
-    "asset": 1546343577575,
-    "meta": 1546343578917,
-    "relativePath": "Script/EnemySmall.ts"
+  "9acbca84-8a58-42d1-87d6-d3652b300875": {
+    "asset": 1546357191320,
+    "meta": 1546357201294,
+    "relativePath": "Script/Asteroid.ts"
   },
   "1abed3a3-2d81-46b8-930a-ebf044d798eb": {
-    "asset": 1546343892215,
-    "meta": 1546343892847,
+    "asset": 1546357183591,
+    "meta": 1546357201316,
     "relativePath": "Script/Enemy.ts"
+  },
+  "a0812d76-cad3-4bab-a034-b8fdcfb6aa58": {
+    "asset": 1546357186895,
+    "meta": 1546357201361,
+    "relativePath": "Script/EnemyBig.ts"
+  },
+  "4a12556b-4979-459a-9614-1675bebb31ce": {
+    "asset": 1546357185927,
+    "meta": 1546357201381,
+    "relativePath": "Script/EnemyMedium.ts"
+  },
+  "dc6551d7-fb57-4d87-81c8-c1b145a193a5": {
+    "asset": 1546357184883,
+    "meta": 1546357201466,
+    "relativePath": "Script/EnemySmall.ts"
+  },
+  "fb929ed4-0ede-4bda-9add-bef3cbd19c53": {
+    "asset": 1546357187976,
+    "meta": 1546357201582,
+    "relativePath": "Script/LaserRed.ts"
+  },
+  "4d5610d2-5927-4527-b75a-a8ca14bd8a77": {
+    "asset": 1546357952574,
+    "meta": 1546357952608,
+    "relativePath": "Sound/invincible.wav"
+  },
+  "ba9465f7-e3bf-45d9-8bc4-211ea0b7fd53": {
+    "asset": 1546358754439,
+    "meta": 1546358754449,
+    "relativePath": "Sound/inv.wav"
+  },
+  "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
+    "asset": 1546359164579,
+    "meta": 1546359167858,
+    "relativePath": "Script/PlayerControl.ts"
+  },
+  "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
+    "asset": 1546359276265,
+    "meta": 1546359285109,
+    "relativePath": "Script/Game.ts"
   }
 }

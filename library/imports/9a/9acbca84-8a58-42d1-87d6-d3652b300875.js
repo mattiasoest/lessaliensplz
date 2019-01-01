@@ -54,15 +54,17 @@ var Asteroid = /** @class */ (function (_super) {
             otherCollider.node.destroy();
         }
         if (otherCollider.node.name === "Player") {
-            console.log("PLAYER ASTEROID CONTACT");
-            // ====== TODO FIX
             this.node.getComponent(cc.RigidBody).enabledContactListener = false;
-            // this.getComponent(cc.Animation).play("ExplosionLarger");
-            // ======
-            this.game.resetGame();
-            this.game.playExplosionAnimation();
-            // selfCollider.node.destroy();
-            // otherCollider.node.destroy();
+            if (!this.game.player.getComponent("PlayerControl").isInvincible()) {
+                this.game.resetGame();
+                this.game.playPlayerExplosionAnimation();
+                // selfCollider.node.destroy();
+                // otherCollider.node.destroy();
+            }
+            else {
+                this.getComponent(cc.Animation).play("ExplosionLarger");
+                this.game.playRockExplosion();
+            }
         }
     };
     // ============== Animation trigger functions ==============
