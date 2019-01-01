@@ -6,7 +6,7 @@
       "url": "app://editor/index.html",
       "windowType": "dockable",
       "x": 12,
-      "y": 40,
+      "y": 39,
       "width": 1428,
       "height": 810,
       "layout": {
@@ -64,7 +64,7 @@
                 "width": 849
               },
               {
-                "active": 0,
+                "active": 1,
                 "children": [
                   "timeline",
                   "console"

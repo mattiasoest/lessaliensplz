@@ -124,7 +124,7 @@ export default class Game extends cc.Component {
         let randomX = Math.random() * this.cvs.width / 2;
         // set sign value
         randomX *= this.generateRandomSign();
-        return cc.v2(randomX, this.cvs.height);
+        return cc.v2(randomX, this.cvs.height / 2);
     }
 
     generateRandomSign() {
@@ -207,7 +207,8 @@ export default class Game extends cc.Component {
         const random = Math.random();
         let xSpeed = 0;
         let ySpeed = 0;
-        if (random < 0.33) {
+        // if (random < 0.33) {
+            if (true) {
             newEnemy = cc.instantiate(this.smallEnemy);
             newEnemy.getComponent('EnemySmall').game = this;
             xSpeed = 220;
@@ -229,7 +230,8 @@ export default class Game extends cc.Component {
         this.node.addChild(newEnemy);
         newEnemy.setPosition(this.generateRandomPos());
         const body = newEnemy.getComponent(cc.RigidBody);
-        body.linearVelocity = cc.v2(xSpeed * this.generateRandomSign(), ySpeed);
+        // body.linearVelocity = cc.v2(xSpeed * this.generateRandomSign(), ySpeed);
+        body.linearVelocity = cc.v2(2, -50);
 
     }
 

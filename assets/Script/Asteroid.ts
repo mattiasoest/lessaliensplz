@@ -48,6 +48,7 @@ export default class Asteroid extends cc.Component {
             // Turn off just the hitbox since we will destroy the whole node after we are done with the animation.
             this.node.getComponent(cc.RigidBody).enabledContactListener = false;
             this.getComponent(cc.Animation).play("ExplosionLarger");
+            
             // Gets destroyed by the trigger function destroySelf
             otherCollider.node.destroy();
         }
@@ -55,7 +56,7 @@ export default class Asteroid extends cc.Component {
             console.log("PLAYER ASTEROID CONTACT");
             // ====== TODO FIX
             this.node.getComponent(cc.RigidBody).enabledContactListener = false;
-            this.getComponent(cc.Animation).play("ExplosionLarger");
+            // this.getComponent(cc.Animation).play("ExplosionLarger");
             // ======
             this.game.resetGame();
             this.game.playExplosionAnimation();

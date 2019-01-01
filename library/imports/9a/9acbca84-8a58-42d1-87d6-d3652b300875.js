@@ -57,7 +57,7 @@ var Asteroid = /** @class */ (function (_super) {
             console.log("PLAYER ASTEROID CONTACT");
             // ====== TODO FIX
             this.node.getComponent(cc.RigidBody).enabledContactListener = false;
-            this.getComponent(cc.Animation).play("ExplosionLarger");
+            // this.getComponent(cc.Animation).play("ExplosionLarger");
             // ======
             this.game.resetGame();
             this.game.playExplosionAnimation();

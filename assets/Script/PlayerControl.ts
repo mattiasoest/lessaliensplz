@@ -37,6 +37,7 @@ export default class PlayerControl extends cc.Component {
     onLoad () {
         this.cvs = cc.find("Canvas");
         this.flySound = this.getComponent(cc.AudioSource);
+        this.flySound.volume = 0.6;
         this.animations = this.getComponent(cc.Animation);
         this.leftBound = -this.cvs.width / 2;
         this.rightBound = this.cvs.width / 2;

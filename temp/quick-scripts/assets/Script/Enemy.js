@@ -13,6 +13,7 @@ var Enemy = /** @class */ (function (_super) {
         _this.rightBound = 0;
         _this.cvs = null;
         _this.hitPoints = 1;
+        _this.redLaser = null;
         _this.game = null;
         return _this;
     }
@@ -73,6 +74,9 @@ var Enemy = /** @class */ (function (_super) {
     Enemy.prototype.destroySelf = function () {
         this.node.destroy();
     };
+    __decorate([
+        property(cc.Prefab)
+    ], Enemy.prototype, "redLaser", void 0);
     Enemy = __decorate([
         ccclass
     ], Enemy);

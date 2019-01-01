@@ -11,6 +11,9 @@ export default class Enemy extends cc.Component {
 
     private hitPoints: number = 1;
 
+    @property(cc.Prefab)
+    redLaser: cc.Prefab = null;
+
     game: Game = null;
 
     onLoad () {

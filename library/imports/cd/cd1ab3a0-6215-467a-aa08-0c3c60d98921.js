@@ -90,7 +90,7 @@ var Game = /** @class */ (function (_super) {
         var randomX = Math.random() * this.cvs.width / 2;
         // set sign value
         randomX *= this.generateRandomSign();
-        return cc.v2(randomX, this.cvs.height);
+        return cc.v2(randomX, this.cvs.height / 2);
     };
     Game.prototype.generateRandomSign = function () {
         return Math.random() <= 0.5 ? -1 : 1;
@@ -160,7 +160,8 @@ var Game = /** @class */ (function (_super) {
         var random = Math.random();
         var xSpeed = 0;
         var ySpeed = 0;
-        if (random < 0.33) {
+        // if (random < 0.33) {
+        if (true) {
             newEnemy = cc.instantiate(this.smallEnemy);
             newEnemy.getComponent('EnemySmall').game = this;
             xSpeed = 220;
@@ -181,7 +182,8 @@ var Game = /** @class */ (function (_super) {
         this.node.addChild(newEnemy);
         newEnemy.setPosition(this.generateRandomPos());
         var body = newEnemy.getComponent(cc.RigidBody);
-        body.linearVelocity = cc.v2(xSpeed * this.generateRandomSign(), ySpeed);
+        // body.linearVelocity = cc.v2(xSpeed * this.generateRandomSign(), ySpeed);
+        body.linearVelocity = cc.v2(2, -50);
     };
     // ========== SCHEDULERS ==========
     Game.prototype.setCoinScheduler = function () {
