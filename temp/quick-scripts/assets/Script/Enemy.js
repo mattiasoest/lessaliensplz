@@ -18,7 +18,6 @@ var Enemy = /** @class */ (function (_super) {
         _this.cvs = null;
         _this.applyForceLeft = false;
         _this.xSpeed = 0;
-        _this.redLaser = null;
         _this.game = null;
         return _this;
     }
@@ -69,6 +68,7 @@ var Enemy = /** @class */ (function (_super) {
                 this.hitPoints--;
             }
             else {
+                this.isAllowedToFire = false;
                 // Turn off just the hitbox since we will destroy the whole node after we are done with the animation.
                 this.node.getComponent(cc.RigidBody).enabledContactListener = false;
                 this.getComponent(cc.Animation).play("Explosion");
@@ -88,19 +88,6 @@ var Enemy = /** @class */ (function (_super) {
     Enemy.prototype.setLaserScheduler = function (fireRate, initiateLaser) {
         cc.director.getScheduler().schedule(initiateLaser, this, fireRate, false);
     };
-    // Local x-pos from the center and velocity vector
-    Enemy.prototype.createLaser = function (xPos, velocityVector) {
-        var newLaser = cc.instantiate(this.redLaser);
-        // Relative to the current node. So center it.
-        newLaser.setPosition(xPos, -this.node.height / 2);
-        var body = newLaser.getComponent(cc.RigidBody);
-        (180 / Math.PI);
-        body.linearVelocity = velocityVector;
-        this.node.addChild(newLaser);
-        var laserObject = newLaser.getComponent('LaserRed');
-        // Game from the superclass.
-        laserObject.game = this.game;
-    };
     // Just a hack to get the angle, need to read more about
     // the coordinate system and how angles work in cocos
     // Works for now.
@@ -112,9 +99,6 @@ var Enemy = /** @class */ (function (_super) {
     Enemy.prototype.destroySelf = function () {
         this.node.destroy();
     };
-    __decorate([
-        property(cc.Prefab)
-    ], Enemy.prototype, "redLaser", void 0);
     Enemy = __decorate([
         ccclass
     ], Enemy);

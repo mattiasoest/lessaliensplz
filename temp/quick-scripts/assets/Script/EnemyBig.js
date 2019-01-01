@@ -10,15 +10,11 @@ var EnemyBig = /** @class */ (function (_super) {
     function EnemyBig() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.FIRE_RATE = 2;
-        _this.BULLET_BURST = 1;
-        _this.LASER_INTERVAL = 0.2;
         _this.X_ACCELERATION = 110;
-        _this.Y_SPEED = -50;
+        _this.Y_SPEED = -45;
         _this.LASER_SPEED = 135;
+        _this.isFireTriggered = false;
         _this.laserSound = null;
-        _this.isBurstOn = false;
-        _this.burstTimer = 0;
-        _this.numberOfBulletsFired = 0;
         return _this;
     }
     EnemyBig.prototype.start = function () {
@@ -30,27 +26,21 @@ var EnemyBig = /** @class */ (function (_super) {
         _super.prototype.update.call(this, dt);
         _super.prototype.updateShip.call(this, this.X_ACCELERATION, this.Y_SPEED, dt);
         if (this.isAllowedToFire) {
-            if (this.isBurstOn) {
-                this.burstTimer += dt;
-                if (this.burstTimer >= this.LASER_INTERVAL && this.numberOfBulletsFired < this.BULLET_BURST) {
-                    this.burstTimer = 0;
-                    var angle = -37.5;
-                    var offset = -20;
-                    for (var i = 0; i < 7; i++) {
-                        this.createLaser(offset, cc.v2(Math.sin(angle / (180 / Math.PI)) * this.LASER_SPEED, Math.cos(angle / (180 / Math.PI)) * -this.LASER_SPEED));
-                        angle += 12.5;
-                        offset += 10;
-                    }
-                    this.laserSound.play();
-                    this.numberOfBulletsFired++;
+            if (this.isFireTriggered) {
+                this.isFireTriggered = false;
+                var angle = -37.5;
+                var offset = -20;
+                for (var i = 0; i < 7; i++) {
+                    this.game.spawnEnemyLaser(offset, this.node, cc.v2(Math.sin(angle / (180 / Math.PI)) * this.LASER_SPEED, Math.cos(angle / (180 / Math.PI)) * -this.LASER_SPEED));
+                    angle += 12.5;
+                    offset += 10;
                 }
+                this.laserSound.play();
             }
         }
     };
     EnemyBig.prototype.initiateLaser = function () {
-        this.isBurstOn = true;
-        this.burstTimer = 0;
-        this.numberOfBulletsFired = 0;
+        this.isFireTriggered = true;
     };
     EnemyBig = __decorate([
         ccclass

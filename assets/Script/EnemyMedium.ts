@@ -34,8 +34,8 @@ export default class EnemyMedium extends Enemy {
                 this.burstTimer += dt;
                 if (this.burstTimer >= this.LASER_INTERVAL && this.numberOfBulletsFired < this.BULLET_BURST) {
                     this.burstTimer = 0;
-                    this.createLaser(-5, cc.v2(Math.sin(this.node.rotation /  (-180 / Math.PI)) * this.LASER_SPEED, Math.cos(this.node.rotation / (-180 / Math.PI)) * -this.LASER_SPEED));
-                    this.createLaser(5, cc.v2(Math.sin(this.node.rotation /  (-180 / Math.PI)) * this.LASER_SPEED, Math.cos(this.node.rotation / (-180 / Math.PI)) * -this.LASER_SPEED));
+                    this.game.spawnEnemyLaser(-5, this.node, cc.v2(Math.sin(this.node.rotation /  (-180 / Math.PI)) * this.LASER_SPEED, Math.cos(this.node.rotation / (-180 / Math.PI)) * -this.LASER_SPEED));
+                    this.game.spawnEnemyLaser(5, this.node, cc.v2(Math.sin(this.node.rotation /  (-180 / Math.PI)) * this.LASER_SPEED, Math.cos(this.node.rotation / (-180 / Math.PI)) * -this.LASER_SPEED));
                     this.laserSound.play();
                     this.numberOfBulletsFired++;
                 }

@@ -12,7 +12,7 @@ var EnemySmall = /** @class */ (function (_super) {
         _this.FIRE_RATE = 1.8;
         _this.BULLET_BURST = 5;
         _this.LASER_INTERVAL = 0.05;
-        _this.X_ACCELERATION = 1200;
+        _this.X_ACCELERATION = 1000;
         _this.Y_SPEED = -70;
         _this.LASER_SPEED = 300;
         _this.laserSound = null;
@@ -36,7 +36,7 @@ var EnemySmall = /** @class */ (function (_super) {
                 if (this.burstTimer >= this.LASER_INTERVAL && this.numberOfBulletsFired < this.BULLET_BURST) {
                     this.burstTimer = 0;
                     // Local xPos (center)
-                    this.createLaser(0, cc.v2(Math.sin(this.node.rotation / (-180 / Math.PI)) * this.LASER_SPEED, Math.cos(this.node.rotation / (-180 / Math.PI)) * -this.LASER_SPEED));
+                    this.game.spawnEnemyLaser(0, this.node, cc.v2(Math.sin(this.node.rotation / (-180 / Math.PI)) * this.LASER_SPEED, Math.cos(this.node.rotation / (-180 / Math.PI)) * -this.LASER_SPEED));
                     this.laserSound.play();
                     this.numberOfBulletsFired++;
                 }

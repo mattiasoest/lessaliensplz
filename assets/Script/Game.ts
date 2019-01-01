@@ -4,7 +4,7 @@ const {ccclass, property} = cc._decorator;
 export default class Game extends cc.Component {
     // CONSTANTS
     private readonly ASTEROID_SPAWN_RATE: number = 1.5;
-    private readonly COIN_SPAWN_RATE: number = 2;
+    private readonly COIN_SPAWN_RATE: number = 1.8;
     private readonly AMMO_SPAWN_RATE: number = 7.1;
     private readonly AMMO_PER_BOX: number = 8;
     private readonly ENEMY_SPAWN_RATE: number = 8;
@@ -35,6 +35,9 @@ export default class Game extends cc.Component {
 
     @property(cc.Prefab)
     playerLaser: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    redLaser: cc.Prefab = null;
 
     @property(cc.Prefab)
     asteroid: cc.Prefab = null;
@@ -175,6 +178,21 @@ export default class Game extends cc.Component {
         body.linearVelocity = cc.v2(0, 450);
         this.node.addChild(newLaser);
         laserObject.playLaserSound();
+    }
+
+    spawnEnemyLaser(xOffset: number, node: cc.Node, velocityVector: cc.Vec2) {
+        const newLaser = cc.instantiate(this.redLaser);
+        // Relative to the current node. So center it.
+        newLaser.setPosition(node.x + xOffset, node.y -node.height / 2);
+        const body = newLaser.getComponent(cc.RigidBody);
+        body.linearVelocity = velocityVector;
+        // Set the bullets parent to the game object 
+        // So they survive even if the enemy is killed
+        // Gets destroyed later by its own laser logic
+        this.node.addChild(newLaser);
+        const laserObject = newLaser.getComponent('LaserRed');
+        // Game from the superclass.
+        laserObject.game = this;
     }
 
     spawnAsteroid() {

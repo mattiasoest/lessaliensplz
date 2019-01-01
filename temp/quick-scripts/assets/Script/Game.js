@@ -10,7 +10,7 @@ var Game = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         // CONSTANTS
         _this.ASTEROID_SPAWN_RATE = 1.5;
-        _this.COIN_SPAWN_RATE = 2;
+        _this.COIN_SPAWN_RATE = 1.8;
         _this.AMMO_SPAWN_RATE = 7.1;
         _this.AMMO_PER_BOX = 8;
         _this.ENEMY_SPAWN_RATE = 8;
@@ -28,6 +28,7 @@ var Game = /** @class */ (function (_super) {
         _this.coin = null;
         _this.player = null;
         _this.playerLaser = null;
+        _this.redLaser = null;
         _this.asteroid = null;
         _this.bigEnemy = null;
         _this.medEnemy = null;
@@ -133,6 +134,20 @@ var Game = /** @class */ (function (_super) {
         this.node.addChild(newLaser);
         laserObject.playLaserSound();
     };
+    Game.prototype.spawnEnemyLaser = function (xOffset, node, velocityVector) {
+        var newLaser = cc.instantiate(this.redLaser);
+        // Relative to the current node. So center it.
+        newLaser.setPosition(node.x + xOffset, node.y - node.height / 2);
+        var body = newLaser.getComponent(cc.RigidBody);
+        body.linearVelocity = velocityVector;
+        // Set the bullets parent to the game object 
+        // So they survive even if the enemy is killed
+        // Gets destroyed later by its own laser logic
+        this.node.addChild(newLaser);
+        var laserObject = newLaser.getComponent('LaserRed');
+        // Game from the superclass.
+        laserObject.game = this;
+    };
     Game.prototype.spawnAsteroid = function () {
         var newAsteroid = cc.instantiate(this.asteroid);
         this.node.addChild(newAsteroid);
@@ -204,6 +219,9 @@ var Game = /** @class */ (function (_super) {
     __decorate([
         property(cc.Prefab)
     ], Game.prototype, "playerLaser", void 0);
+    __decorate([
+        property(cc.Prefab)
+    ], Game.prototype, "redLaser", void 0);
     __decorate([
         property(cc.Prefab)
     ], Game.prototype, "asteroid", void 0);

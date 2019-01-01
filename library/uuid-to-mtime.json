@@ -505,8 +505,8 @@
     "relativePath": "Animation/PlayerAmmo.anim"
   },
   "78ebf929-e657-483e-a7b6-478af6ef84bb": {
-    "asset": 1546341473057,
-    "meta": 1546341473078,
+    "asset": 1546343503745,
+    "meta": 1546343503751,
     "relativePath": "Scene/Gameplay.fire"
   },
   "5ebd0091-add8-40b7-bf0d-6e1f41c59592": {
@@ -650,8 +650,8 @@
     "relativePath": "Animation/ExplosionLarger.anim"
   },
   "fdaed899-5fb3-47f7-8f8e-863ccbc3b797": {
-    "asset": 1546341370511,
-    "meta": 1546341370517,
+    "asset": 1546343202683,
+    "meta": 1546343202743,
     "relativePath": "Prefab/EnemyBig.prefab"
   },
   "0fe07dd6-1192-43ec-bc3d-e13d62993a90": {
@@ -660,8 +660,8 @@
     "relativePath": "Prefab/EnemySmall.prefab"
   },
   "a3d056de-95d0-4ba9-b52f-e4284060a032": {
-    "asset": 1546338822674,
-    "meta": 1546338822684,
+    "asset": 1546343494782,
+    "meta": 1546343494790,
     "relativePath": "Prefab/EnemyMedium.prefab"
   },
   "298a3f64-e0e4-4a43-ac05-2b41c46e1f4a": {
@@ -755,28 +755,28 @@
     "relativePath": "Sound/laser-big.wav"
   },
   "4a12556b-4979-459a-9614-1675bebb31ce": {
-    "asset": 1546340200316,
-    "meta": 1546340223521,
+    "asset": 1546343376376,
+    "meta": 1546343380013,
     "relativePath": "Script/EnemyMedium.ts"
   },
   "a0812d76-cad3-4bab-a034-b8fdcfb6aa58": {
-    "asset": 1546341282145,
-    "meta": 1546341283228,
+    "asset": 1546343398652,
+    "meta": 1546343399700,
     "relativePath": "Script/EnemyBig.ts"
   },
-  "1abed3a3-2d81-46b8-930a-ebf044d798eb": {
-    "asset": 1546341403209,
-    "meta": 1546341403729,
-    "relativePath": "Script/Enemy.ts"
-  },
   "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
-    "asset": 1546341528377,
-    "meta": 1546341529440,
+    "asset": 1546343463491,
+    "meta": 1546343465699,
     "relativePath": "Script/Game.ts"
   },
   "dc6551d7-fb57-4d87-81c8-c1b145a193a5": {
-    "asset": 1546341623481,
-    "meta": 1546341624079,
+    "asset": 1546343577575,
+    "meta": 1546343578917,
     "relativePath": "Script/EnemySmall.ts"
+  },
+  "1abed3a3-2d81-46b8-930a-ebf044d798eb": {
+    "asset": 1546343892215,
+    "meta": 1546343892847,
+    "relativePath": "Script/Enemy.ts"
   }
 }

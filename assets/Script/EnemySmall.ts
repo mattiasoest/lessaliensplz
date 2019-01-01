@@ -8,7 +8,7 @@ export default class EnemySmall extends Enemy {
     private readonly FIRE_RATE = 1.8;
     private readonly BULLET_BURST = 5;
     private readonly LASER_INTERVAL = 0.05;
-    private readonly X_ACCELERATION = 1200;
+    private readonly X_ACCELERATION = 1000;
     private readonly Y_SPEED = -70; 
     private readonly LASER_SPEED: number = 300;
 
@@ -34,7 +34,7 @@ export default class EnemySmall extends Enemy {
                 if (this.burstTimer >= this.LASER_INTERVAL && this.numberOfBulletsFired < this.BULLET_BURST) {
                     this.burstTimer = 0;
                     // Local xPos (center)
-                    this.createLaser(0, cc.v2(Math.sin(this.node.rotation /  (-180 / Math.PI)) * this.LASER_SPEED, Math.cos(this.node.rotation / (-180 / Math.PI)) * -this.LASER_SPEED));
+                    this.game.spawnEnemyLaser(0, this.node, cc.v2(Math.sin(this.node.rotation /  (-180 / Math.PI)) * this.LASER_SPEED, Math.cos(this.node.rotation / (-180 / Math.PI)) * -this.LASER_SPEED));
                     this.laserSound.play();
                     this.numberOfBulletsFired++;
                 }

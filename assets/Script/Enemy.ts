@@ -18,9 +18,6 @@ export default class Enemy extends cc.Component {
     private applyForceLeft: boolean = false;
     private xSpeed = 0;
 
-    @property(cc.Prefab)
-    redLaser: cc.Prefab = null;
-
     game: Game = null;
 
     onLoad () {
@@ -76,6 +73,7 @@ export default class Enemy extends cc.Component {
                 this.hitPoints--;
             }
             else {
+                this.isAllowedToFire = false;
                 // Turn off just the hitbox since we will destroy the whole node after we are done with the animation.
                 this.node.getComponent(cc.RigidBody).enabledContactListener = false;
                 this.getComponent(cc.Animation).play("Explosion");
@@ -95,20 +93,6 @@ export default class Enemy extends cc.Component {
 
     setLaserScheduler(fireRate: number,initiateLaser: Function) {
         cc.director.getScheduler().schedule(initiateLaser, this, fireRate, false);
-    }
-
-    // Local x-pos from the center and velocity vector
-    createLaser(xPos : number, velocityVector: cc.Vec2) {
-        const newLaser = cc.instantiate(this.redLaser);
-        // Relative to the current node. So center it.
-        newLaser.setPosition(xPos, -this.node.height / 2);
-        const body = newLaser.getComponent(cc.RigidBody);
-         (180 / Math.PI)
-        body.linearVelocity = velocityVector;
-        this.node.addChild(newLaser);
-        const laserObject = newLaser.getComponent('LaserRed');
-        // Game from the superclass.
-        laserObject.game = this.game;
     }
 
     // Just a hack to get the angle, need to read more about
