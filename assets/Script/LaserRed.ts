@@ -44,8 +44,8 @@ export default class LaserRed extends cc.Component {
             this.game.playRockExplosion();
             selfCollider.node.destroy();
             if (!this.game.player.getComponent("PlayerControl").isInvincible()) {
-                this.game.resetGame();
                 this.game.playPlayerExplosionAnimation();
+                this.game.resetGame();
                 // selfCollider.node.destroy();
                     // otherCollider.node.destroy();
                 

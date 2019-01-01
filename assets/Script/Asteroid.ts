@@ -55,10 +55,8 @@ export default class Asteroid extends cc.Component {
         if (otherCollider.node.name === "Player") {
             this.node.getComponent(cc.RigidBody).enabledContactListener = false;
             if (!this.game.player.getComponent("PlayerControl").isInvincible()) {
-                this.game.resetGame();
                 this.game.playPlayerExplosionAnimation();
-                // selfCollider.node.destroy();
-                    // otherCollider.node.destroy();
+                this.game.resetGame();
             }
             else {
                 this.getComponent(cc.Animation).play("ExplosionLarger");

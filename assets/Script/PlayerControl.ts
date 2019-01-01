@@ -67,6 +67,12 @@ export default class PlayerControl extends cc.Component {
             }
         }
 
+        if (this.game.isPlayerAlive()) {
+            this.updateMovement(dt)
+        }
+    }
+
+    updateMovement(dt) {
         // === X-AXIS ===
         if (this.accLeft) {
             this.xSpeed -= this.X_ACCELERATION * dt;
@@ -104,55 +110,60 @@ export default class PlayerControl extends cc.Component {
     }
 
     onKeyDown(event: cc.Event.EventKeyboard) {
-        switch(event.keyCode) {
-            case cc.macro.KEY.left:
-                if (!this.isLeftAnimPlaying) {
+        if (this.game.isPlayerAlive()) {
+            switch(event.keyCode) {
+                case cc.macro.KEY.left:
+                    if (!this.isLeftAnimPlaying) {
+                        this.flySound.play();
+                        this.isLeftAnimPlaying = true;
+                        this.animations.play("PlayerLeft");
+                    }
+                    this.accLeft = true;
+                    break;
+                case cc.macro.KEY.right:
+                if (!this.isRightAnimPlaying) {
                     this.flySound.play();
-                    this.isLeftAnimPlaying = true;
-                    this.animations.play("PlayerLeft");
-                }
-                this.accLeft = true;
-                break;
-            case cc.macro.KEY.right:
-            if (!this.isRightAnimPlaying) {
-                this.flySound.play();
-                this.isRightAnimPlaying = true;
-                this.animations.play("PlayerRight");
-                }
-                this.accRight = true;
-                break;
-            case cc.macro.KEY.up:
-                this.accUp = true;
-                break;
-            case cc.macro.KEY.down:
-                this.accDown = true;
-                break;
-            case cc.macro.KEY.space:
-                break;
+                    this.isRightAnimPlaying = true;
+                    this.animations.play("PlayerRight");
+                    }
+                    this.accRight = true;
+                    break;
+                case cc.macro.KEY.up:
+                    this.accUp = true;
+                    break;
+                case cc.macro.KEY.down:
+                    this.accDown = true;
+                    break;
+                case cc.macro.KEY.space:
+                    break;
+            }
         }
+ 
     }
 
     onKeyUp(event: cc.Event.EventKeyboard) {
-        switch(event.keyCode) {
-            case cc.macro.KEY.left:
-                this.isLeftAnimPlaying = false;
-                this.animations.play("PlayerNormal");
-                this.accLeft = false;
-                break;
-            case cc.macro.KEY.right:
-                this.isRightAnimPlaying = false;
-                this.animations.play("PlayerNormal");
-                this.accRight = false;
-                break;
-            case cc.macro.KEY.up:
-                this.accUp = false;
-                break;
-            case cc.macro.KEY.down:
-                this.accDown = false;
-                break;
-            case cc.macro.KEY.space:
-                this.game.spawnBlueLaser();
-                break;
+        if (this.game.isPlayerAlive()) {
+            switch(event.keyCode) {
+                case cc.macro.KEY.left:
+                    this.isLeftAnimPlaying = false;
+                    this.animations.play("PlayerNormal");
+                    this.accLeft = false;
+                    break;
+                case cc.macro.KEY.right:
+                    this.isRightAnimPlaying = false;
+                    this.animations.play("PlayerNormal");
+                    this.accRight = false;
+                    break;
+                case cc.macro.KEY.up:
+                    this.accUp = false;
+                    break;
+                case cc.macro.KEY.down:
+                    this.accDown = false;
+                    break;
+                case cc.macro.KEY.space:
+                    this.game.spawnBlueLaser();
+                    break;
+            }
         }
     }
 
@@ -174,5 +185,9 @@ export default class PlayerControl extends cc.Component {
 
     playMaxRightFrames() {
         this.animations.play("PlayerRightMax");
+    }
+
+    destroySelf() {
+        this.node.destroy();
     }
 }

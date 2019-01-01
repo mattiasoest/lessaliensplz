@@ -8,7 +8,7 @@ export default class Coin extends cc.Component {
     private coinSpeed: number = 125;
     private cvs: cc.Node = null;
     private lowerBound: number = 0;
-    private hitboxRadius: number = 12;
+    private hitBoxOffset: number = 15;
 
     private manager: cc.CollisionManager = cc.director.getCollisionManager();
     game: Game = null;
@@ -32,7 +32,8 @@ export default class Coin extends cc.Component {
             // Tried to adjust  parameters until it had a good feel. 
             // Wanted to do oldschool collision before I started using the physics engine
             // So the Coin objects are currently NOT hooked up to the physics engine
-            if (this.node.y - this.hitboxRadius / 2 < player.y - player.height / 2 && this.node.y + this.hitboxRadius > player.y - player.height * 1.5) {
+            if (this.game.isPlayerAlive() && this.node.y - this.hitBoxOffset * 2 < player.y - player.height / 2 &&
+                                                 this.node.y + this.hitBoxOffset > player.y - player.height * 1.5) {
                 if (this.node.x < player.x + player.width && this.node.x > player.x - player.width) {
                     this.game.updateCoinScore();
                     this.node.destroy();

@@ -15,6 +15,8 @@ var Game = /** @class */ (function (_super) {
         _this.AMMO_PER_BOX = 8;
         _this.ENEMY_SPAWN_RATE = 8;
         _this.INVINCIBLE_DURATION = 5;
+        _this.GAME_STATE = { PLAY: 0, MENU: 1 };
+        _this.currentState = _this.GAME_STATE.PLAY;
         // NORMAL INSTANCE VARIABLES
         _this.currentAmmo = _this.AMMO_PER_BOX;
         _this.coinScore = 0;
@@ -24,11 +26,13 @@ var Game = /** @class */ (function (_super) {
         _this.cvs = null;
         _this.scheduler = null;
         _this.invincibleParticleObject = null;
+        _this.isAlive = true;
+        _this.player = null;
         _this.scoreLabel = null;
         _this.timeLabel = null;
         _this.ammoLabel = null;
         _this.coin = null;
-        _this.player = null;
+        _this.playerFab = null;
         _this.playerLaser = null;
         _this.redLaser = null;
         _this.asteroid = null;
@@ -36,7 +40,6 @@ var Game = /** @class */ (function (_super) {
         _this.medEnemy = null;
         _this.smallEnemy = null;
         _this.playerAmmo = null;
-        _this.invincibleEffect = null;
         _this.noAmmoSound = null;
         _this.ammoPickupSound = null;
         _this.rockExpSound = null;
@@ -46,42 +49,51 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.onLoad = function () {
         this.cvs = cc.find("Canvas");
         // Setup physics engine.
-        this.invincibleParticleObject = this.invincibleEffect.getComponent("InvincibleEffect");
-        this.invincibleParticleObject.setDuration(this.INVINCIBLE_DURATION);
         var physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
+        this.createPlayer();
         this.coinSound = this.getComponent(cc.AudioSource);
-        // Push reference of the game object
-        this.player.getComponent('PlayerControl').game = this;
         this.scheduler = cc.director.getScheduler();
         // Setup auto-generation of objects dynamically during gameplay
-        this.setCoinScheduler();
-        this.setAsteroidScheduler();
-        this.setAmmoScheduler();
-        this.setEnemyScheduler();
+        this.setupItemAutoGeneration();
     };
-    Game.prototype.start = function () {
-        this.spawnRandomEnemy();
-        this.spawnAmmo();
-        this.spawnAsteroid();
-        this.spawnCoin();
-    };
+    Game.prototype.start = function () { };
     Game.prototype.update = function (dt) {
-        this.time += dt;
-        this.timeLabel.string = "Time: " + this.parseTime(this.time);
+        switch (this.currentState) {
+            case this.GAME_STATE.PLAY:
+                this.time += dt;
+                this.timeLabel.string = "Time: " + this.parseTime(this.time);
+                break;
+            case this.GAME_STATE.MENU:
+                break;
+        }
     };
+    // ============================== TODO ========================================
     Game.prototype.resetGame = function () {
-        this.playBoomSound();
+        var _this = this;
+        console.log("ONCE!");
+        this.currentState = this.GAME_STATE.MENU;
+        this.player.getComponent(cc.RigidBody).enabledContactListener = false;
+        this.isAlive = false;
         this.coinScore = 0;
         this.currentAmmo = this.AMMO_PER_BOX;
-        this.time = 0;
-        // Update the labels aswell, so we render w/ the new data
-        this.scoreLabel.string = "Coins: " + this.coinScore;
-        this.ammoLabel.string = "Ammo: " + this.currentAmmo;
-        this.timeLabel.string = "Time: " + this.time;
-        // ACTUALLY RESETS EVERYTHING...... 
-        // cc.director.loadScene('Gameplay');
+        this.playBoomSound();
+        this.endRandomGeneration();
+        // Let animation finish etc..
+        setTimeout(function () {
+            _this.node.destroyAllChildren();
+            // ==========================================
+            // ACTUALLY RESETS EVERYTHING...... 
+            // cc.director.loadScene('Gameplay');
+            _this.setupItemAutoGeneration();
+            _this.createPlayer();
+            _this.currentState = _this.GAME_STATE.PLAY;
+            _this.time = 0;
+            // Update the labels aswell, so we render w/ the new data
+            _this.scoreLabel.string = "Coins: " + _this.coinScore;
+            _this.ammoLabel.string = "Ammo: " + _this.currentAmmo;
+        }, 2000);
     };
     Game.prototype.playRockExplosion = function () {
         cc.audioEngine.play(this.rockExpSound, false, 0.8);
@@ -120,6 +132,15 @@ var Game = /** @class */ (function (_super) {
         return Number(Math.round(toBeParsed * 100) / 100).toFixed(2);
     };
     // ========== DYNAMICALLY OBJECT CREATORS ==========
+    Game.prototype.createPlayer = function () {
+        this.player = cc.instantiate(this.playerFab);
+        this.node.addChild(this.player);
+        // Push reference of the game object
+        this.player.getComponent('PlayerControl').game = this;
+        this.invincibleParticleObject = this.player.getChildByName("Particles").getComponent("InvincibleEffect");
+        this.invincibleParticleObject.setDuration(this.INVINCIBLE_DURATION);
+        this.isAlive = true;
+    };
     Game.prototype.spawnCoin = function () {
         var newCoin = cc.instantiate(this.coin);
         this.node.addChild(newCoin);
@@ -201,6 +222,26 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.getInvincibleDuration = function () {
         return this.INVINCIBLE_DURATION;
     };
+    Game.prototype.isPlayerAlive = function () {
+        return this.isAlive;
+    };
+    Game.prototype.setupItemAutoGeneration = function () {
+        this.setCoinScheduler();
+        this.setAsteroidScheduler();
+        this.setAmmoScheduler();
+        this.setEnemyScheduler();
+        // Spawn 1 set of each item without delay
+        this.spawnRandomEnemy();
+        this.spawnAmmo();
+        this.spawnAsteroid();
+        this.spawnCoin();
+    };
+    Game.prototype.endRandomGeneration = function () {
+        this.scheduler.unschedule(this.spawnCoin, this);
+        this.scheduler.unschedule(this.spawnAsteroid, this);
+        this.scheduler.unschedule(this.spawnAmmo, this);
+        this.scheduler.unschedule(this.spawnRandomEnemy, this);
+    };
     // ========== SCHEDULERS ==========
     Game.prototype.setCoinScheduler = function () {
         this.scheduler.schedule(this.spawnCoin, this, this.COIN_SPAWN_RATE, false);
@@ -227,8 +268,8 @@ var Game = /** @class */ (function (_super) {
         property(cc.Prefab)
     ], Game.prototype, "coin", void 0);
     __decorate([
-        property(cc.Node)
-    ], Game.prototype, "player", void 0);
+        property(cc.Prefab)
+    ], Game.prototype, "playerFab", void 0);
     __decorate([
         property(cc.Prefab)
     ], Game.prototype, "playerLaser", void 0);
@@ -250,9 +291,6 @@ var Game = /** @class */ (function (_super) {
     __decorate([
         property(cc.Prefab)
     ], Game.prototype, "playerAmmo", void 0);
-    __decorate([
-        property(cc.ParticleSystem)
-    ], Game.prototype, "invincibleEffect", void 0);
     __decorate([
         property(cc.AudioClip)
     ], Game.prototype, "noAmmoSound", void 0);

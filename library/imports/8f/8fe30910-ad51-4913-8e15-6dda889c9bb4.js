@@ -11,7 +11,7 @@ var Coin = /** @class */ (function (_super) {
         _this.coinSpeed = 125;
         _this.cvs = null;
         _this.lowerBound = 0;
-        _this.hitboxRadius = 12;
+        _this.hitBoxOffset = 15;
         _this.manager = cc.director.getCollisionManager();
         _this.game = null;
         return _this;
@@ -32,7 +32,8 @@ var Coin = /** @class */ (function (_super) {
             // Tried to adjust  parameters until it had a good feel. 
             // Wanted to do oldschool collision before I started using the physics engine
             // So the Coin objects are currently NOT hooked up to the physics engine
-            if (this.node.y - this.hitboxRadius / 2 < player.y - player.height / 2 && this.node.y + this.hitboxRadius > player.y - player.height * 1.5) {
+            if (this.game.isPlayerAlive() && this.node.y - this.hitBoxOffset * 2 < player.y - player.height / 2 &&
+                this.node.y + this.hitBoxOffset > player.y - player.height * 1.5) {
                 if (this.node.x < player.x + player.width && this.node.x > player.x - player.width) {
                     this.game.updateCoinScore();
                     this.node.destroy();

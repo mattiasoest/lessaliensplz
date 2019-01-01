@@ -11,6 +11,9 @@ export default class Game extends cc.Component {
     private readonly AMMO_PER_BOX: number = 8;
     private readonly ENEMY_SPAWN_RATE: number = 8;
     private readonly INVINCIBLE_DURATION: number = 5;
+    private readonly GAME_STATE = { PLAY : 0, MENU : 1 }
+
+    currentState = this.GAME_STATE.PLAY;
 
     // NORMAL INSTANCE VARIABLES
     private currentAmmo: number = this.AMMO_PER_BOX;
@@ -21,6 +24,10 @@ export default class Game extends cc.Component {
     private cvs: cc.Node = null;
     private scheduler : cc.Scheduler = null;
     private invincibleParticleObject: InvincibleEffect = null;
+    private isAlive = true;
+    player: cc.Node = null;
+    
+
 
     @property(cc.Label)
     scoreLabel: cc.Label = null;
@@ -34,8 +41,8 @@ export default class Game extends cc.Component {
     @property(cc.Prefab)
     coin: cc.Prefab = null;
 
-    @property(cc.Node)
-    player: cc.Node = null;
+    @property(cc.Prefab)
+    playerFab: cc.Prefab = null;
 
     @property(cc.Prefab)
     playerLaser: cc.Prefab = null;
@@ -58,9 +65,6 @@ export default class Game extends cc.Component {
     @property(cc.Prefab)
     playerAmmo: cc.Prefab = null;
 
-    @property(cc.ParticleSystem)
-    invincibleEffect: cc.ParticleSystem = null;
-
     @property(cc.AudioClip)
     noAmmoSound: cc.AudioClip = null;
 
@@ -76,48 +80,59 @@ export default class Game extends cc.Component {
     onLoad () {
         this.cvs =  cc.find("Canvas");
         // Setup physics engine.
-        this.invincibleParticleObject = this.invincibleEffect.getComponent("InvincibleEffect");
-        this.invincibleParticleObject.setDuration(this.INVINCIBLE_DURATION);
         let physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
 
+        this.createPlayer();
+
         this.coinSound = this.getComponent(cc.AudioSource);
-        // Push reference of the game object
-        this.player.getComponent('PlayerControl').game = this;
         this.scheduler = cc.director.getScheduler();
         // Setup auto-generation of objects dynamically during gameplay
-        this.setCoinScheduler();
-        this.setAsteroidScheduler();
-        this.setAmmoScheduler();
-        this.setEnemyScheduler();
+        this.setupItemAutoGeneration();
     }
 
-    start () {
-        this.spawnRandomEnemy();
-        this.spawnAmmo();
-        this.spawnAsteroid();
-        this.spawnCoin();
-    }
+    start () {}
 
     update (dt) {
-        this.time+= dt;
-        this.timeLabel.string = "Time: " + this.parseTime(this.time);
+        switch (this.currentState) {
+            case this.GAME_STATE.PLAY:
+                this.time+= dt;
+                this.timeLabel.string = "Time: " + this.parseTime(this.time); 
+                break;
+            case this.GAME_STATE.MENU:
+                break;
+        }
+           
     }
 
+    // ============================== TODO ========================================
     resetGame() {
-        this.playBoomSound();
+        console.log("ONCE!");
+        this.currentState = this.GAME_STATE.MENU;
+        this.player.getComponent(cc.RigidBody).enabledContactListener = false;
+        this.isAlive = false;
         this.coinScore = 0;
         this.currentAmmo = this.AMMO_PER_BOX;
-        this.time = 0;
+        this.playBoomSound();
+        this.endRandomGeneration();
 
-        // Update the labels aswell, so we render w/ the new data
-        this.scoreLabel.string = "Coins: " + this.coinScore;
-        this.ammoLabel.string = "Ammo: " + this.currentAmmo;
-        this.timeLabel.string = "Time: " + this.time;
-        // ACTUALLY RESETS EVERYTHING...... 
-        // cc.director.loadScene('Gameplay');
-    }
+        // Let animation finish etc..
+        setTimeout(() => {
+            this.node.destroyAllChildren();
+            // ==========================================
+            // ACTUALLY RESETS EVERYTHING...... 
+            // cc.director.loadScene('Gameplay');
+
+            this.setupItemAutoGeneration();
+            this.createPlayer();
+            this.currentState = this.GAME_STATE.PLAY;
+            this.time = 0;
+            // Update the labels aswell, so we render w/ the new data
+            this.scoreLabel.string = "Coins: " + this.coinScore;
+            this.ammoLabel.string = "Ammo: " + this.currentAmmo;
+            }, 2000);
+        }
 
     playRockExplosion() {
         cc.audioEngine.play(this.rockExpSound, false, 0.8);
@@ -164,6 +179,17 @@ export default class Game extends cc.Component {
     }
 
     // ========== DYNAMICALLY OBJECT CREATORS ==========
+
+    createPlayer() {
+        this.player = cc.instantiate(this.playerFab);
+        this.node.addChild(this.player);
+        // Push reference of the game object
+        this.player.getComponent('PlayerControl').game = this;
+        this.invincibleParticleObject = this.player.getChildByName("Particles").getComponent("InvincibleEffect");
+        this.invincibleParticleObject.setDuration(this.INVINCIBLE_DURATION);
+        this.isAlive = true;
+    }
+
     spawnCoin() {
         const newCoin = cc.instantiate(this.coin);
         this.node.addChild(newCoin);
@@ -255,6 +281,31 @@ export default class Game extends cc.Component {
 
     getInvincibleDuration() {
         return this.INVINCIBLE_DURATION;
+    }
+
+    isPlayerAlive() {
+        return this.isAlive;
+    }
+
+
+    setupItemAutoGeneration() {
+        this.setCoinScheduler();
+        this.setAsteroidScheduler();
+        this.setAmmoScheduler();
+        this.setEnemyScheduler();
+
+        // Spawn 1 set of each item without delay
+        this.spawnRandomEnemy();
+        this.spawnAmmo();
+        this.spawnAsteroid();
+        this.spawnCoin();
+    }
+
+    endRandomGeneration() {
+        this.scheduler.unschedule(this.spawnCoin, this);
+        this.scheduler.unschedule(this.spawnAsteroid, this);
+        this.scheduler.unschedule(this.spawnAmmo, this);
+        this.scheduler.unschedule(this.spawnRandomEnemy, this);
     }
 
     // ========== SCHEDULERS ==========

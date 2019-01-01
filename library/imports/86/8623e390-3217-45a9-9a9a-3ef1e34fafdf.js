@@ -59,6 +59,11 @@ var PlayerControl = /** @class */ (function (_super) {
                 this.invincibleTimer = 0;
             }
         }
+        if (this.game.isPlayerAlive()) {
+            this.updateMovement(dt);
+        }
+    };
+    PlayerControl.prototype.updateMovement = function (dt) {
         // === X-AXIS ===
         if (this.accLeft) {
             this.xSpeed -= this.X_ACCELERATION * dt;
@@ -93,54 +98,58 @@ var PlayerControl = /** @class */ (function (_super) {
         }
     };
     PlayerControl.prototype.onKeyDown = function (event) {
-        switch (event.keyCode) {
-            case cc.macro.KEY.left:
-                if (!this.isLeftAnimPlaying) {
-                    this.flySound.play();
-                    this.isLeftAnimPlaying = true;
-                    this.animations.play("PlayerLeft");
-                }
-                this.accLeft = true;
-                break;
-            case cc.macro.KEY.right:
-                if (!this.isRightAnimPlaying) {
-                    this.flySound.play();
-                    this.isRightAnimPlaying = true;
-                    this.animations.play("PlayerRight");
-                }
-                this.accRight = true;
-                break;
-            case cc.macro.KEY.up:
-                this.accUp = true;
-                break;
-            case cc.macro.KEY.down:
-                this.accDown = true;
-                break;
-            case cc.macro.KEY.space:
-                break;
+        if (this.game.isPlayerAlive()) {
+            switch (event.keyCode) {
+                case cc.macro.KEY.left:
+                    if (!this.isLeftAnimPlaying) {
+                        this.flySound.play();
+                        this.isLeftAnimPlaying = true;
+                        this.animations.play("PlayerLeft");
+                    }
+                    this.accLeft = true;
+                    break;
+                case cc.macro.KEY.right:
+                    if (!this.isRightAnimPlaying) {
+                        this.flySound.play();
+                        this.isRightAnimPlaying = true;
+                        this.animations.play("PlayerRight");
+                    }
+                    this.accRight = true;
+                    break;
+                case cc.macro.KEY.up:
+                    this.accUp = true;
+                    break;
+                case cc.macro.KEY.down:
+                    this.accDown = true;
+                    break;
+                case cc.macro.KEY.space:
+                    break;
+            }
         }
     };
     PlayerControl.prototype.onKeyUp = function (event) {
-        switch (event.keyCode) {
-            case cc.macro.KEY.left:
-                this.isLeftAnimPlaying = false;
-                this.animations.play("PlayerNormal");
-                this.accLeft = false;
-                break;
-            case cc.macro.KEY.right:
-                this.isRightAnimPlaying = false;
-                this.animations.play("PlayerNormal");
-                this.accRight = false;
-                break;
-            case cc.macro.KEY.up:
-                this.accUp = false;
-                break;
-            case cc.macro.KEY.down:
-                this.accDown = false;
-                break;
-            case cc.macro.KEY.space:
-                this.game.spawnBlueLaser();
-                break;
+        if (this.game.isPlayerAlive()) {
+            switch (event.keyCode) {
+                case cc.macro.KEY.left:
+                    this.isLeftAnimPlaying = false;
+                    this.animations.play("PlayerNormal");
+                    this.accLeft = false;
+                    break;
+                case cc.macro.KEY.right:
+                    this.isRightAnimPlaying = false;
+                    this.animations.play("PlayerNormal");
+                    this.accRight = false;
+                    break;
+                case cc.macro.KEY.up:
+                    this.accUp = false;
+                    break;
+                case cc.macro.KEY.down:
+                    this.accDown = false;
+                    break;
+                case cc.macro.KEY.space:
+                    this.game.spawnBlueLaser();
+                    break;
+            }
         }
     };
     PlayerControl.prototype.makeInvincible = function () {
@@ -158,6 +167,9 @@ var PlayerControl = /** @class */ (function (_super) {
     };
     PlayerControl.prototype.playMaxRightFrames = function () {
         this.animations.play("PlayerRightMax");
+    };
+    PlayerControl.prototype.destroySelf = function () {
+        this.node.destroy();
     };
     __decorate([
         property(cc.AudioClip)

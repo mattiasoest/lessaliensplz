@@ -79,8 +79,8 @@ var Enemy = /** @class */ (function (_super) {
             this.node.getComponent(cc.RigidBody).enabledContactListener = false;
             this.getComponent(cc.Animation).play("Explosion");
             if (!this.game.player.getComponent("PlayerControl").isInvincible()) {
-                this.game.resetGame();
                 this.game.playPlayerExplosionAnimation();
+                this.game.resetGame();
             }
         }
     };
@@ -91,8 +91,13 @@ var Enemy = /** @class */ (function (_super) {
     // the coordinate system and how angles work in cocos
     // Works for now.
     Enemy.prototype.getAngle = function () {
-        var angle = Math.atan2(this.game.player.y - this.node.y, this.game.player.x - this.node.x) * -180 / Math.PI;
-        return angle - 90;
+        if (this.game.isPlayerAlive()) {
+            var angle = Math.atan2(this.game.player.y - this.node.y, this.game.player.x - this.node.x) * -180 / Math.PI;
+            return angle - 90;
+        }
+        else {
+            return 0;
+        }
     };
     // ============== Animation trigger functions ==============
     Enemy.prototype.destroySelf = function () {
