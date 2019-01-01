@@ -6,13 +6,21 @@ import Game from "./Game";
 export default class LaserRed extends cc.Component {
     private playerFireSound: cc.AudioSource = null;
     private lowerBound: number = 0;
+    private leftBound : number = 0;
+    private rightBound: number = 0; 
+    private upperBound: number = 0;
+
+
     private cvs : cc.Node = null;
     game: Game = null;
 
     onLoad () {
         this.playerFireSound = this.getComponent(cc.AudioSource);
         this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.62;
+        this.lowerBound = -this.cvs.height;
+        this.leftBound = -this.cvs.width;
+        this.rightBound = this.cvs.width;
+        this.upperBound = this.cvs.height;
     }
 
     // start () {
@@ -20,15 +28,21 @@ export default class LaserRed extends cc.Component {
 
     update (dt) {
         if (cc.isValid(this.node)) {
-            if (this.node.y < -this.lowerBound) {
-                // this.node.destroy();
+            if (this.isOutOfBounds()) {
+                this.node.destroy();
             }
         }
+    }
+
+    isOutOfBounds() {
+        return this.node.y < this.lowerBound || this.node.y > this.upperBound ||
+            this.node.x < this.leftBound || this.node.x > this.rightBound;
     }
     
     onBeginContact(contact, selfCollider, otherCollider) {
         if (otherCollider.node.name === "Player") {
             this.game.playRockExplosion();
+            this.game.resetGame();
             otherCollider.getComponent(cc.Animation).play("Explosion");
             selfCollider.node.destroy();
             // otherCollider.node.destroy();

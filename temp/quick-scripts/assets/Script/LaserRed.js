@@ -10,6 +10,9 @@ var LaserRed = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.playerFireSound = null;
         _this.lowerBound = 0;
+        _this.leftBound = 0;
+        _this.rightBound = 0;
+        _this.upperBound = 0;
         _this.cvs = null;
         _this.game = null;
         return _this;
@@ -17,20 +20,28 @@ var LaserRed = /** @class */ (function (_super) {
     LaserRed.prototype.onLoad = function () {
         this.playerFireSound = this.getComponent(cc.AudioSource);
         this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.62;
+        this.lowerBound = -this.cvs.height;
+        this.leftBound = -this.cvs.width;
+        this.rightBound = this.cvs.width;
+        this.upperBound = this.cvs.height;
     };
     // start () {
     // }
     LaserRed.prototype.update = function (dt) {
         if (cc.isValid(this.node)) {
-            if (this.node.y < -this.lowerBound) {
-                // this.node.destroy();
+            if (this.isOutOfBounds()) {
+                this.node.destroy();
             }
         }
+    };
+    LaserRed.prototype.isOutOfBounds = function () {
+        return this.node.y < this.lowerBound || this.node.y > this.upperBound ||
+            this.node.x < this.leftBound || this.node.x > this.rightBound;
     };
     LaserRed.prototype.onBeginContact = function (contact, selfCollider, otherCollider) {
         if (otherCollider.node.name === "Player") {
             this.game.playRockExplosion();
+            this.game.resetGame();
             otherCollider.getComponent(cc.Animation).play("Explosion");
             selfCollider.node.destroy();
             // otherCollider.node.destroy();

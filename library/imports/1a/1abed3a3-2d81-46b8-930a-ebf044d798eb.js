@@ -8,39 +8,58 @@ var Enemy = /** @class */ (function (_super) {
     __extends(Enemy, _super);
     function Enemy() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.DAMP = 0.95;
         _this.lowerBound = 0;
         _this.leftBound = 0;
         _this.rightBound = 0;
+        _this.isAllowedToFire = true;
+        // Being set in the subclasses.
+        _this.hitPoints = 0;
         _this.cvs = null;
-        _this.hitPoints = 1;
+        _this.applyForceLeft = false;
+        _this.xSpeed = 0;
         _this.redLaser = null;
         _this.game = null;
         return _this;
     }
     Enemy.prototype.onLoad = function () {
         this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.62;
+        this.lowerBound = -this.cvs.height * 0.65;
         this.leftBound = -this.cvs.width / 2;
         this.rightBound = this.cvs.width / 2;
+        this.applyForceLeft = this.getComponent(cc.RigidBody).linearVelocity.x < 0 ? false : true;
     };
     // start () {}
     Enemy.prototype.update = function (dt) {
         if (cc.isValid(this.node)) {
+            // Stop the laser shooting after passing the lower part
+            // Of the canvas
+            if (this.node.y <= this.lowerBound * 0.6) {
+                this.isAllowedToFire = false;
+            }
             if (this.node.y <= this.lowerBound) {
-                console.log("ENEMY DESTROYED SUPER CLASS");
                 this.node.destroy();
             }
-            else {
-                // X-Screen bounds
-                if (this.node.x <= this.leftBound - 30 || this.node.x >= this.rightBound + 30) {
-                    console.log("INVERT");
-                    this.node.getComponent(cc.RigidBody);
-                    // Invert x-velocity so it bounces back
-                    var body = this.node.getComponent(cc.RigidBody);
-                    body.linearVelocity = cc.v2(body.linearVelocity.x * -1, body.linearVelocity.y);
-                }
-            }
         }
+    };
+    Enemy.prototype.updateShip = function (xAcceleration, ySpeed, dt) {
+        // X-axis force bounds
+        if (this.node.x <= this.leftBound * 0.65) {
+            this.applyForceLeft = false;
+        }
+        else if (this.node.x >= this.rightBound * 0.65) {
+            this.applyForceLeft = true;
+        }
+        // === X-AXIS ===
+        if (this.applyForceLeft) {
+            this.xSpeed -= xAcceleration * dt;
+        }
+        else {
+            this.xSpeed += xAcceleration * dt;
+        }
+        this.node.y += ySpeed * dt;
+        this.node.x += this.xSpeed * dt;
+        this.xSpeed *= this.DAMP;
     };
     Enemy.prototype.onBeginContact = function (contact, selfCollider, otherCollider) {
         if (otherCollider.node.name === "LaserBlue") {
@@ -56,7 +75,6 @@ var Enemy = /** @class */ (function (_super) {
             }
         }
         if (otherCollider.node.name === "Player") {
-            console.log("PLAYER ASTEROID CONTACT");
             // ====== TODO FIX
             this.node.getComponent(cc.RigidBody).enabledContactListener = false;
             this.getComponent(cc.Animation).play("Explosion");
@@ -67,8 +85,28 @@ var Enemy = /** @class */ (function (_super) {
             // otherCollider.node.destroy();
         }
     };
-    Enemy.prototype.testFunction = function () {
-        console.log("FROM SUPER CLASS");
+    Enemy.prototype.setLaserScheduler = function (fireRate, initiateLaser) {
+        cc.director.getScheduler().schedule(initiateLaser, this, fireRate, false);
+    };
+    // Local x-pos from the center and velocity vector
+    Enemy.prototype.createLaser = function (xPos, velocityVector) {
+        var newLaser = cc.instantiate(this.redLaser);
+        // Relative to the current node. So center it.
+        newLaser.setPosition(xPos, -this.node.height / 2);
+        var body = newLaser.getComponent(cc.RigidBody);
+        (180 / Math.PI);
+        body.linearVelocity = velocityVector;
+        this.node.addChild(newLaser);
+        var laserObject = newLaser.getComponent('LaserRed');
+        // Game from the superclass.
+        laserObject.game = this.game;
+    };
+    // Just a hack to get the angle, need to read more about
+    // the coordinate system and how angles work in cocos
+    // Works for now.
+    Enemy.prototype.getAngle = function () {
+        var angle = Math.atan2(this.game.player.y - this.node.y, this.game.player.x - this.node.x) * -180 / Math.PI;
+        return angle - 90;
     };
     // ============== Animation trigger functions ==============
     Enemy.prototype.destroySelf = function () {

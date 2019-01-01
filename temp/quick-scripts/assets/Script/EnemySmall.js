@@ -9,37 +9,44 @@ var EnemySmall = /** @class */ (function (_super) {
     __extends(EnemySmall, _super);
     function EnemySmall() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.FIRE_RATE = 0.5;
-        _this.BULLET_BURST = 4;
-        _this.LASER_INTERVAL = 0.25;
-        _this.miniLaser = null;
+        _this.FIRE_RATE = 1.8;
+        _this.BULLET_BURST = 5;
+        _this.LASER_INTERVAL = 0.05;
+        _this.X_ACCELERATION = 1200;
+        _this.Y_SPEED = -70;
+        _this.LASER_SPEED = 300;
+        _this.laserSound = null;
+        _this.isBurstOn = false;
+        _this.burstTimer = 0;
+        _this.numberOfBulletsFired = 0;
         return _this;
     }
     EnemySmall.prototype.start = function () {
-        this.miniLaser = this.getComponent(cc.AudioSource);
-        this.setLaserScheduler();
+        this.laserSound = this.getComponent(cc.AudioSource);
+        this.hitPoints = 0;
+        _super.prototype.setLaserScheduler.call(this, this.FIRE_RATE, this.initiateLaser);
     };
     EnemySmall.prototype.update = function (dt) {
         _super.prototype.update.call(this, dt);
+        this.node.rotation = _super.prototype.getAngle.call(this);
+        _super.prototype.updateShip.call(this, this.X_ACCELERATION, this.Y_SPEED, dt);
+        if (this.isAllowedToFire) {
+            if (this.isBurstOn) {
+                this.burstTimer += dt;
+                if (this.burstTimer >= this.LASER_INTERVAL && this.numberOfBulletsFired < this.BULLET_BURST) {
+                    this.burstTimer = 0;
+                    // Local xPos (center)
+                    this.createLaser(0, cc.v2(Math.sin(this.node.rotation / (-180 / Math.PI)) * this.LASER_SPEED, Math.cos(this.node.rotation / (-180 / Math.PI)) * -this.LASER_SPEED));
+                    this.laserSound.play();
+                    this.numberOfBulletsFired++;
+                }
+            }
+        }
     };
-    EnemySmall.prototype.fireLaser = function () {
-        // cc.director.getScheduler().schedule(this.createLaser, this, this.FIRE_RATE, false);
-        this.createLaser();
-    };
-    EnemySmall.prototype.setLaserScheduler = function () {
-        cc.director.getScheduler().schedule(this.fireLaser, this, this.FIRE_RATE, false);
-    };
-    EnemySmall.prototype.createLaser = function () {
-        var newLaser = cc.instantiate(this.redLaser);
-        // Relative to the current node. So center it.
-        newLaser.setPosition(0, -this.node.height / 2);
-        var body = newLaser.getComponent(cc.RigidBody);
-        body.linearVelocity = cc.v2(0, -285);
-        this.node.addChild(newLaser);
-        var laserObject = newLaser.getComponent('LaserRed');
-        // Game from the superclass.
-        laserObject.game = this.game;
-        this.miniLaser.play();
+    EnemySmall.prototype.initiateLaser = function () {
+        this.isBurstOn = true;
+        this.burstTimer = 0;
+        this.numberOfBulletsFired = 0;
     };
     EnemySmall = __decorate([
         ccclass

@@ -9,10 +9,10 @@ var Game = /** @class */ (function (_super) {
     function Game() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         // CONSTANTS
-        _this.ASTEROID_SPAWN_RATE = 1;
-        _this.COIN_SPAWN_RATE = 4;
+        _this.ASTEROID_SPAWN_RATE = 1.5;
+        _this.COIN_SPAWN_RATE = 2;
         _this.AMMO_SPAWN_RATE = 7.1;
-        _this.AMMO_PER_BOX = 4;
+        _this.AMMO_PER_BOX = 8;
         _this.ENEMY_SPAWN_RATE = 8;
         // NORMAL INSTANCE VARIABLES
         _this.currentAmmo = _this.AMMO_PER_BOX;
@@ -90,7 +90,7 @@ var Game = /** @class */ (function (_super) {
         var randomX = Math.random() * this.cvs.width / 2;
         // set sign value
         randomX *= this.generateRandomSign();
-        return cc.v2(randomX, this.cvs.height / 2);
+        return cc.v2(randomX, this.cvs.height * 0.62);
     };
     Game.prototype.generateRandomSign = function () {
         return Math.random() <= 0.5 ? -1 : 1;
@@ -129,7 +129,7 @@ var Game = /** @class */ (function (_super) {
         var laserObject = newLaser.getComponent('LaserBlue');
         laserObject.game = this;
         var body = newLaser.getComponent(cc.RigidBody);
-        body.linearVelocity = cc.v2(0, 350);
+        body.linearVelocity = cc.v2(0, 450);
         this.node.addChild(newLaser);
         laserObject.playLaserSound();
     };
@@ -158,32 +158,20 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.spawnRandomEnemy = function () {
         var newEnemy = null;
         var random = Math.random();
-        var xSpeed = 0;
-        var ySpeed = 0;
-        // if (random < 0.33) {
-        if (true) {
+        if (random < 0.33) {
             newEnemy = cc.instantiate(this.smallEnemy);
             newEnemy.getComponent('EnemySmall').game = this;
-            xSpeed = 220;
-            ySpeed = -110;
         }
         else if (random <= 0.67) {
             newEnemy = cc.instantiate(this.medEnemy);
             newEnemy.getComponent('EnemyMedium').game = this;
-            xSpeed = 120;
-            ySpeed = -90;
         }
         else {
             newEnemy = cc.instantiate(this.bigEnemy);
             newEnemy.getComponent('EnemyBig').game = this;
-            xSpeed = 40;
-            ySpeed = -60;
         }
         this.node.addChild(newEnemy);
         newEnemy.setPosition(this.generateRandomPos());
-        var body = newEnemy.getComponent(cc.RigidBody);
-        // body.linearVelocity = cc.v2(xSpeed * this.generateRandomSign(), ySpeed);
-        body.linearVelocity = cc.v2(2, -50);
     };
     // ========== SCHEDULERS ==========
     Game.prototype.setCoinScheduler = function () {

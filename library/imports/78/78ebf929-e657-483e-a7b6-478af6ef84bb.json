@@ -893,12 +893,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 4
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 16,
-      "height": 24
+      "width": 9,
+      "height": 10
     },
     "_id": "a7JydSyw9E4auJaUCx0TOm"
   },
@@ -1480,8 +1480,8 @@
     "_srcBlendFactor": 1,
     "_dstBlendFactor": 771,
     "_useOriginalSize": false,
-    "_string": "Ammo:  4",
-    "_N$string": "Ammo:  4",
+    "_string": "Ammo:  8",
+    "_N$string": "Ammo:  8",
     "_fontSize": 15,
     "_lineHeight": 40,
     "_enableWrapText": true,

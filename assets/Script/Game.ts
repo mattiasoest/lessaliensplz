@@ -3,10 +3,10 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Game extends cc.Component {
     // CONSTANTS
-    private readonly ASTEROID_SPAWN_RATE: number = 1;
-    private readonly COIN_SPAWN_RATE: number = 4;
+    private readonly ASTEROID_SPAWN_RATE: number = 1.5;
+    private readonly COIN_SPAWN_RATE: number = 2;
     private readonly AMMO_SPAWN_RATE: number = 7.1;
-    private readonly AMMO_PER_BOX: number = 4;
+    private readonly AMMO_PER_BOX: number = 8;
     private readonly ENEMY_SPAWN_RATE: number = 8;
 
     // NORMAL INSTANCE VARIABLES
@@ -124,7 +124,7 @@ export default class Game extends cc.Component {
         let randomX = Math.random() * this.cvs.width / 2;
         // set sign value
         randomX *= this.generateRandomSign();
-        return cc.v2(randomX, this.cvs.height / 2);
+        return cc.v2(randomX, this.cvs.height * 0.62);
     }
 
     generateRandomSign() {
@@ -172,7 +172,7 @@ export default class Game extends cc.Component {
         laserObject.game = this;
 
         const body = newLaser.getComponent(cc.RigidBody);
-        body.linearVelocity = cc.v2(0, 350);
+        body.linearVelocity = cc.v2(0, 450);
         this.node.addChild(newLaser);
         laserObject.playLaserSound();
     }
@@ -205,34 +205,21 @@ export default class Game extends cc.Component {
     spawnRandomEnemy() {
         let newEnemy = null;
         const random = Math.random();
-        let xSpeed = 0;
-        let ySpeed = 0;
-        // if (random < 0.33) {
-            if (true) {
+        if (random < 0.33) {
             newEnemy = cc.instantiate(this.smallEnemy);
             newEnemy.getComponent('EnemySmall').game = this;
-            xSpeed = 220;
-            ySpeed = -110;
         }
         else if (random <= 0.67) {
             newEnemy = cc.instantiate(this.medEnemy);
             newEnemy.getComponent('EnemyMedium').game = this;
-            xSpeed = 120
-            ySpeed = -90;
         }
         else {
             newEnemy = cc.instantiate(this.bigEnemy);
             newEnemy.getComponent('EnemyBig').game = this;
-            xSpeed = 40;
-            ySpeed = -60;
         }
 
         this.node.addChild(newEnemy);
         newEnemy.setPosition(this.generateRandomPos());
-        const body = newEnemy.getComponent(cc.RigidBody);
-        // body.linearVelocity = cc.v2(xSpeed * this.generateRandomSign(), ySpeed);
-        body.linearVelocity = cc.v2(2, -50);
-
     }
 
     // ========== SCHEDULERS ==========
