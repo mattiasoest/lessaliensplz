@@ -143,8 +143,10 @@ export default class Game extends cc.Component {
     }
 
     startGame() {
+        this.setMenuInteractable(false);
+        this.menu.runAction(cc.sequence(cc.fadeOut(0.4), cc.callFunc(()=> this.menu.active = false)));
+        // this.menu.active = false
         this.createPlayer();
-        this.menu.active = false;
         this.setupItemAutoGeneration();
 
         this.enableLabels(true);
@@ -155,6 +157,16 @@ export default class Game extends cc.Component {
         this.upperBound.y = this.upperBound.height / 2 + this.getPlayerUpperBound() + this.player.height / 2;
         this.upperBound.active = true;
         this.upperBound.opacity = 0;
+    }
+
+    setMenuInteractable(value: boolean) {
+        let buttons = this.menu.getComponentsInChildren(cc.Button);
+        console.log("buttons" + buttons.length);
+        buttons.forEach(button => {
+            button.interactable = value;
+        });
+        
+
     }
 
     setGameState(state: number) {
@@ -190,7 +202,10 @@ export default class Game extends cc.Component {
             this.node.destroyAllChildren();
             this.enableLabels(false);
             this.time = 0;
+            this.setMenuInteractable(true);
             this.menu.active = true;
+            this.menu.opacity = 0;
+            this.menu.runAction(cc.fadeIn(0.4));
         }, 1250);
     }
 

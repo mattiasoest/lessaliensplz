@@ -12,6 +12,7 @@ var Menu = /** @class */ (function (_super) {
         _this.startButton = null;
         _this.creditsButton = null;
         _this.exitButton = null;
+        _this.creditsLabel = null;
         _this.game = null;
         return _this;
     }
@@ -19,16 +20,24 @@ var Menu = /** @class */ (function (_super) {
         this.startButton.node.on('click', this.startCallback, this);
         this.creditsButton.node.on('click', this.creditsCallback, this);
         this.exitButton.node.on('click', this.exitCallback, this);
+        this.creditsLabel.enabled = false;
     };
     Menu.prototype.start = function () {
     };
-    // update (dt) {}
+    Menu.prototype.update = function (dt) {
+    };
     // Button event callbacks
     Menu.prototype.startCallback = function () {
+        this.creditsLabel.enabled = false;
         this.game.startGame();
     };
     Menu.prototype.creditsCallback = function () {
-        this.game.startBgMusic();
+        var _this = this;
+        this.creditsLabel.enabled = true;
+        this.creditsLabel.node.opacity = 0;
+        this.game.setMenuInteractable(false);
+        this.creditsLabel.node.runAction(cc.sequence(cc.fadeIn(0.75), cc.delayTime(2.5), cc.fadeOut(0.75)));
+        this.node.runAction(cc.sequence(cc.fadeOut(0.4), cc.delayTime(3.25), cc.fadeIn(0.4), cc.callFunc(function () { return _this.game.setMenuInteractable(true); })));
     };
     Menu.prototype.exitCallback = function () {
         cc.audioEngine.stopAll();
@@ -43,6 +52,9 @@ var Menu = /** @class */ (function (_super) {
     __decorate([
         property(cc.Button)
     ], Menu.prototype, "exitButton", void 0);
+    __decorate([
+        property(cc.Label)
+    ], Menu.prototype, "creditsLabel", void 0);
     __decorate([
         property(Game_1.default)
     ], Menu.prototype, "game", void 0);

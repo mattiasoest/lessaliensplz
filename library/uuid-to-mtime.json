@@ -25,7 +25,7 @@
     "relativePath": "prefab"
   },
   "29f52784-2fca-467b-92e7-8fd9ef8c57b7": {
-    "asset": 1546157932344,
+    "asset": 1546409872395,
     "meta": 1546017408101,
     "relativePath": "Scene"
   },
@@ -35,7 +35,7 @@
     "relativePath": "Script"
   },
   "7b81d4e8-ec84-4716-968d-500ac1d78a54": {
-    "asset": 1546173460554,
+    "asset": 1546414880492,
     "meta": 1546017408101,
     "relativePath": "Texture"
   },
@@ -150,7 +150,7 @@
     "relativePath": "Animation/PlayerAnimation/PlayerLeftMax.anim"
   },
   "3fb23d99-af0e-4ede-a94e-82b910a4c1f4": {
-    "asset": 1546370140189,
+    "asset": 1546441355583,
     "meta": 1546072728626,
     "relativePath": "Prefab"
   },
@@ -200,7 +200,7 @@
     "relativePath": "Animation/Coin.anim"
   },
   "64d99177-ce4b-4eae-a6f2-344559525d71": {
-    "asset": 1546358754442,
+    "asset": 1546429647076,
     "meta": 1546081835161,
     "relativePath": "Sound"
   },
@@ -505,8 +505,8 @@
     "relativePath": "Animation/PlayerAmmo.anim"
   },
   "78ebf929-e657-483e-a7b6-478af6ef84bb": {
-    "asset": 1546439159532,
-    "meta": 1546439159539,
+    "asset": 1546442103287,
+    "meta": 1546442103299,
     "relativePath": "Scene/Gameplay.fire"
   },
   "13e4222c-c03c-4527-a0ce-769fa0a5ea9c": {
@@ -719,11 +719,6 @@
     "meta": 1546363621061,
     "relativePath": "Prefab/InvincibleEffect.prefab"
   },
-  "05190984-c081-4536-a867-e96c363a6add": {
-    "asset": 1546356736012,
-    "meta": 1546356832115,
-    "relativePath": "Script/InvincibleEffect.ts"
-  },
   "a0812d76-cad3-4bab-a034-b8fdcfb6aa58": {
     "asset": 1546357186895,
     "meta": 1546357201361,
@@ -809,11 +804,6 @@
     "meta": 1546429633652,
     "relativePath": "Sound/ShortSimple.mp3"
   },
-  "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
-    "asset": 1546430821989,
-    "meta": 1546430827605,
-    "relativePath": "Script/Menu.ts"
-  },
   "57af1582-6b03-4aa9-ad59-e96b88147507": {
     "asset": 1546438529526,
     "meta": 1546438535859,
@@ -824,9 +814,24 @@
     "meta": 1546438623615,
     "relativePath": "Script/PlayerControl.ts"
   },
+  "6e60d0cb-c90f-4301-82c8-f7ea093e60fa": {
+    "asset": 1546441355579,
+    "meta": 1546441355583,
+    "relativePath": "Prefab/Credits.prefab"
+  },
+  "05190984-c081-4536-a867-e96c363a6add": {
+    "asset": 1546443380765,
+    "meta": 1546443555344,
+    "relativePath": "Script/InvincibleEffect.ts"
+  },
   "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
-    "asset": 1546439353628,
-    "meta": 1546439354360,
+    "asset": 1546444670159,
+    "meta": 1546444785675,
     "relativePath": "Script/Game.ts"
+  },
+  "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
+    "asset": 1546444820179,
+    "meta": 1546444820724,
+    "relativePath": "Script/Menu.ts"
   }
 }

@@ -97,8 +97,11 @@ var Game = /** @class */ (function (_super) {
         }
     };
     Game.prototype.startGame = function () {
+        var _this = this;
+        this.setMenuInteractable(false);
+        this.menu.runAction(cc.sequence(cc.fadeOut(0.4), cc.callFunc(function () { return _this.menu.active = false; })));
+        // this.menu.active = false
         this.createPlayer();
-        this.menu.active = false;
         this.setupItemAutoGeneration();
         this.enableLabels(true);
         this.scoreLabel.string = "Coins: " + this.coinScore;
@@ -107,6 +110,13 @@ var Game = /** @class */ (function (_super) {
         this.upperBound.y = this.upperBound.height / 2 + this.getPlayerUpperBound() + this.player.height / 2;
         this.upperBound.active = true;
         this.upperBound.opacity = 0;
+    };
+    Game.prototype.setMenuInteractable = function (value) {
+        var buttons = this.menu.getComponentsInChildren(cc.Button);
+        console.log("buttons" + buttons.length);
+        buttons.forEach(function (button) {
+            button.interactable = value;
+        });
     };
     Game.prototype.setGameState = function (state) {
         switch (state) {
@@ -139,7 +149,10 @@ var Game = /** @class */ (function (_super) {
             _this.node.destroyAllChildren();
             _this.enableLabels(false);
             _this.time = 0;
+            _this.setMenuInteractable(true);
             _this.menu.active = true;
+            _this.menu.opacity = 0;
+            _this.menu.runAction(cc.fadeIn(0.4));
         }, 1250);
     };
     Game.prototype.resetCounter = function () {
