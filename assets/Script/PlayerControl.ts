@@ -27,10 +27,8 @@ export default class PlayerControl extends cc.Component {
     private cvs: cc.Node  = null;
     private animations : cc.Animation = null;
     private isCurrentlyInvincible: boolean = false;
-    private invincibleTimer: number = 0;
     private invincibleId = -1;
     private boundId = -1;
-    private engineId = -1;
     private justPlayedBoundSound: boolean = false;
 
     @property(cc.AudioClip)
@@ -40,7 +38,6 @@ export default class PlayerControl extends cc.Component {
     upperBoundSound: cc.AudioClip = null;
 
     game : Game = null;
-
 
     // Constants
     private readonly X_ACCELERATION: number = 3200;
@@ -65,15 +62,6 @@ export default class PlayerControl extends cc.Component {
     }
 
     update (dt) {
-        if (this.isCurrentlyInvincible) {
-            this.invincibleTimer += dt;
-            if (this.invincibleTimer >= this.game.getInvincibleDuration()) {
-                cc.audioEngine.stop(this.invincibleId);
-                this.isCurrentlyInvincible = false;
-                this.invincibleTimer = 0;
-            }
-        }
-
         if (this.game.isPlayerAlive()) {
             this.updateMovement(dt)
         }
@@ -190,6 +178,11 @@ export default class PlayerControl extends cc.Component {
     makeInvincible() {
         this.invincibleId = cc.audioEngine.play(this.invincibleSound, true, 0.4);
         this.isCurrentlyInvincible = true;
+    }
+
+    makeNotInvincible() {
+        cc.audioEngine.stop(this.invincibleId);
+        this.isCurrentlyInvincible = false;
     }
 
     isInvincible() {

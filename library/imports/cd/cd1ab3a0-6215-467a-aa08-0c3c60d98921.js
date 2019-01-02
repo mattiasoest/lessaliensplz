@@ -9,7 +9,7 @@ var Game = /** @class */ (function (_super) {
     function Game() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         // CONSTANTS
-        _this.ASTEROID_SPAWN_RATE = 1.5;
+        _this.ASTEROID_SPAWN_RATE = 1.25;
         _this.COIN_SPAWN_RATE = 1.55;
         _this.AMMO_SPAWN_RATE = 7.1;
         _this.AMMO_PER_BOX = 8;
@@ -30,13 +30,16 @@ var Game = /** @class */ (function (_super) {
         _this.isBoundHit = false;
         _this.increaseOpacity = true;
         _this.isBoundAnimationPlaying = false;
+        _this.invincibleTimer = _this.INVINCIBLE_DURATION;
         _this.menuMusicId = -1;
         _this.gameMusicId = -1;
+        _this.playerObject = null;
         _this.player = null;
         _this.menu = null;
         _this.scoreLabel = null;
         _this.timeLabel = null;
         _this.ammoLabel = null;
+        _this.counterLabel = null;
         _this.coin = null;
         _this.playerFab = null;
         _this.playerLaser = null;
@@ -65,6 +68,7 @@ var Game = /** @class */ (function (_super) {
         this.scheduler = cc.director.getScheduler();
         this.menu.active = true;
         this.upperBound.active = false;
+        this.resetCounter();
         this.startBgMusic();
     };
     Game.prototype.start = function () {
@@ -78,7 +82,15 @@ var Game = /** @class */ (function (_super) {
             case this.GAME_STATE.PLAY:
                 this.checkTopBoundAnimation(dt);
                 this.time += dt;
-                this.timeLabel.string = "Time: " + this.parseTime(this.time);
+                this.timeLabel.string = "Time: " + this.parseTime(this.time, 2);
+                if (this.playerObject.isInvincible()) {
+                    this.invincibleTimer -= dt;
+                    this.counterLabel.string = this.parseTime(this.invincibleTimer, 0);
+                    if (this.invincibleTimer < 0) {
+                        this.playerObject.makeNotInvincible();
+                        this.resetCounter();
+                    }
+                }
                 break;
             case this.GAME_STATE.MENU:
                 break;
@@ -112,6 +124,7 @@ var Game = /** @class */ (function (_super) {
     };
     Game.prototype.resetGame = function () {
         var _this = this;
+        this.resetCounter();
         this.setGameState(this.GAME_STATE.MENU);
         this.playPlayerExplosionAnimation();
         this.player.getComponent(cc.RigidBody).enabledContactListener = false;
@@ -129,6 +142,10 @@ var Game = /** @class */ (function (_super) {
             _this.menu.active = true;
         }, 1250);
     };
+    Game.prototype.resetCounter = function () {
+        this.invincibleTimer = this.getInvincibleDuration();
+        this.counterLabel.enabled = false;
+    };
     Game.prototype.hitBound = function () {
         this.isBoundHit = true;
     };
@@ -141,11 +158,11 @@ var Game = /** @class */ (function (_super) {
         }
         else if (this.isBoundAnimationPlaying) {
             if (this.increaseOpacity && this.upperBound.opacity < 220) {
-                this.upperBound.opacity += 700 * dt;
+                this.upperBound.opacity += 950 * dt;
             }
             else if (this.upperBound.opacity > 0) {
                 this.increaseOpacity = false;
-                this.upperBound.opacity -= 700 * dt;
+                this.upperBound.opacity -= 950 * dt;
             }
             else {
                 this.upperBound.opacity = 0;
@@ -177,10 +194,17 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.updateCoinScore = function () {
         this.coinScore++;
         this.coinSound.play();
-        if (this.coinScore >= 5) {
+        if (this.coinScore >= 10) {
+            this.counterLabel.enabled = true;
+            this.invincibleTimer = this.getInvincibleDuration();
             this.coinScore = 0;
             this.invincibleParticleObject.startParticleEffect();
-            this.player.getComponent("PlayerControl").makeInvincible();
+            // If the player get enough coins while already
+            // invincible, just increase the timers, dont have 
+            // to start anything.
+            if (!this.playerObject.isInvincible()) {
+                this.playerObject.makeInvincible();
+            }
         }
         this.scoreLabel.string = "Coins: " + this.coinScore;
     };
@@ -189,15 +213,16 @@ var Game = /** @class */ (function (_super) {
         cc.audioEngine.play(this.ammoPickupSound, false, 1);
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
     };
-    Game.prototype.parseTime = function (toBeParsed) {
-        return Number(Math.round(toBeParsed * 100) / 100).toFixed(2);
+    Game.prototype.parseTime = function (toBeParsed, decimals) {
+        return Number(Math.round(toBeParsed * 100) / 100).toFixed(decimals);
     };
     // ========== DYNAMICALLY OBJECT CREATORS ==========
     Game.prototype.createPlayer = function () {
         this.player = cc.instantiate(this.playerFab);
         this.node.addChild(this.player);
+        this.playerObject = this.player.getComponent("PlayerControl");
         // Push reference of the game object
-        this.player.getComponent('PlayerControl').game = this;
+        this.playerObject.game = this;
         this.invincibleParticleObject = this.player.getChildByName("Particles").getComponent("InvincibleEffect");
         this.invincibleParticleObject.setDuration(this.INVINCIBLE_DURATION);
         this.isAlive = true;
@@ -331,6 +356,9 @@ var Game = /** @class */ (function (_super) {
     __decorate([
         property(cc.Label)
     ], Game.prototype, "ammoLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], Game.prototype, "counterLabel", void 0);
     __decorate([
         property(cc.Prefab)
     ], Game.prototype, "coin", void 0);

@@ -26,10 +26,8 @@ var PlayerControl = /** @class */ (function (_super) {
         _this.cvs = null;
         _this.animations = null;
         _this.isCurrentlyInvincible = false;
-        _this.invincibleTimer = 0;
         _this.invincibleId = -1;
         _this.boundId = -1;
-        _this.engineId = -1;
         _this.justPlayedBoundSound = false;
         _this.invincibleSound = null;
         _this.upperBoundSound = null;
@@ -55,14 +53,6 @@ var PlayerControl = /** @class */ (function (_super) {
         this.lowerBound = this.node.height / 2 - this.cvs.height / 2;
     };
     PlayerControl.prototype.update = function (dt) {
-        if (this.isCurrentlyInvincible) {
-            this.invincibleTimer += dt;
-            if (this.invincibleTimer >= this.game.getInvincibleDuration()) {
-                cc.audioEngine.stop(this.invincibleId);
-                this.isCurrentlyInvincible = false;
-                this.invincibleTimer = 0;
-            }
-        }
         if (this.game.isPlayerAlive()) {
             this.updateMovement(dt);
         }
@@ -171,6 +161,10 @@ var PlayerControl = /** @class */ (function (_super) {
     PlayerControl.prototype.makeInvincible = function () {
         this.invincibleId = cc.audioEngine.play(this.invincibleSound, true, 0.4);
         this.isCurrentlyInvincible = true;
+    };
+    PlayerControl.prototype.makeNotInvincible = function () {
+        cc.audioEngine.stop(this.invincibleId);
+        this.isCurrentlyInvincible = false;
     };
     PlayerControl.prototype.isInvincible = function () {
         return this.isCurrentlyInvincible;

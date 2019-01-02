@@ -1,11 +1,12 @@
 import InvincibleEffect from "./InvincibleEffect";
+import PlayerControl from "./PlayerControl";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Game extends cc.Component {
     // CONSTANTS
-    private readonly ASTEROID_SPAWN_RATE: number = 1.5;
+    private readonly ASTEROID_SPAWN_RATE: number = 1.25;
     private readonly COIN_SPAWN_RATE: number = 1.55;
     private readonly AMMO_SPAWN_RATE: number = 7.1;
     private readonly AMMO_PER_BOX: number = 8;
@@ -23,17 +24,19 @@ export default class Game extends cc.Component {
     private time: number = 0;
     private gravity: number = -70;
     private cvs: cc.Node = null;
-    private scheduler : cc.Scheduler = null;
+    private scheduler: cc.Scheduler = null;
     private invincibleParticleObject: InvincibleEffect = null;
     private isAlive = true;
     private isBoundHit = false;
     private increaseOpacity = true;
     private isBoundAnimationPlaying: boolean = false;
+    private invincibleTimer: number = this.INVINCIBLE_DURATION;
     private menuMusicId = -1;
     private gameMusicId = -1;
+    private playerObject: PlayerControl = null;
+
     player: cc.Node = null;
     
-
     @property(cc.Node)
     menu: cc.Node = null;
 
@@ -45,6 +48,9 @@ export default class Game extends cc.Component {
 
     @property(cc.Label)
     ammoLabel: cc.Label = null;
+
+    @property(cc.Label)
+    counterLabel: cc.Label = null;
 
     @property(cc.Prefab)
     coin: cc.Prefab = null;
@@ -103,6 +109,7 @@ export default class Game extends cc.Component {
         this.scheduler = cc.director.getScheduler();
         this.menu.active = true;
         this.upperBound.active = false;
+        this.resetCounter();
         this.startBgMusic();
     }
 
@@ -119,8 +126,16 @@ export default class Game extends cc.Component {
         switch (this.currentState) {
             case this.GAME_STATE.PLAY:
                 this.checkTopBoundAnimation(dt);
-                this.time+= dt;
-                this.timeLabel.string = "Time: " + this.parseTime(this.time); 
+                this.time += dt;
+                this.timeLabel.string = "Time: " + this.parseTime(this.time, 2);
+                if (this.playerObject.isInvincible()) {
+                    this.invincibleTimer -= dt;
+                    this.counterLabel.string = this.parseTime(this.invincibleTimer, 0);
+                    if (this.invincibleTimer < 0) {
+                        this.playerObject.makeNotInvincible();
+                        this.resetCounter();
+                    }
+                }
                 break;
             case this.GAME_STATE.MENU:
                 break;
@@ -159,6 +174,7 @@ export default class Game extends cc.Component {
     }
 
     resetGame() {
+        this.resetCounter();
         this.setGameState(this.GAME_STATE.MENU);
         this.playPlayerExplosionAnimation();
         this.player.getComponent(cc.RigidBody).enabledContactListener = false;
@@ -175,9 +191,14 @@ export default class Game extends cc.Component {
             this.enableLabels(false);
             this.time = 0;
             this.menu.active = true;
-            }, 1250);
-        }
+        }, 1250);
+    }
 
+    resetCounter() {
+        this.invincibleTimer = this.getInvincibleDuration();
+        this.counterLabel.enabled = false;
+    }
+    
     hitBound() {        
         this.isBoundHit = true;    
     }
@@ -191,11 +212,11 @@ export default class Game extends cc.Component {
         }
         else if (this.isBoundAnimationPlaying) {
             if (this.increaseOpacity && this.upperBound.opacity < 220) {
-                this.upperBound.opacity += 700 * dt;
+                this.upperBound.opacity += 950 * dt;
             }
             else if(this.upperBound.opacity > 0) {
                 this.increaseOpacity = false;
-                this.upperBound.opacity -= 700 * dt;
+                this.upperBound.opacity -= 950 * dt;
             }
             else {
                 this.upperBound.opacity = 0;
@@ -233,10 +254,18 @@ export default class Game extends cc.Component {
     updateCoinScore() {
         this.coinScore++;
         this.coinSound.play();
-        if (this.coinScore >= 5) {
+        if (this.coinScore >= 10) {
+            this.counterLabel.enabled = true;
+            this.invincibleTimer = this.getInvincibleDuration();
             this.coinScore = 0;
             this.invincibleParticleObject.startParticleEffect();
-            this.player.getComponent("PlayerControl").makeInvincible();
+            // If the player get enough coins while already
+            // invincible, just increase the timers, dont have 
+            // to start anything.
+            if (!this.playerObject.isInvincible()) {
+                this.playerObject.makeInvincible();
+            }
+
         }
         this.scoreLabel.string = "Coins: " + this.coinScore;
     }
@@ -247,8 +276,8 @@ export default class Game extends cc.Component {
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
     }
 
-    parseTime(toBeParsed: number) {
-        return Number(Math.round(toBeParsed * 100) / 100).toFixed(2);
+    parseTime(toBeParsed: number, decimals: number) {
+        return Number(Math.round(toBeParsed * 100) / 100).toFixed(decimals);
     }
 
     // ========== DYNAMICALLY OBJECT CREATORS ==========
@@ -256,8 +285,9 @@ export default class Game extends cc.Component {
     createPlayer() {
         this.player = cc.instantiate(this.playerFab);
         this.node.addChild(this.player);
+        this.playerObject = this.player.getComponent("PlayerControl");
         // Push reference of the game object
-        this.player.getComponent('PlayerControl').game = this;
+        this.playerObject.game = this;
         this.invincibleParticleObject = this.player.getChildByName("Particles").getComponent("InvincibleEffect");
         this.invincibleParticleObject.setDuration(this.INVINCIBLE_DURATION);
         this.isAlive = true;

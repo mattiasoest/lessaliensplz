@@ -505,8 +505,8 @@
     "relativePath": "Animation/PlayerAmmo.anim"
   },
   "78ebf929-e657-483e-a7b6-478af6ef84bb": {
-    "asset": 1546429713548,
-    "meta": 1546429713559,
+    "asset": 1546439159532,
+    "meta": 1546439159539,
     "relativePath": "Scene/Gameplay.fire"
   },
   "13e4222c-c03c-4527-a0ce-769fa0a5ea9c": {
@@ -704,11 +704,6 @@
     "meta": 1546242207571,
     "relativePath": "Sound/laser-mini.wav"
   },
-  "57af1582-6b03-4aa9-ad59-e96b88147507": {
-    "asset": 1546321637957,
-    "meta": 1546321638996,
-    "relativePath": "Script/LaserBlue.ts"
-  },
   "ea2c6c9d-080a-4ab7-8b0b-465fdc0a7a93": {
     "asset": 1546335516245,
     "meta": 1546335516258,
@@ -755,8 +750,8 @@
     "relativePath": "Sound/inv.wav"
   },
   "79da25bc-7510-406b-a85a-a0f32d8a2544": {
-    "asset": 1546416456151,
-    "meta": 1546416456159,
+    "asset": 1546438646313,
+    "meta": 1546438646323,
     "relativePath": "Prefab/Player.prefab"
   },
   "8fe30910-ad51-4913-8e15-6dda889c9bb4": {
@@ -765,8 +760,8 @@
     "relativePath": "Script/Coin.ts"
   },
   "cd5e089b-53e4-4f5c-a5f4-81902a178b67": {
-    "asset": 1546370148699,
-    "meta": 1546370148709,
+    "asset": 1546439156391,
+    "meta": 1546439156401,
     "relativePath": "Prefab/Menu.prefab"
   },
   "dc3d5742-9336-4987-85d8-1ac41cc26155": {
@@ -799,11 +794,6 @@
     "meta": 1546421935639,
     "relativePath": "Script/LaserRed.ts"
   },
-  "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
-    "asset": 1546421934259,
-    "meta": 1546421935659,
-    "relativePath": "Script/PlayerControl.ts"
-  },
   "926e1938-1ba6-4bea-95be-1e6591594275": {
     "asset": 1546425054903,
     "meta": 1546425054925,
@@ -824,9 +814,19 @@
     "meta": 1546430827605,
     "relativePath": "Script/Menu.ts"
   },
+  "57af1582-6b03-4aa9-ad59-e96b88147507": {
+    "asset": 1546438529526,
+    "meta": 1546438535859,
+    "relativePath": "Script/LaserBlue.ts"
+  },
+  "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
+    "asset": 1546438616176,
+    "meta": 1546438623615,
+    "relativePath": "Script/PlayerControl.ts"
+  },
   "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
-    "asset": 1546431473316,
-    "meta": 1546431477018,
+    "asset": 1546439353628,
+    "meta": 1546439354360,
     "relativePath": "Script/Game.ts"
   }
 }
