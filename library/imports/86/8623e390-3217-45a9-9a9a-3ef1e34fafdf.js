@@ -27,8 +27,12 @@ var PlayerControl = /** @class */ (function (_super) {
         _this.animations = null;
         _this.isCurrentlyInvincible = false;
         _this.invincibleTimer = 0;
-        _this.audioId = 0;
+        _this.invincibleId = -1;
+        _this.boundId = -1;
+        _this.engineId = -1;
+        _this.justPlayedBoundSound = false;
         _this.invincibleSound = null;
+        _this.upperBoundSound = null;
         _this.game = null;
         // Constants
         _this.X_ACCELERATION = 3200;
@@ -41,20 +45,20 @@ var PlayerControl = /** @class */ (function (_super) {
         this.flySound = this.getComponent(cc.AudioSource);
         this.flySound.volume = 0.6;
         this.animations = this.getComponent(cc.Animation);
-        this.leftBound = -this.cvs.width / 2;
-        this.rightBound = this.cvs.width / 2;
-        this.upperBound = 0;
-        this.lowerBound = this.node.height / 2 - this.cvs.height / 2;
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     };
     PlayerControl.prototype.start = function () {
+        this.leftBound = -this.cvs.width / 2;
+        this.rightBound = this.cvs.width / 2;
+        this.upperBound = this.game.getPlayerUpperBound();
+        this.lowerBound = this.node.height / 2 - this.cvs.height / 2;
     };
     PlayerControl.prototype.update = function (dt) {
         if (this.isCurrentlyInvincible) {
             this.invincibleTimer += dt;
             if (this.invincibleTimer >= this.game.getInvincibleDuration()) {
-                cc.audioEngine.stop(this.audioId);
+                cc.audioEngine.stop(this.invincibleId);
                 this.isCurrentlyInvincible = false;
                 this.invincibleTimer = 0;
             }
@@ -93,8 +97,10 @@ var PlayerControl = /** @class */ (function (_super) {
         if (this.node.y <= this.lowerBound) {
             this.node.y = this.lowerBound;
         }
-        else if (this.node.y >= this.upperBound) {
+        else if (this.node.y > this.upperBound) {
+            this.playBoundSound();
             this.node.y = this.upperBound;
+            this.ySpeed = 0;
         }
     };
     PlayerControl.prototype.onKeyDown = function (event) {
@@ -120,6 +126,7 @@ var PlayerControl = /** @class */ (function (_super) {
                     this.accUp = true;
                     break;
                 case cc.macro.KEY.down:
+                    this.justPlayedBoundSound = false;
                     this.accDown = true;
                     break;
                 case cc.macro.KEY.space:
@@ -152,8 +159,17 @@ var PlayerControl = /** @class */ (function (_super) {
             }
         }
     };
+    PlayerControl.prototype.playBoundSound = function () {
+        var _this = this;
+        if (!this.justPlayedBoundSound) {
+            this.justPlayedBoundSound = true;
+            this.boundId = cc.audioEngine.play(this.upperBoundSound, false, 1);
+            this.game.hitBound();
+            cc.audioEngine.setFinishCallback(this.boundId, function () { return _this.accUp ? _this.justPlayedBoundSound = true : _this.justPlayedBoundSound = false; });
+        }
+    };
     PlayerControl.prototype.makeInvincible = function () {
-        this.audioId = cc.audioEngine.play(this.invincibleSound, true, 0.4);
+        this.invincibleId = cc.audioEngine.play(this.invincibleSound, true, 0.4);
         this.isCurrentlyInvincible = true;
     };
     PlayerControl.prototype.isInvincible = function () {
@@ -174,6 +190,9 @@ var PlayerControl = /** @class */ (function (_super) {
     __decorate([
         property(cc.AudioClip)
     ], PlayerControl.prototype, "invincibleSound", void 0);
+    __decorate([
+        property(cc.AudioClip)
+    ], PlayerControl.prototype, "upperBoundSound", void 0);
     PlayerControl = __decorate([
         ccclass
     ], PlayerControl);

@@ -505,8 +505,8 @@
     "relativePath": "Animation/PlayerAmmo.anim"
   },
   "78ebf929-e657-483e-a7b6-478af6ef84bb": {
-    "asset": 1546409650265,
-    "meta": 1546409650271,
+    "asset": 1546416714909,
+    "meta": 1546416714920,
     "relativePath": "Scene/Gameplay.fire"
   },
   "13e4222c-c03c-4527-a0ce-769fa0a5ea9c": {
@@ -760,8 +760,8 @@
     "relativePath": "Sound/inv.wav"
   },
   "79da25bc-7510-406b-a85a-a0f32d8a2544": {
-    "asset": 1546364952551,
-    "meta": 1546364952561,
+    "asset": 1546416456151,
+    "meta": 1546416456159,
     "relativePath": "Prefab/Player.prefab"
   },
   "9acbca84-8a58-42d1-87d6-d3652b300875": {
@@ -779,11 +779,6 @@
     "meta": 1546367697277,
     "relativePath": "Script/LaserRed.ts"
   },
-  "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
-    "asset": 1546367911550,
-    "meta": 1546367912731,
-    "relativePath": "Script/PlayerControl.ts"
-  },
   "8fe30910-ad51-4913-8e15-6dda889c9bb4": {
     "asset": 1546368314968,
     "meta": 1546368316948,
@@ -795,13 +790,33 @@
     "relativePath": "Prefab/Menu.prefab"
   },
   "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
-    "asset": 1546409622081,
-    "meta": 1546409627417,
+    "asset": 1546411418044,
+    "meta": 1546411433244,
     "relativePath": "Script/Menu.ts"
   },
+  "dc3d5742-9336-4987-85d8-1ac41cc26155": {
+    "asset": 1546411910091,
+    "meta": 1546411910105,
+    "relativePath": "Sound/bound.wav"
+  },
+  "4fd87a28-581e-4806-9103-09da90be8509": {
+    "asset": 1546414880486,
+    "meta": 1546414880511,
+    "relativePath": "Texture/upper-bound.png"
+  },
+  "fa2ea5b2-ad70-4e43-ad46-e63b205ed8e3": {
+    "asset": 1546416852467,
+    "meta": 1546416852485,
+    "relativePath": "Bound.anim"
+  },
+  "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
+    "asset": 1546418593567,
+    "meta": 1546418595370,
+    "relativePath": "Script/PlayerControl.ts"
+  },
   "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
-    "asset": 1546409791031,
-    "meta": 1546409791721,
+    "asset": 1546419858192,
+    "meta": 1546419858780,
     "relativePath": "Script/Game.ts"
   }
 }

@@ -25,6 +25,10 @@ export default class Game extends cc.Component {
     private scheduler : cc.Scheduler = null;
     private invincibleParticleObject: InvincibleEffect = null;
     private isAlive = true;
+    private isBoundHit = false;
+    private increaseOpacity = true;
+    private isBoundAnimationPlaying: boolean = false;
+    private boundTimer = 0;
     player: cc.Node = null;
     
 
@@ -79,6 +83,10 @@ export default class Game extends cc.Component {
     @property(cc.AudioClip)
     boomSound: cc.AudioClip = null;
 
+    @property(cc.Node)
+    upperBound: cc.Node = null;
+
+
     onLoad () {
         this.cvs =  cc.find("Canvas");
         // Setup physics engine.
@@ -92,6 +100,7 @@ export default class Game extends cc.Component {
         this.coinSound = this.getComponent(cc.AudioSource);
         this.scheduler = cc.director.getScheduler();
         this.menu.active = true;
+        this.upperBound.active = false;
     }
 
     start () {
@@ -100,6 +109,7 @@ export default class Game extends cc.Component {
     update (dt) {
         switch (this.currentState) {
             case this.GAME_STATE.PLAY:
+                this.checkTopBoundAnimation(dt);
                 this.time+= dt;
                 this.timeLabel.string = "Time: " + this.parseTime(this.time); 
                 break;
@@ -124,6 +134,9 @@ export default class Game extends cc.Component {
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
 
         this.currentState = this.GAME_STATE.PLAY;
+        this.upperBound.y = this.upperBound.height / 2 + this.getPlayerUpperBound() + this.player.height / 2;
+        this.upperBound.active = true;
+        this.upperBound.opacity = 0;
     }
 
     // ============================== TODO ========================================
@@ -136,6 +149,7 @@ export default class Game extends cc.Component {
         this.currentAmmo = this.AMMO_PER_BOX;
         this.playBoomSound();
         this.endRandomGeneration();
+        this.upperBound.opacity = 0;
 
         // Let animation finish etc..
         setTimeout(() => {
@@ -148,6 +162,32 @@ export default class Game extends cc.Component {
             }, 2000);
         }
 
+    hitBound() {        
+        this.isBoundHit = true;    
+    }
+
+    checkTopBoundAnimation(dt) {
+        if (this.isBoundHit) {
+            this.isBoundHit = false;
+            if (!this.isBoundAnimationPlaying) {
+                this.isBoundAnimationPlaying = true;
+            }
+        }
+        else if (this.isBoundAnimationPlaying) {
+            if (this.increaseOpacity && this.upperBound.opacity < 220) {
+                this.upperBound.opacity += 700 * dt;
+            }
+            else if(this.upperBound.opacity > 0) {
+                this.increaseOpacity = false;
+                this.upperBound.opacity -= 700 * dt;
+            }
+            else {
+                this.upperBound.opacity = 0;
+                this.increaseOpacity = true;
+                this.isBoundAnimationPlaying = false;
+            }
+        }
+    }
 
     enableLabels(isEnabled: boolean) {
         this.scoreLabel.enabled = isEnabled;
@@ -303,6 +343,11 @@ export default class Game extends cc.Component {
     getInvincibleDuration() {
         return this.INVINCIBLE_DURATION;
     }
+
+    getPlayerUpperBound() {
+        return -this.cvs.height * 0.125;
+    }
+
 
     isPlayerAlive() {
         return this.isAlive;

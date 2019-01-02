@@ -28,10 +28,16 @@ export default class PlayerControl extends cc.Component {
     private animations : cc.Animation = null;
     private isCurrentlyInvincible: boolean = false;
     private invincibleTimer: number = 0;
-    private audioId = 0;
+    private invincibleId = -1;
+    private boundId = -1;
+    private engineId = -1;
+    private justPlayedBoundSound: boolean = false;
 
     @property(cc.AudioClip)
     invincibleSound: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
+    upperBoundSound: cc.AudioClip = null;
 
     game : Game = null;
 
@@ -46,22 +52,23 @@ export default class PlayerControl extends cc.Component {
         this.flySound = this.getComponent(cc.AudioSource);
         this.flySound.volume = 0.6;
         this.animations = this.getComponent(cc.Animation);
-        this.leftBound = -this.cvs.width / 2;
-        this.rightBound = this.cvs.width / 2;
-        this.upperBound = 0;
-        this.lowerBound = this.node.height / 2 -this.cvs.height / 2;
+
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     }
 
     start () {
+        this.leftBound = -this.cvs.width / 2;
+        this.rightBound = this.cvs.width / 2;
+        this.upperBound = this.game.getPlayerUpperBound();
+        this.lowerBound = this.node.height / 2 -this.cvs.height / 2;
     }
 
     update (dt) {
         if (this.isCurrentlyInvincible) {
             this.invincibleTimer += dt;
             if (this.invincibleTimer >= this.game.getInvincibleDuration()) {
-                cc.audioEngine.stop(this.audioId);
+                cc.audioEngine.stop(this.invincibleId);
                 this.isCurrentlyInvincible = false;
                 this.invincibleTimer = 0;
             }
@@ -104,8 +111,10 @@ export default class PlayerControl extends cc.Component {
         if (this.node.y <= this.lowerBound) {
             this.node.y = this.lowerBound;
         }
-        else if (this.node.y >= this.upperBound) {
+        else if (this.node.y > this.upperBound) {
+            this.playBoundSound();
             this.node.y = this.upperBound;
+            this.ySpeed = 0;
         }
     }
 
@@ -132,6 +141,7 @@ export default class PlayerControl extends cc.Component {
                     this.accUp = true;
                     break;
                 case cc.macro.KEY.down:
+                    this.justPlayedBoundSound = false;
                     this.accDown = true;
                     break;
                 case cc.macro.KEY.space:
@@ -167,8 +177,18 @@ export default class PlayerControl extends cc.Component {
         }
     }
 
+    playBoundSound() {
+        if (!this.justPlayedBoundSound) {
+            this.justPlayedBoundSound = true;
+            this.boundId = cc.audioEngine.play(this.upperBoundSound, false, 1);
+            this.game.hitBound();
+            cc.audioEngine.setFinishCallback(this.boundId,
+                () => this.accUp ? this.justPlayedBoundSound = true : this.justPlayedBoundSound = false);
+        }
+    }
+
     makeInvincible() {
-        this.audioId = cc.audioEngine.play(this.invincibleSound, true, 0.4);
+        this.invincibleId = cc.audioEngine.play(this.invincibleSound, true, 0.4);
         this.isCurrentlyInvincible = true;
     }
 

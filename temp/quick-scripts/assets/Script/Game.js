@@ -27,6 +27,10 @@ var Game = /** @class */ (function (_super) {
         _this.scheduler = null;
         _this.invincibleParticleObject = null;
         _this.isAlive = true;
+        _this.isBoundHit = false;
+        _this.increaseOpacity = true;
+        _this.isBoundAnimationPlaying = false;
+        _this.boundTimer = 0;
         _this.player = null;
         _this.menu = null;
         _this.scoreLabel = null;
@@ -45,6 +49,7 @@ var Game = /** @class */ (function (_super) {
         _this.ammoPickupSound = null;
         _this.rockExpSound = null;
         _this.boomSound = null;
+        _this.upperBound = null;
         return _this;
     }
     Game.prototype.onLoad = function () {
@@ -58,12 +63,14 @@ var Game = /** @class */ (function (_super) {
         this.coinSound = this.getComponent(cc.AudioSource);
         this.scheduler = cc.director.getScheduler();
         this.menu.active = true;
+        this.upperBound.active = false;
     };
     Game.prototype.start = function () {
     };
     Game.prototype.update = function (dt) {
         switch (this.currentState) {
             case this.GAME_STATE.PLAY:
+                this.checkTopBoundAnimation(dt);
                 this.time += dt;
                 this.timeLabel.string = "Time: " + this.parseTime(this.time);
                 break;
@@ -84,6 +91,9 @@ var Game = /** @class */ (function (_super) {
         this.scoreLabel.string = "Coins: " + this.coinScore;
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
         this.currentState = this.GAME_STATE.PLAY;
+        this.upperBound.y = this.upperBound.height / 2 + this.getPlayerUpperBound() + this.player.height / 2;
+        this.upperBound.active = true;
+        this.upperBound.opacity = 0;
     };
     // ============================== TODO ========================================
     Game.prototype.resetGame = function () {
@@ -96,6 +106,7 @@ var Game = /** @class */ (function (_super) {
         this.currentAmmo = this.AMMO_PER_BOX;
         this.playBoomSound();
         this.endRandomGeneration();
+        this.upperBound.opacity = 0;
         // Let animation finish etc..
         setTimeout(function () {
             _this.node.destroyAllChildren();
@@ -104,6 +115,31 @@ var Game = /** @class */ (function (_super) {
             _this.time = 0;
             _this.menu.active = true;
         }, 2000);
+    };
+    Game.prototype.hitBound = function () {
+        this.isBoundHit = true;
+    };
+    Game.prototype.checkTopBoundAnimation = function (dt) {
+        if (this.isBoundHit) {
+            this.isBoundHit = false;
+            if (!this.isBoundAnimationPlaying) {
+                this.isBoundAnimationPlaying = true;
+            }
+        }
+        else if (this.isBoundAnimationPlaying) {
+            if (this.increaseOpacity && this.upperBound.opacity < 220) {
+                this.upperBound.opacity += 700 * dt;
+            }
+            else if (this.upperBound.opacity > 0) {
+                this.increaseOpacity = false;
+                this.upperBound.opacity -= 700 * dt;
+            }
+            else {
+                this.upperBound.opacity = 0;
+                this.increaseOpacity = true;
+                this.isBoundAnimationPlaying = false;
+            }
+        }
     };
     Game.prototype.enableLabels = function (isEnabled) {
         this.scoreLabel.enabled = isEnabled;
@@ -237,6 +273,9 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.getInvincibleDuration = function () {
         return this.INVINCIBLE_DURATION;
     };
+    Game.prototype.getPlayerUpperBound = function () {
+        return -this.cvs.height * 0.125;
+    };
     Game.prototype.isPlayerAlive = function () {
         return this.isAlive;
     };
@@ -321,6 +360,9 @@ var Game = /** @class */ (function (_super) {
     __decorate([
         property(cc.AudioClip)
     ], Game.prototype, "boomSound", void 0);
+    __decorate([
+        property(cc.Node)
+    ], Game.prototype, "upperBound", void 0);
     Game = __decorate([
         ccclass
     ], Game);
