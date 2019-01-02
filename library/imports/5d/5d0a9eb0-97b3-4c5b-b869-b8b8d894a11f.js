@@ -2,41 +2,53 @@
 cc._RF.push(module, '5d0a96wl7NMW7hpuLjYlKEf', 'Menu');
 // Script/Menu.ts
 
-// Learn TypeScript:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 Object.defineProperty(exports, "__esModule", { value: true });
+var Game_1 = require("./Game");
 var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
-var NewClass = /** @class */ (function (_super) {
-    __extends(NewClass, _super);
-    function NewClass() {
+var Menu = /** @class */ (function (_super) {
+    __extends(Menu, _super);
+    function Menu() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.label = null;
-        _this.text = 'hello';
+        _this.startButton = null;
+        _this.creditsButton = null;
+        _this.exitButton = null;
+        _this.game = null;
         return _this;
-        // update (dt) {}
     }
-    // LIFE-CYCLE CALLBACKS:
-    // onLoad () {}
-    NewClass.prototype.start = function () {
+    Menu.prototype.onLoad = function () {
+        this.startButton.node.on('click', this.startCallback, this);
+        this.creditsButton.node.on('click', this.creditsCallback, this);
+        this.exitButton.node.on('click', this.exitCallback, this);
+    };
+    // start () {}
+    // update (dt) {}
+    // Button event callbacks
+    Menu.prototype.startCallback = function () {
+        this.game.startGame();
+    };
+    Menu.prototype.creditsCallback = function () {
+    };
+    Menu.prototype.exitCallback = function () {
+        cc.audioEngine.stopAll();
+        cc.game.end();
     };
     __decorate([
-        property(cc.Label)
-    ], NewClass.prototype, "label", void 0);
+        property(cc.Button)
+    ], Menu.prototype, "startButton", void 0);
     __decorate([
-        property
-    ], NewClass.prototype, "text", void 0);
-    NewClass = __decorate([
+        property(cc.Button)
+    ], Menu.prototype, "creditsButton", void 0);
+    __decorate([
+        property(cc.Button)
+    ], Menu.prototype, "exitButton", void 0);
+    __decorate([
+        property(Game_1.default)
+    ], Menu.prototype, "game", void 0);
+    Menu = __decorate([
         ccclass
-    ], NewClass);
-    return NewClass;
+    ], Menu);
+    return Menu;
 }(cc.Component));
-exports.default = NewClass;
+exports.default = Menu;
 
 cc._RF.pop();

@@ -150,7 +150,7 @@
     "relativePath": "Animation/PlayerAnimation/PlayerLeftMax.anim"
   },
   "3fb23d99-af0e-4ede-a94e-82b910a4c1f4": {
-    "asset": 1546321548869,
+    "asset": 1546370140189,
     "meta": 1546072728626,
     "relativePath": "Prefab"
   },
@@ -200,7 +200,7 @@
     "relativePath": "Animation/Coin.anim"
   },
   "64d99177-ce4b-4eae-a6f2-344559525d71": {
-    "asset": 1546338628728,
+    "asset": 1546358754442,
     "meta": 1546081835161,
     "relativePath": "Sound"
   },
@@ -505,14 +505,9 @@
     "relativePath": "Animation/PlayerAmmo.anim"
   },
   "78ebf929-e657-483e-a7b6-478af6ef84bb": {
-    "asset": 1546369672264,
-    "meta": 1546369672272,
+    "asset": 1546409650265,
+    "meta": 1546409650271,
     "relativePath": "Scene/Gameplay.fire"
-  },
-  "5ebd0091-add8-40b7-bf0d-6e1f41c59592": {
-    "asset": 1546170709566,
-    "meta": 1546170709585,
-    "relativePath": "Scene/Menu.fire"
   },
   "13e4222c-c03c-4527-a0ce-769fa0a5ea9c": {
     "asset": 1546160395043,
@@ -548,11 +543,6 @@
     "asset": 1546198214797,
     "meta": 1546198214807,
     "relativePath": "Animation/PlayerAnimation/PlayerRightMax.anim"
-  },
-  "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
-    "asset": 1546168573789,
-    "meta": 1546168575822,
-    "relativePath": "Script/Menu.ts"
   },
   "fd9ef61b-72b3-41b5-9d54-fe2fbce71aa7": {
     "asset": 1546170060058,
@@ -799,9 +789,19 @@
     "meta": 1546368316948,
     "relativePath": "Script/Coin.ts"
   },
+  "cd5e089b-53e4-4f5c-a5f4-81902a178b67": {
+    "asset": 1546370148699,
+    "meta": 1546370148709,
+    "relativePath": "Prefab/Menu.prefab"
+  },
+  "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
+    "asset": 1546409622081,
+    "meta": 1546409627417,
+    "relativePath": "Script/Menu.ts"
+  },
   "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
-    "asset": 1546369625186,
-    "meta": 1546369625738,
+    "asset": 1546409791031,
+    "meta": 1546409791721,
     "relativePath": "Script/Game.ts"
   }
 }

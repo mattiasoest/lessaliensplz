@@ -1,31 +1,45 @@
-// Learn TypeScript:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
+import Game from "./Game";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Menu extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
 
-    @property
-    text: string = 'hello';
+    @property(cc.Button)
+    startButton: cc.Button = null;
 
-    // LIFE-CYCLE CALLBACKS:
+    @property(cc.Button)
+    creditsButton: cc.Button = null;
 
-    // onLoad () {}
+    @property(cc.Button)
+    exitButton: cc.Button = null;
 
-    start () {
+    @property(Game)
+    game : Game = null;
+
+    onLoad () {
+        this.startButton.node.on('click', this.startCallback, this);
+        this.creditsButton.node.on('click', this.creditsCallback, this);
+        this.exitButton.node.on('click', this.exitCallback, this);
+    }
+
+    // start () {}
+
+    // update (dt) {}
+
+    // Button event callbacks
+    startCallback() {
+        this.game.startGame();
 
     }
 
-    // update (dt) {}
+    creditsCallback() {
+
+    }
+
+    exitCallback() {
+        cc.audioEngine.stopAll();
+        cc.game.end();
+    }
 }

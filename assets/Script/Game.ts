@@ -13,7 +13,7 @@ export default class Game extends cc.Component {
     private readonly INVINCIBLE_DURATION: number = 5;
     private readonly GAME_STATE = { PLAY : 0, MENU : 1 }
 
-    currentState = this.GAME_STATE.PLAY;
+    currentState = this.GAME_STATE.MENU;
 
     // NORMAL INSTANCE VARIABLES
     private currentAmmo: number = this.AMMO_PER_BOX;
@@ -28,6 +28,8 @@ export default class Game extends cc.Component {
     player: cc.Node = null;
     
 
+    @property(cc.Node)
+    menu: cc.Node = null;
 
     @property(cc.Label)
     scoreLabel: cc.Label = null;
@@ -84,15 +86,16 @@ export default class Game extends cc.Component {
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
 
-        this.createPlayer();
+        // this.createPlayer();
 
+        this.enableLabels(false);
         this.coinSound = this.getComponent(cc.AudioSource);
         this.scheduler = cc.director.getScheduler();
-        // Setup auto-generation of objects dynamically during gameplay
-        this.setupItemAutoGeneration();
+        this.menu.active = true;
     }
 
-    start () {}
+    start () {
+    }
 
     update (dt) {
         switch (this.currentState) {
@@ -104,6 +107,23 @@ export default class Game extends cc.Component {
                 break;
         }
            
+    }
+
+    startGame() {
+        // ==========================================
+        // ACTUALLY RESETS EVERYTHING...... 
+        // cc.director.loadScene('Gameplay');
+        this.createPlayer();
+        // this.menu.enabled = false;
+        this.menu.active = false;
+        // buttonNodes.forEach((node => node.enabled = false));
+        this.setupItemAutoGeneration();
+
+        this.enableLabels(true);
+        this.scoreLabel.string = "Coins: " + this.coinScore;
+        this.ammoLabel.string = "Ammo: " + this.currentAmmo;
+
+        this.currentState = this.GAME_STATE.PLAY;
     }
 
     // ============================== TODO ========================================
@@ -120,19 +140,20 @@ export default class Game extends cc.Component {
         // Let animation finish etc..
         setTimeout(() => {
             this.node.destroyAllChildren();
-            // ==========================================
-            // ACTUALLY RESETS EVERYTHING...... 
-            // cc.director.loadScene('Gameplay');
 
-            this.setupItemAutoGeneration();
-            this.createPlayer();
-            this.currentState = this.GAME_STATE.PLAY;
+            // this.currentState = this.GAME_STATE.PLAY;
+            this.enableLabels(false);
             this.time = 0;
-            // Update the labels aswell, so we render w/ the new data
-            this.scoreLabel.string = "Coins: " + this.coinScore;
-            this.ammoLabel.string = "Ammo: " + this.currentAmmo;
+            this.menu.active = true;
             }, 2000);
         }
+
+
+    enableLabels(isEnabled: boolean) {
+        this.scoreLabel.enabled = isEnabled;
+        this.timeLabel.enabled = isEnabled;
+        this.ammoLabel.enabled = isEnabled;
+    }
 
     playRockExplosion() {
         cc.audioEngine.play(this.rockExpSound, false, 0.8);
@@ -207,7 +228,7 @@ export default class Game extends cc.Component {
         this.currentAmmo--;
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
         const newLaser = cc.instantiate(this.playerLaser);
-        newLaser.setPosition(this.player.x, this.player.y - this.player.height);
+        newLaser.setPosition(this.player.x, this.player.y + this.player.height * 0.35);
 
         // Leave a reference to the game object.
         const laserObject = newLaser.getComponent('LaserBlue');

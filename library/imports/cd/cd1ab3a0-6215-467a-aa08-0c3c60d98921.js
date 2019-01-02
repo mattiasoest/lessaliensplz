@@ -16,7 +16,7 @@ var Game = /** @class */ (function (_super) {
         _this.ENEMY_SPAWN_RATE = 8;
         _this.INVINCIBLE_DURATION = 5;
         _this.GAME_STATE = { PLAY: 0, MENU: 1 };
-        _this.currentState = _this.GAME_STATE.PLAY;
+        _this.currentState = _this.GAME_STATE.MENU;
         // NORMAL INSTANCE VARIABLES
         _this.currentAmmo = _this.AMMO_PER_BOX;
         _this.coinScore = 0;
@@ -28,6 +28,7 @@ var Game = /** @class */ (function (_super) {
         _this.invincibleParticleObject = null;
         _this.isAlive = true;
         _this.player = null;
+        _this.menu = null;
         _this.scoreLabel = null;
         _this.timeLabel = null;
         _this.ammoLabel = null;
@@ -52,13 +53,14 @@ var Game = /** @class */ (function (_super) {
         var physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
-        this.createPlayer();
+        // this.createPlayer();
+        this.enableLabels(false);
         this.coinSound = this.getComponent(cc.AudioSource);
         this.scheduler = cc.director.getScheduler();
-        // Setup auto-generation of objects dynamically during gameplay
-        this.setupItemAutoGeneration();
+        this.menu.active = true;
     };
-    Game.prototype.start = function () { };
+    Game.prototype.start = function () {
+    };
     Game.prototype.update = function (dt) {
         switch (this.currentState) {
             case this.GAME_STATE.PLAY:
@@ -68,6 +70,20 @@ var Game = /** @class */ (function (_super) {
             case this.GAME_STATE.MENU:
                 break;
         }
+    };
+    Game.prototype.startGame = function () {
+        // ==========================================
+        // ACTUALLY RESETS EVERYTHING...... 
+        // cc.director.loadScene('Gameplay');
+        this.createPlayer();
+        // this.menu.enabled = false;
+        this.menu.active = false;
+        // buttonNodes.forEach((node => node.enabled = false));
+        this.setupItemAutoGeneration();
+        this.enableLabels(true);
+        this.scoreLabel.string = "Coins: " + this.coinScore;
+        this.ammoLabel.string = "Ammo: " + this.currentAmmo;
+        this.currentState = this.GAME_STATE.PLAY;
     };
     // ============================== TODO ========================================
     Game.prototype.resetGame = function () {
@@ -83,17 +99,16 @@ var Game = /** @class */ (function (_super) {
         // Let animation finish etc..
         setTimeout(function () {
             _this.node.destroyAllChildren();
-            // ==========================================
-            // ACTUALLY RESETS EVERYTHING...... 
-            // cc.director.loadScene('Gameplay');
-            _this.setupItemAutoGeneration();
-            _this.createPlayer();
-            _this.currentState = _this.GAME_STATE.PLAY;
+            // this.currentState = this.GAME_STATE.PLAY;
+            _this.enableLabels(false);
             _this.time = 0;
-            // Update the labels aswell, so we render w/ the new data
-            _this.scoreLabel.string = "Coins: " + _this.coinScore;
-            _this.ammoLabel.string = "Ammo: " + _this.currentAmmo;
+            _this.menu.active = true;
         }, 2000);
+    };
+    Game.prototype.enableLabels = function (isEnabled) {
+        this.scoreLabel.enabled = isEnabled;
+        this.timeLabel.enabled = isEnabled;
+        this.ammoLabel.enabled = isEnabled;
     };
     Game.prototype.playRockExplosion = function () {
         cc.audioEngine.play(this.rockExpSound, false, 0.8);
@@ -156,7 +171,7 @@ var Game = /** @class */ (function (_super) {
         this.currentAmmo--;
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
         var newLaser = cc.instantiate(this.playerLaser);
-        newLaser.setPosition(this.player.x, this.player.y - this.player.height);
+        newLaser.setPosition(this.player.x, this.player.y + this.player.height * 0.35);
         // Leave a reference to the game object.
         var laserObject = newLaser.getComponent('LaserBlue');
         laserObject.game = this;
@@ -255,6 +270,9 @@ var Game = /** @class */ (function (_super) {
     Game.prototype.setEnemyScheduler = function () {
         this.scheduler.schedule(this.spawnRandomEnemy, this, this.ENEMY_SPAWN_RATE, false);
     };
+    __decorate([
+        property(cc.Node)
+    ], Game.prototype, "menu", void 0);
     __decorate([
         property(cc.Label)
     ], Game.prototype, "scoreLabel", void 0);
