@@ -20,13 +20,15 @@ var Menu = /** @class */ (function (_super) {
         this.creditsButton.node.on('click', this.creditsCallback, this);
         this.exitButton.node.on('click', this.exitCallback, this);
     };
-    // start () {}
+    Menu.prototype.start = function () {
+    };
     // update (dt) {}
     // Button event callbacks
     Menu.prototype.startCallback = function () {
         this.game.startGame();
     };
     Menu.prototype.creditsCallback = function () {
+        this.game.startBgMusic();
     };
     Menu.prototype.exitCallback = function () {
         cc.audioEngine.stopAll();

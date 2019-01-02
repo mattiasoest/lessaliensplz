@@ -81,10 +81,10 @@ export default class Enemy extends cc.Component {
         }
         if (otherCollider.node.name === "Player") {
             this.game.playRockExplosion();
-            this.node.getComponent(cc.RigidBody).enabledContactListener = false;
             this.getComponent(cc.Animation).play("Explosion");
-            if (!this.game.player.getComponent("PlayerControl").isInvincible()) {
-                this.game.playPlayerExplosionAnimation();
+            let isAlive = this.game.isPlayerAlive();
+            if (!this.game.player.getComponent("PlayerControl").isInvincible() && isAlive) {
+                // Will destroy itself after the animation.
                 this.game.resetGame();
             }
         }

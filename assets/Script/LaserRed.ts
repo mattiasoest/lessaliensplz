@@ -43,16 +43,11 @@ export default class LaserRed extends cc.Component {
         if (otherCollider.node.name === "Player") {
             this.game.playRockExplosion();
             selfCollider.node.destroy();
-            if (!this.game.player.getComponent("PlayerControl").isInvincible()) {
-                this.game.playPlayerExplosionAnimation();
+            let isAlive = this.game.isPlayerAlive();
+            if (!this.game.player.getComponent("PlayerControl").isInvincible() && isAlive) {
+                // this.game.player.getComponent(cc.RigidBody).enabledContactListener = false;
                 this.game.resetGame();
-                // selfCollider.node.destroy();
-                    // otherCollider.node.destroy();
-                
             }
-
-            // otherCollider.node.destroy();
-
         }
     }
 

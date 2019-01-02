@@ -11,7 +11,8 @@ export default class Game extends cc.Component {
     private readonly AMMO_PER_BOX: number = 8;
     private readonly ENEMY_SPAWN_RATE: number = 8;
     private readonly INVINCIBLE_DURATION: number = 5;
-    private readonly GAME_STATE = { PLAY : 0, MENU : 1 }
+    
+    public readonly GAME_STATE = { PLAY : 0, MENU : 1 }
 
     currentState = this.GAME_STATE.MENU;
 
@@ -28,7 +29,8 @@ export default class Game extends cc.Component {
     private isBoundHit = false;
     private increaseOpacity = true;
     private isBoundAnimationPlaying: boolean = false;
-    private boundTimer = 0;
+    private menuMusicId = -1;
+    private gameMusicId = -1;
     player: cc.Node = null;
     
 
@@ -81,29 +83,36 @@ export default class Game extends cc.Component {
     rockExpSound: cc.AudioClip = null;
 
     @property(cc.AudioClip)
-    boomSound: cc.AudioClip = null;
+    menuMusic: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
+    gameplayMusic: cc.AudioClip = null;
 
     @property(cc.Node)
     upperBound: cc.Node = null;
 
 
     onLoad () {
-        this.cvs =  cc.find("Canvas");
+        this.cvs = cc.find("Canvas");
         // Setup physics engine.
         let physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
-
-        // this.createPlayer();
-
         this.enableLabels(false);
         this.coinSound = this.getComponent(cc.AudioSource);
         this.scheduler = cc.director.getScheduler();
         this.menu.active = true;
         this.upperBound.active = false;
+        this.startBgMusic();
     }
 
     start () {
+
+    }
+
+    startBgMusic() {
+        this.menuMusicId = cc.audioEngine.playMusic(this.menuMusic, true);
+        cc.audioEngine.setMusicVolume(0.55);
     }
 
     update (dt) {
@@ -116,50 +125,57 @@ export default class Game extends cc.Component {
             case this.GAME_STATE.MENU:
                 break;
         }
-           
     }
 
     startGame() {
-        // ==========================================
-        // ACTUALLY RESETS EVERYTHING...... 
-        // cc.director.loadScene('Gameplay');
         this.createPlayer();
-        // this.menu.enabled = false;
         this.menu.active = false;
-        // buttonNodes.forEach((node => node.enabled = false));
         this.setupItemAutoGeneration();
 
         this.enableLabels(true);
         this.scoreLabel.string = "Coins: " + this.coinScore;
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
 
-        this.currentState = this.GAME_STATE.PLAY;
+        this.setGameState(this.GAME_STATE.PLAY);
         this.upperBound.y = this.upperBound.height / 2 + this.getPlayerUpperBound() + this.player.height / 2;
         this.upperBound.active = true;
         this.upperBound.opacity = 0;
     }
 
-    // ============================== TODO ========================================
+    setGameState(state: number) {
+        switch (state) {
+            case this.GAME_STATE.MENU:
+                this.menuMusicId = cc.audioEngine.playMusic(this.menuMusic, true);
+                this.currentState = state;
+                break;
+            case this.GAME_STATE.PLAY:
+                this.gameMusicId = cc.audioEngine.playMusic(this.gameplayMusic, true);
+                this.currentState = state;
+                break;
+            default: 
+                throw new Error("Invalid game state: " + state);
+        }
+
+    }
+
     resetGame() {
-        console.log("ONCE!");
-        this.currentState = this.GAME_STATE.MENU;
+        this.setGameState(this.GAME_STATE.MENU);
+        this.playPlayerExplosionAnimation();
         this.player.getComponent(cc.RigidBody).enabledContactListener = false;
         this.isAlive = false;
         this.coinScore = 0;
         this.currentAmmo = this.AMMO_PER_BOX;
-        this.playBoomSound();
         this.endRandomGeneration();
+        this.isBoundAnimationPlaying = false;
         this.upperBound.opacity = 0;
 
         // Let animation finish etc..
         setTimeout(() => {
             this.node.destroyAllChildren();
-
-            // this.currentState = this.GAME_STATE.PLAY;
             this.enableLabels(false);
             this.time = 0;
             this.menu.active = true;
-            }, 2000);
+            }, 1250);
         }
 
     hitBound() {        
@@ -201,10 +217,6 @@ export default class Game extends cc.Component {
 
     playPlayerExplosionAnimation() {
         this.player.getComponent(cc.Animation).play("Explosion");
-    }
-
-    playBoomSound() {
-        cc.audioEngine.play(this.boomSound, false, 0.5);
     }
 
     generateRandomPos() {

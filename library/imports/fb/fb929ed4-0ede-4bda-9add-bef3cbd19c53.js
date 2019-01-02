@@ -42,13 +42,11 @@ var LaserRed = /** @class */ (function (_super) {
         if (otherCollider.node.name === "Player") {
             this.game.playRockExplosion();
             selfCollider.node.destroy();
-            if (!this.game.player.getComponent("PlayerControl").isInvincible()) {
-                this.game.playPlayerExplosionAnimation();
+            var isAlive = this.game.isPlayerAlive();
+            if (!this.game.player.getComponent("PlayerControl").isInvincible() && isAlive) {
+                // this.game.player.getComponent(cc.RigidBody).enabledContactListener = false;
                 this.game.resetGame();
-                // selfCollider.node.destroy();
-                // otherCollider.node.destroy();
             }
-            // otherCollider.node.destroy();
         }
     };
     LaserRed.prototype.playLaserSound = function () {

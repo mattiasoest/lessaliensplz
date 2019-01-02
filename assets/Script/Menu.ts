@@ -5,7 +5,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Menu extends cc.Component {
 
-
     @property(cc.Button)
     startButton: cc.Button = null;
 
@@ -24,18 +23,18 @@ export default class Menu extends cc.Component {
         this.exitButton.node.on('click', this.exitCallback, this);
     }
 
-    // start () {}
+    start () {
+    }
 
     // update (dt) {}
 
     // Button event callbacks
     startCallback() {
         this.game.startGame();
-
     }
 
     creditsCallback() {
-
+        this.game.startBgMusic();
     }
 
     exitCallback() {

@@ -30,7 +30,8 @@ var Game = /** @class */ (function (_super) {
         _this.isBoundHit = false;
         _this.increaseOpacity = true;
         _this.isBoundAnimationPlaying = false;
-        _this.boundTimer = 0;
+        _this.menuMusicId = -1;
+        _this.gameMusicId = -1;
         _this.player = null;
         _this.menu = null;
         _this.scoreLabel = null;
@@ -48,7 +49,8 @@ var Game = /** @class */ (function (_super) {
         _this.noAmmoSound = null;
         _this.ammoPickupSound = null;
         _this.rockExpSound = null;
-        _this.boomSound = null;
+        _this.menuMusic = null;
+        _this.gameplayMusic = null;
         _this.upperBound = null;
         return _this;
     }
@@ -58,14 +60,18 @@ var Game = /** @class */ (function (_super) {
         var physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
-        // this.createPlayer();
         this.enableLabels(false);
         this.coinSound = this.getComponent(cc.AudioSource);
         this.scheduler = cc.director.getScheduler();
         this.menu.active = true;
         this.upperBound.active = false;
+        this.startBgMusic();
     };
     Game.prototype.start = function () {
+    };
+    Game.prototype.startBgMusic = function () {
+        this.menuMusicId = cc.audioEngine.playMusic(this.menuMusic, true);
+        cc.audioEngine.setMusicVolume(0.55);
     };
     Game.prototype.update = function (dt) {
         switch (this.currentState) {
@@ -79,42 +85,49 @@ var Game = /** @class */ (function (_super) {
         }
     };
     Game.prototype.startGame = function () {
-        // ==========================================
-        // ACTUALLY RESETS EVERYTHING...... 
-        // cc.director.loadScene('Gameplay');
         this.createPlayer();
-        // this.menu.enabled = false;
         this.menu.active = false;
-        // buttonNodes.forEach((node => node.enabled = false));
         this.setupItemAutoGeneration();
         this.enableLabels(true);
         this.scoreLabel.string = "Coins: " + this.coinScore;
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
-        this.currentState = this.GAME_STATE.PLAY;
+        this.setGameState(this.GAME_STATE.PLAY);
         this.upperBound.y = this.upperBound.height / 2 + this.getPlayerUpperBound() + this.player.height / 2;
         this.upperBound.active = true;
         this.upperBound.opacity = 0;
     };
-    // ============================== TODO ========================================
+    Game.prototype.setGameState = function (state) {
+        switch (state) {
+            case this.GAME_STATE.MENU:
+                this.menuMusicId = cc.audioEngine.playMusic(this.menuMusic, true);
+                this.currentState = state;
+                break;
+            case this.GAME_STATE.PLAY:
+                this.gameMusicId = cc.audioEngine.playMusic(this.gameplayMusic, true);
+                this.currentState = state;
+                break;
+            default:
+                throw new Error("Invalid game state: " + state);
+        }
+    };
     Game.prototype.resetGame = function () {
         var _this = this;
-        console.log("ONCE!");
-        this.currentState = this.GAME_STATE.MENU;
+        this.setGameState(this.GAME_STATE.MENU);
+        this.playPlayerExplosionAnimation();
         this.player.getComponent(cc.RigidBody).enabledContactListener = false;
         this.isAlive = false;
         this.coinScore = 0;
         this.currentAmmo = this.AMMO_PER_BOX;
-        this.playBoomSound();
         this.endRandomGeneration();
+        this.isBoundAnimationPlaying = false;
         this.upperBound.opacity = 0;
         // Let animation finish etc..
         setTimeout(function () {
             _this.node.destroyAllChildren();
-            // this.currentState = this.GAME_STATE.PLAY;
             _this.enableLabels(false);
             _this.time = 0;
             _this.menu.active = true;
-        }, 2000);
+        }, 1250);
     };
     Game.prototype.hitBound = function () {
         this.isBoundHit = true;
@@ -151,9 +164,6 @@ var Game = /** @class */ (function (_super) {
     };
     Game.prototype.playPlayerExplosionAnimation = function () {
         this.player.getComponent(cc.Animation).play("Explosion");
-    };
-    Game.prototype.playBoomSound = function () {
-        cc.audioEngine.play(this.boomSound, false, 0.5);
     };
     Game.prototype.generateRandomPos = function () {
         var randomX = Math.random() * this.cvs.width / 2;
@@ -359,7 +369,10 @@ var Game = /** @class */ (function (_super) {
     ], Game.prototype, "rockExpSound", void 0);
     __decorate([
         property(cc.AudioClip)
-    ], Game.prototype, "boomSound", void 0);
+    ], Game.prototype, "menuMusic", void 0);
+    __decorate([
+        property(cc.AudioClip)
+    ], Game.prototype, "gameplayMusic", void 0);
     __decorate([
         property(cc.Node)
     ], Game.prototype, "upperBound", void 0);

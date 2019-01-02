@@ -53,14 +53,15 @@ export default class Asteroid extends cc.Component {
             otherCollider.node.destroy();
         }
         if (otherCollider.node.name === "Player") {
+            this.game.playRockExplosion();
             this.node.getComponent(cc.RigidBody).enabledContactListener = false;
-            if (!this.game.player.getComponent("PlayerControl").isInvincible()) {
-                this.game.playPlayerExplosionAnimation();
+            let isAlive = this.game.isPlayerAlive();
+            if (!this.game.player.getComponent("PlayerControl").isInvincible() && isAlive) {
+                // otherCollider.getComponent(cc.RigidBody).enabledContactListener = false;
                 this.game.resetGame();
             }
             else {
                 this.getComponent(cc.Animation).play("ExplosionLarger");
-                this.game.playRockExplosion();
             }
         }
     }

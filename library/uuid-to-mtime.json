@@ -505,8 +505,8 @@
     "relativePath": "Animation/PlayerAmmo.anim"
   },
   "78ebf929-e657-483e-a7b6-478af6ef84bb": {
-    "asset": 1546416714909,
-    "meta": 1546416714920,
+    "asset": 1546429713548,
+    "meta": 1546429713559,
     "relativePath": "Scene/Gameplay.fire"
   },
   "13e4222c-c03c-4527-a0ce-769fa0a5ea9c": {
@@ -523,11 +523,6 @@
     "asset": 1546161593492,
     "meta": 1546161593513,
     "relativePath": "Sound/rock-explosion.wav"
-  },
-  "877a492a-4b39-4ce8-8c34-e67c70040d0d": {
-    "asset": 1546162389369,
-    "meta": 1546162389392,
-    "relativePath": "Sound/boom.wav"
   },
   "166c48a3-b7a3-4a9b-85f4-763b4c2d9481": {
     "asset": 1546198207475,
@@ -764,21 +759,6 @@
     "meta": 1546416456159,
     "relativePath": "Prefab/Player.prefab"
   },
-  "9acbca84-8a58-42d1-87d6-d3652b300875": {
-    "asset": 1546367696542,
-    "meta": 1546367697256,
-    "relativePath": "Script/Asteroid.ts"
-  },
-  "1abed3a3-2d81-46b8-930a-ebf044d798eb": {
-    "asset": 1546367687394,
-    "meta": 1546367697270,
-    "relativePath": "Script/Enemy.ts"
-  },
-  "fb929ed4-0ede-4bda-9add-bef3cbd19c53": {
-    "asset": 1546367680793,
-    "meta": 1546367697277,
-    "relativePath": "Script/LaserRed.ts"
-  },
   "8fe30910-ad51-4913-8e15-6dda889c9bb4": {
     "asset": 1546368314968,
     "meta": 1546368316948,
@@ -788,11 +768,6 @@
     "asset": 1546370148699,
     "meta": 1546370148709,
     "relativePath": "Prefab/Menu.prefab"
-  },
-  "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
-    "asset": 1546411418044,
-    "meta": 1546411433244,
-    "relativePath": "Script/Menu.ts"
   },
   "dc3d5742-9336-4987-85d8-1ac41cc26155": {
     "asset": 1546411910091,
@@ -809,14 +784,49 @@
     "meta": 1546416852485,
     "relativePath": "Bound.anim"
   },
+  "9acbca84-8a58-42d1-87d6-d3652b300875": {
+    "asset": 1546421932266,
+    "meta": 1546421935484,
+    "relativePath": "Script/Asteroid.ts"
+  },
+  "1abed3a3-2d81-46b8-930a-ebf044d798eb": {
+    "asset": 1546421933040,
+    "meta": 1546421935551,
+    "relativePath": "Script/Enemy.ts"
+  },
+  "fb929ed4-0ede-4bda-9add-bef3cbd19c53": {
+    "asset": 1546421933615,
+    "meta": 1546421935639,
+    "relativePath": "Script/LaserRed.ts"
+  },
   "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
-    "asset": 1546418593567,
-    "meta": 1546418595370,
+    "asset": 1546421934259,
+    "meta": 1546421935659,
     "relativePath": "Script/PlayerControl.ts"
   },
+  "926e1938-1ba6-4bea-95be-1e6591594275": {
+    "asset": 1546425054903,
+    "meta": 1546425054925,
+    "relativePath": "Sound/menu.mp3"
+  },
+  "2181607f-ec31-4ca8-9d65-84c87d4338a1": {
+    "asset": 1546429417494,
+    "meta": 1546429417518,
+    "relativePath": "Sound/Air.mp3"
+  },
+  "0ebb331e-787f-43c6-907d-a4d8988ba098": {
+    "asset": 1546429633638,
+    "meta": 1546429633652,
+    "relativePath": "Sound/ShortSimple.mp3"
+  },
+  "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
+    "asset": 1546430821989,
+    "meta": 1546430827605,
+    "relativePath": "Script/Menu.ts"
+  },
   "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
-    "asset": 1546419858192,
-    "meta": 1546419858780,
+    "asset": 1546431473316,
+    "meta": 1546431477018,
     "relativePath": "Script/Game.ts"
   }
 }
