@@ -19,6 +19,7 @@ var EnemyBig = /** @class */ (function (_super) {
     }
     EnemyBig.prototype.start = function () {
         this.laserSound = this.getComponent(cc.AudioSource);
+        this.laserSound.volume = 0.6;
         this.hitPoints = 1;
         _super.prototype.setLaserScheduler.call(this, this.FIRE_RATE, this.initiateLaser);
     };

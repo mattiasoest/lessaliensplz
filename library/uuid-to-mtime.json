@@ -789,11 +789,6 @@
     "meta": 1546509078350,
     "relativePath": "Script/InvincibleEffect.ts"
   },
-  "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
-    "asset": 1546509069214,
-    "meta": 1546509078444,
-    "relativePath": "Script/Menu.ts"
-  },
   "edd215b9-2796-4a05-aaf5-81f96c9281ce": {
     "asset": 1543305034000,
     "meta": 1546509941453,
@@ -813,11 +808,6 @@
     "asset": 1543305034000,
     "meta": 1546509941899,
     "relativePath": "prefab/tiledtile.prefab"
-  },
-  "a0812d76-cad3-4bab-a034-b8fdcfb6aa58": {
-    "asset": 1546521921118,
-    "meta": 1546521927615,
-    "relativePath": "Script/EnemyBig.ts"
   },
   "57af1582-6b03-4aa9-ad59-e96b88147507": {
     "asset": 1546522137455,
@@ -843,5 +833,15 @@
     "asset": 1546524290090,
     "meta": 1546524293853,
     "relativePath": "Script/PlayerControl.ts"
+  },
+  "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
+    "asset": 1546524663386,
+    "meta": 1546524725778,
+    "relativePath": "Script/Menu.ts"
+  },
+  "a0812d76-cad3-4bab-a034-b8fdcfb6aa58": {
+    "asset": 1546524752470,
+    "meta": 1546524753173,
+    "relativePath": "Script/EnemyBig.ts"
   }
 }

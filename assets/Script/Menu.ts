@@ -56,7 +56,6 @@ export default class Menu extends cc.Component {
 
     exitCallback() {
         cc.audioEngine.stopAll();
-        cc.audioEngine.play(this.buttonSound, false, 0.8)
         cc.game.end();
     }
 }

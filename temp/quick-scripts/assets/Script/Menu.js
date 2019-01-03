@@ -46,7 +46,6 @@ var Menu = /** @class */ (function (_super) {
     };
     Menu.prototype.exitCallback = function () {
         cc.audioEngine.stopAll();
-        cc.audioEngine.play(this.buttonSound, false, 0.8);
         cc.game.end();
     };
     __decorate([
