@@ -55,8 +55,8 @@ export default class PlayerControl extends cc.Component {
     }
 
     start () {
-        this.leftBound = -this.cvs.width / 2;
-        this.rightBound = this.cvs.width / 2;
+        this.leftBound = -this.cvs.width / 2 + this.node.width / 2;
+        this.rightBound = this.cvs.width / 2 - this.node.width / 2;
         this.upperBound = this.game.getPlayerUpperBound();
         this.lowerBound = this.node.height / 2 -this.cvs.height / 2;
     }

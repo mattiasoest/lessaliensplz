@@ -35,6 +35,8 @@ export default class Game extends cc.Component {
     private gameMusicId = -1;
     private playerObject: PlayerControl = null;
 
+    private camera: cc.Camera = null;
+
     player: cc.Node = null;
     
     @property(cc.Node)
@@ -161,7 +163,6 @@ export default class Game extends cc.Component {
 
     setMenuInteractable(value: boolean) {
         let buttons = this.menu.getComponentsInChildren(cc.Button);
-        console.log("buttons" + buttons.length);
         buttons.forEach(button => {
             button.interactable = value;
         });

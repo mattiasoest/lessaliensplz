@@ -3,8 +3,9 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class BgScroll extends cc.Component {
     
-    private readonly lowBound: number = -66;
-    private readonly scrollSpeed: number = 30;
+    private readonly lowBound: number = -130;
+    private readonly scrollSpeed: number = 45;
+    // private readonly scrollSpeed: number = 30;
 
     // onLoad () {}
 

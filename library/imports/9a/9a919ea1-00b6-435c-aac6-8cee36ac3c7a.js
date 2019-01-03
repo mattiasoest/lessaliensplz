@@ -8,10 +8,11 @@ var BgScroll = /** @class */ (function (_super) {
     __extends(BgScroll, _super);
     function BgScroll() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.lowBound = -66;
-        _this.scrollSpeed = 30;
+        _this.lowBound = -130;
+        _this.scrollSpeed = 45;
         return _this;
     }
+    // private readonly scrollSpeed: number = 30;
     // onLoad () {}
     // start () {
     // }

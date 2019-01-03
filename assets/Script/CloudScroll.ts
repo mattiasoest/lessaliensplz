@@ -5,7 +5,7 @@ export default class CloudScroll extends cc.Component {
 
     private readonly lowBound: number = -252;
     private readonly resetPos: number = 3134;
-    private readonly scrollSpeed: number = 130;
+    private readonly scrollSpeed: number = 150;
 
     // onLoad () {}
 

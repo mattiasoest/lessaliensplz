@@ -505,8 +505,8 @@
     "relativePath": "Animation/PlayerAmmo.anim"
   },
   "78ebf929-e657-483e-a7b6-478af6ef84bb": {
-    "asset": 1546442103287,
-    "meta": 1546442103299,
+    "asset": 1546490465382,
+    "meta": 1546490465389,
     "relativePath": "Scene/Gameplay.fire"
   },
   "13e4222c-c03c-4527-a0ce-769fa0a5ea9c": {
@@ -679,16 +679,6 @@
     "meta": 1546193562609,
     "relativePath": "Animation/HitAnimation.anim"
   },
-  "9a919ea1-00b6-435c-aac6-8cee36ac3c7a": {
-    "asset": 1546197645935,
-    "meta": 1546197648034,
-    "relativePath": "Script/BgScroll.ts"
-  },
-  "4467ede8-4c42-4d40-bcc9-4ed3e3b8edf5": {
-    "asset": 1546197651292,
-    "meta": 1546197651941,
-    "relativePath": "Script/CloudScroll.ts"
-  },
   "49ef048f-1407-4b3c-bec2-d1d3afbb16be": {
     "asset": 1546243167055,
     "meta": 1546243167063,
@@ -809,11 +799,6 @@
     "meta": 1546438535859,
     "relativePath": "Script/LaserBlue.ts"
   },
-  "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
-    "asset": 1546438616176,
-    "meta": 1546438623615,
-    "relativePath": "Script/PlayerControl.ts"
-  },
   "6e60d0cb-c90f-4301-82c8-f7ea093e60fa": {
     "asset": 1546441355579,
     "meta": 1546441355583,
@@ -824,14 +809,39 @@
     "meta": 1546443555344,
     "relativePath": "Script/InvincibleEffect.ts"
   },
-  "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
-    "asset": 1546444670159,
-    "meta": 1546444785675,
-    "relativePath": "Script/Game.ts"
+  "8763edbe-720c-4f85-babd-2b7d19e3bafa": {
+    "asset": 1546454336730,
+    "meta": 1546454339489,
+    "relativePath": "Script/Camera.ts"
+  },
+  "9a919ea1-00b6-435c-aac6-8cee36ac3c7a": {
+    "asset": 1546455114477,
+    "meta": 1546455116218,
+    "relativePath": "Script/BgScroll.ts"
+  },
+  "4467ede8-4c42-4d40-bcc9-4ed3e3b8edf5": {
+    "asset": 1546455121924,
+    "meta": 1546455123534,
+    "relativePath": "Script/CloudScroll.ts"
+  },
+  "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
+    "asset": 1546455407940,
+    "meta": 1546455408900,
+    "relativePath": "Script/PlayerControl.ts"
+  },
+  "f53c036f-4b2b-45c8-a7ae-1907ce192e40": {
+    "asset": 1546490173653,
+    "meta": 1546490173663,
+    "relativePath": "Sound/button.wav"
   },
   "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
-    "asset": 1546444820179,
-    "meta": 1546444820724,
+    "asset": 1546490405206,
+    "meta": 1546490407675,
     "relativePath": "Script/Menu.ts"
+  },
+  "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
+    "asset": 1546490490396,
+    "meta": 1546490496591,
+    "relativePath": "Script/Game.ts"
   }
 }

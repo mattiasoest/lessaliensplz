@@ -13,6 +13,7 @@ var Menu = /** @class */ (function (_super) {
         _this.creditsButton = null;
         _this.exitButton = null;
         _this.creditsLabel = null;
+        _this.buttonSound = null;
         _this.game = null;
         return _this;
     }
@@ -28,11 +29,13 @@ var Menu = /** @class */ (function (_super) {
     };
     // Button event callbacks
     Menu.prototype.startCallback = function () {
+        cc.audioEngine.play(this.buttonSound, false, 0.8);
         this.creditsLabel.enabled = false;
         this.game.startGame();
     };
     Menu.prototype.creditsCallback = function () {
         var _this = this;
+        cc.audioEngine.play(this.buttonSound, false, 0.8);
         this.creditsLabel.enabled = true;
         this.creditsLabel.node.opacity = 0;
         this.game.setMenuInteractable(false);
@@ -41,6 +44,7 @@ var Menu = /** @class */ (function (_super) {
     };
     Menu.prototype.exitCallback = function () {
         cc.audioEngine.stopAll();
+        cc.audioEngine.play(this.buttonSound, false, 0.8);
         cc.game.end();
     };
     __decorate([
@@ -55,6 +59,9 @@ var Menu = /** @class */ (function (_super) {
     __decorate([
         property(cc.Label)
     ], Menu.prototype, "creditsLabel", void 0);
+    __decorate([
+        property(cc.AudioClip)
+    ], Menu.prototype, "buttonSound", void 0);
     __decorate([
         property(Game_1.default)
     ], Menu.prototype, "game", void 0);

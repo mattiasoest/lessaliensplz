@@ -47,8 +47,8 @@ var PlayerControl = /** @class */ (function (_super) {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     };
     PlayerControl.prototype.start = function () {
-        this.leftBound = -this.cvs.width / 2;
-        this.rightBound = this.cvs.width / 2;
+        this.leftBound = -this.cvs.width / 2 + this.node.width / 2;
+        this.rightBound = this.cvs.width / 2 - this.node.width / 2;
         this.upperBound = this.game.getPlayerUpperBound();
         this.lowerBound = this.node.height / 2 - this.cvs.height / 2;
     };

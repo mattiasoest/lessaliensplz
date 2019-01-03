@@ -17,6 +17,9 @@ export default class Menu extends cc.Component {
     @property(cc.Label)
     creditsLabel: cc.Button = null;
 
+    @property(cc.AudioClip)
+    buttonSound: cc.AudioClip = null;
+
     @property(Game)
     game : Game = null;
 
@@ -35,11 +38,13 @@ export default class Menu extends cc.Component {
 
     // Button event callbacks
     startCallback() {
+        cc.audioEngine.play(this.buttonSound, false, 0.8);
         this.creditsLabel.enabled = false;
         this.game.startGame();
     }
 
     creditsCallback() {
+        cc.audioEngine.play(this.buttonSound, false, 0.8);
         this.creditsLabel.enabled = true;
         this.creditsLabel.node.opacity = 0;
         this.game.setMenuInteractable(false);
@@ -50,6 +55,7 @@ export default class Menu extends cc.Component {
 
     exitCallback() {
         cc.audioEngine.stopAll();
+        cc.audioEngine.play(this.buttonSound, false, 0.8)
         cc.game.end();
     }
 }

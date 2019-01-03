@@ -34,6 +34,7 @@ var Game = /** @class */ (function (_super) {
         _this.menuMusicId = -1;
         _this.gameMusicId = -1;
         _this.playerObject = null;
+        _this.camera = null;
         _this.player = null;
         _this.menu = null;
         _this.scoreLabel = null;
@@ -113,7 +114,6 @@ var Game = /** @class */ (function (_super) {
     };
     Game.prototype.setMenuInteractable = function (value) {
         var buttons = this.menu.getComponentsInChildren(cc.Button);
-        console.log("buttons" + buttons.length);
         buttons.forEach(function (button) {
             button.interactable = value;
         });
