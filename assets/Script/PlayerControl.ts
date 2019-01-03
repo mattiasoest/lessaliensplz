@@ -45,7 +45,7 @@ export default class PlayerControl extends cc.Component {
 
     // Constants
     private readonly X_ACCELERATION: number = 3200;
-    private readonly Y_ACCELERATION: number = 2000;
+    private readonly Y_ACCELERATION: number = 2300;
     private readonly MOBILE_ACC_MULTIPLIER = 2.7;
     private readonly DAMP: number = 0.8;
 
@@ -123,10 +123,11 @@ export default class PlayerControl extends cc.Component {
                 }
         }
         else {
-            this.animations.play("PlayerNormal");
             this.isRightAnimPlaying = false;
             this.isLeftAnimPlaying = false;
-
+            if (!this.animations.getAnimationState("PlayerNormal").isPlaying) {
+                this.animations.play("PlayerNormal");
+            }
         }
         // === X-AXIS ===
         this.xSpeed += this.xAccelerometer * this.X_ACCELERATION * dt;
@@ -183,9 +184,13 @@ export default class PlayerControl extends cc.Component {
                     break;
                 case cc.macro.KEY.space:
                     break;
+                case cc.macro.KEY.back:
+                    cc.audioEngine.stopAll();
+                    cc.game.end();
+                    cc.director.end();
+                    break;
             }
         }
- 
     }
 
     onKeyUp(event: cc.Event.EventKeyboard) {
@@ -217,13 +222,17 @@ export default class PlayerControl extends cc.Component {
     onDeviceMotionEvent(event: any) {
         this.xAccelerometer = event.acc.x;
         this.yAccelerometer = event.acc.y;
+        // Normal player holds the device in a tilted state
+        // Adjust the y for better "feel"
+        let tiltOffset = 0.3;
+        this.yAccelerometer += tiltOffset;
 
         // Cap it to 1 /  this.MOBILE_ACC_MULTIPLIER angle of the device
-        if (Math.abs(this.xAccelerometer) > 1 / this.MOBILE_ACC_MULTIPLIER) {
+        if (Math.abs(this.xAccelerometer) > (1 / this.MOBILE_ACC_MULTIPLIER)) {
             this.xAccelerometer = Math.sign(this.xAccelerometer) * (1 / this.MOBILE_ACC_MULTIPLIER);
 
         }
-        if (Math.abs(this.yAccelerometer) > 1 / this.MOBILE_ACC_MULTIPLIER) {
+        if (Math.abs(this.yAccelerometer) > (1 / this.MOBILE_ACC_MULTIPLIER)) {
             this.yAccelerometer = Math.sign(this.yAccelerometer) * (1 / this.MOBILE_ACC_MULTIPLIER);
         }
 

@@ -7,7 +7,7 @@ const {ccclass, property} = cc._decorator;
 export default class Game extends cc.Component {
     // CONSTANTS
     private readonly ASTEROID_SPAWN_RATE: number = 1.25;
-    private readonly COIN_SPAWN_RATE: number = 1.55;
+    private readonly COIN_SPAWN_RATE: number = 1.5;
     private readonly AMMO_SPAWN_RATE: number = 7.1;
     private readonly AMMO_PER_BOX: number = 12;
     private readonly ENEMY_SPAWN_RATE: number = 8;
@@ -185,7 +185,6 @@ export default class Game extends cc.Component {
             default: 
                 throw new Error("Invalid game state: " + state);
         }
-
     }
 
     resetGame() {

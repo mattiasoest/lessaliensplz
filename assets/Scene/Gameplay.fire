@@ -17,7 +17,7 @@
         "__id__": 2
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 0,
     "_components": [],
     "_prefab": null,
@@ -41,9 +41,9 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.734375,
-      "y": 0.734375,
-      "z": 0.734375
+      "x": 1.9623043845073938,
+      "y": 1.9623043845073938,
+      "z": 1.9623043845073938
     },
     "_quat": {
       "__type__": "cc.Quat",
@@ -2654,7 +2654,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Credits",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 2
     },
@@ -2679,7 +2679,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 240,
+      "width": 252,
       "height": 180
     },
     "_anchorPoint": {
@@ -2689,7 +2689,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 4,
+      "x": 2,
       "y": 0,
       "z": 0
     },

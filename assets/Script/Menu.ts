@@ -23,14 +23,21 @@ export default class Menu extends cc.Component {
     @property(Game)
     game : Game = null;
 
+
+    private cvs : cc.Node = null;
+
     onLoad () {
         this.startButton.node.on('click', this.startCallback, this);
         this.creditsButton.node.on('click', this.creditsCallback, this);
         this.exitButton.node.on('click', this.exitCallback, this);
         this.creditsLabel.enabled = false;
+        this.creditsLabel.node.opacity = 0;
+        this.cvs = cc.find("Canvas");
+        this.cvs.opacity = 0;
     }
 
     start () {
+        this.cvs.runAction(cc.fadeIn(0.5));
     }
 
     update (dt) {
@@ -46,7 +53,6 @@ export default class Menu extends cc.Component {
     creditsCallback() {
         cc.audioEngine.play(this.buttonSound, false, 0.8);
         this.creditsLabel.enabled = true;
-        this.creditsLabel.node.opacity = 0;
         // this.game.setMenuInteractable(false);
         this.node.active = false;
         this.creditsLabel.node.runAction(cc.sequence(cc.fadeIn(0.75),cc.delayTime(2.5), cc.fadeOut(0.75), cc.callFunc(()=> this.node.active = true)));
