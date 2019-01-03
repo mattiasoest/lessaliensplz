@@ -9,7 +9,7 @@ export default class Game extends cc.Component {
     private readonly ASTEROID_SPAWN_RATE: number = 1.25;
     private readonly COIN_SPAWN_RATE: number = 1.55;
     private readonly AMMO_SPAWN_RATE: number = 7.1;
-    private readonly AMMO_PER_BOX: number = 8;
+    private readonly AMMO_PER_BOX: number = 12;
     private readonly ENEMY_SPAWN_RATE: number = 8;
     private readonly INVINCIBLE_DURATION: number = 5;
     
@@ -113,6 +113,10 @@ export default class Game extends cc.Component {
         this.upperBound.active = false;
         this.resetCounter();
         this.startBgMusic();
+
+        // MOBILE
+        // this.node.on('mousedown', () => this.spawnBlueLaser());
+        this.node.on(cc.Node.EventType.TOUCH_START, () => this.spawnBlueLaser());
     }
 
     start () {
@@ -166,8 +170,6 @@ export default class Game extends cc.Component {
         buttons.forEach(button => {
             button.interactable = value;
         });
-        
-
     }
 
     setGameState(state: number) {
@@ -319,6 +321,9 @@ export default class Game extends cc.Component {
     }
 
     spawnBlueLaser() {
+        if (!this.isAlive) {
+            return;
+        }
         if (this.currentAmmo <= 0) {
             cc.audioEngine.play(this.noAmmoSound, false, 1);
             return;
@@ -333,7 +338,7 @@ export default class Game extends cc.Component {
         laserObject.game = this;
 
         const body = newLaser.getComponent(cc.RigidBody);
-        body.linearVelocity = cc.v2(0, 450);
+        body.linearVelocity = cc.v2(0, 475);
         this.node.addChild(newLaser);
         laserObject.playLaserSound();
     }
@@ -403,7 +408,7 @@ export default class Game extends cc.Component {
     }
 
     getPlayerUpperBound() {
-        return -this.cvs.height * 0.125;
+        return -this.cvs.height * 0.18;
     }
 
 

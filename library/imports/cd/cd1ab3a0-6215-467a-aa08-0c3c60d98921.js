@@ -12,7 +12,7 @@ var Game = /** @class */ (function (_super) {
         _this.ASTEROID_SPAWN_RATE = 1.25;
         _this.COIN_SPAWN_RATE = 1.55;
         _this.AMMO_SPAWN_RATE = 7.1;
-        _this.AMMO_PER_BOX = 8;
+        _this.AMMO_PER_BOX = 12;
         _this.ENEMY_SPAWN_RATE = 8;
         _this.INVINCIBLE_DURATION = 5;
         _this.GAME_STATE = { PLAY: 0, MENU: 1 };
@@ -59,6 +59,7 @@ var Game = /** @class */ (function (_super) {
         return _this;
     }
     Game.prototype.onLoad = function () {
+        var _this = this;
         this.cvs = cc.find("Canvas");
         // Setup physics engine.
         var physicsManager = cc.director.getPhysicsManager();
@@ -71,6 +72,9 @@ var Game = /** @class */ (function (_super) {
         this.upperBound.active = false;
         this.resetCounter();
         this.startBgMusic();
+        // MOBILE
+        // this.node.on('mousedown', () => this.spawnBlueLaser());
+        this.node.on(cc.Node.EventType.TOUCH_START, function () { return _this.spawnBlueLaser(); });
     };
     Game.prototype.start = function () {
     };
@@ -248,6 +252,9 @@ var Game = /** @class */ (function (_super) {
         newCoin.getComponent('Coin').game = this;
     };
     Game.prototype.spawnBlueLaser = function () {
+        if (!this.isAlive) {
+            return;
+        }
         if (this.currentAmmo <= 0) {
             cc.audioEngine.play(this.noAmmoSound, false, 1);
             return;
@@ -260,7 +267,7 @@ var Game = /** @class */ (function (_super) {
         var laserObject = newLaser.getComponent('LaserBlue');
         laserObject.game = this;
         var body = newLaser.getComponent(cc.RigidBody);
-        body.linearVelocity = cc.v2(0, 450);
+        body.linearVelocity = cc.v2(0, 475);
         this.node.addChild(newLaser);
         laserObject.playLaserSound();
     };
@@ -322,7 +329,7 @@ var Game = /** @class */ (function (_super) {
         return this.INVINCIBLE_DURATION;
     };
     Game.prototype.getPlayerUpperBound = function () {
-        return -this.cvs.height * 0.125;
+        return -this.cvs.height * 0.18;
     };
     Game.prototype.isPlayerAlive = function () {
         return this.isAlive;

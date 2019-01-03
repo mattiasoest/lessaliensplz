@@ -8,7 +8,7 @@ export default class EnemyBig extends Enemy {
     private readonly FIRE_RATE = 2;
     private readonly X_ACCELERATION = 110;
     private readonly Y_SPEED = -45; 
-    private readonly LASER_SPEED = 135;
+    private readonly LASER_SPEED = 130;
     
     private isFireTriggered: boolean = false;
     private laserSound: cc.AudioSource = null;

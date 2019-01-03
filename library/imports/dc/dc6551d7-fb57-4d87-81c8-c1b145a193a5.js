@@ -11,10 +11,10 @@ var EnemySmall = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.FIRE_RATE = 1.8;
         _this.BULLET_BURST = 5;
-        _this.LASER_INTERVAL = 0.05;
-        _this.X_ACCELERATION = 1000;
+        _this.LASER_INTERVAL = 0.04;
+        _this.X_ACCELERATION = 850;
         _this.Y_SPEED = -70;
-        _this.LASER_SPEED = 300;
+        _this.LASER_SPEED = 270;
         _this.laserSound = null;
         _this.isBurstOn = false;
         _this.burstTimer = 0;

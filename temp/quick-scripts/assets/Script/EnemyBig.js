@@ -12,7 +12,7 @@ var EnemyBig = /** @class */ (function (_super) {
         _this.FIRE_RATE = 2;
         _this.X_ACCELERATION = 110;
         _this.Y_SPEED = -45;
-        _this.LASER_SPEED = 135;
+        _this.LASER_SPEED = 130;
         _this.isFireTriggered = false;
         _this.laserSound = null;
         return _this;

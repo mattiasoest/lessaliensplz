@@ -22,10 +22,8 @@ var Camera = /** @class */ (function (_super) {
         // update (dt) {}
     }
     Camera.prototype.onLoad = function () {
+        // TODO ??
         this.camera = this.node.getComponent(cc.Camera);
-        this.node.width = 100;
-        this.node.height = 100;
-        console.log("WIN SIZE" + cc.winSize);
     };
     Camera.prototype.start = function () {
     };

@@ -19,7 +19,7 @@ var LaserBlue = /** @class */ (function (_super) {
     // }
     LaserBlue.prototype.update = function (dt) {
         if (cc.isValid(this.node)) {
-            if (this.node.y > cc.find("Canvas").height * 0.4) {
+            if (this.node.y > cc.find("Canvas").height * 0.5) {
                 this.node.destroy();
             }
         }

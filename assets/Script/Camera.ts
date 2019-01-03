@@ -14,10 +14,10 @@ const {ccclass, property} = cc._decorator;
 export default class Camera extends cc.Component {
 
     private camera: cc.Camera = null;
+
     onLoad () {
         // TODO ??
         this.camera = this.node.getComponent(cc.Camera);
-        
     }
 
     start () {

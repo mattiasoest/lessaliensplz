@@ -30,6 +30,10 @@ export default class PlayerControl extends cc.Component {
     private invincibleId = -1;
     private boundId = -1;
     private justPlayedBoundSound: boolean = false;
+    private isMobile : boolean = false;
+
+    private xAccelerometer: number = 0;
+    private yAccelerometer: number = 0;
 
     @property(cc.AudioClip)
     invincibleSound: cc.AudioClip = null;
@@ -42,6 +46,7 @@ export default class PlayerControl extends cc.Component {
     // Constants
     private readonly X_ACCELERATION: number = 3200;
     private readonly Y_ACCELERATION: number = 2000;
+    private readonly MOBILE_ACC_MULTIPLIER = 2.7;
     private readonly DAMP: number = 0.8;
 
     onLoad () {
@@ -50,8 +55,16 @@ export default class PlayerControl extends cc.Component {
         this.flySound.volume = 0.6;
         this.animations = this.getComponent(cc.Animation);
 
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        this.isMobile = cc.sys.isMobile;
+        // =========== DIFFERENT CONTROLS DEPENDING ON THE SYSTEM ===========
+        if (this.isMobile) {
+            cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this);
+            cc.systemEvent.setAccelerometerEnabled(true);
+        }
+        else {
+            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        }
     }
 
     start () {
@@ -63,20 +76,18 @@ export default class PlayerControl extends cc.Component {
 
     update (dt) {
         if (this.game.isPlayerAlive()) {
-            this.updateMovement(dt)
+            if (this.isMobile) {
+                this.updateForceMobile(dt);
+            }
+            else {
+                this.updateForce(dt);
+            }
+            this.applyForce(dt)
+            this.checkPlayerBounds();
         }
     }
 
-    updateMovement(dt) {
-        // === X-AXIS ===
-        if (this.accLeft) {
-            this.xSpeed -= this.X_ACCELERATION * dt;
-        } else if (this.accRight) {
-            this.xSpeed += this.X_ACCELERATION * dt;
-        }
-        this.node.x += this.xSpeed * dt;
-        this.xSpeed *= this.DAMP;
-
+    checkPlayerBounds(){
         // X-Screen bounds
         if (this.node.x <= this.leftBound) {
             this.node.x = this.leftBound;
@@ -85,28 +96,66 @@ export default class PlayerControl extends cc.Component {
             this.node.x = this.rightBound;
         }
 
-        // === Y-AXIS ===
-        if (this.accDown) {
-            this.ySpeed -= this.Y_ACCELERATION * dt;
-        } else if (this.accUp) {
-            this.ySpeed += this.Y_ACCELERATION * dt;
-        }
-
-        this.node.y += this.ySpeed * dt;
-        this.ySpeed *= this.DAMP;
-
         // Y-Screen bounds
         if (this.node.y <= this.lowerBound) {
             this.node.y = this.lowerBound;
         }
         else if (this.node.y > this.upperBound) {
             this.playBoundSound();
-            this.node.y = this.upperBound;
+            this.node.y = this.upperBound -1;
             this.ySpeed = 0;
         }
     }
 
+    updateForceMobile(dt: number) {
+        if (this.xAccelerometer < -0.25) {
+            if (!this.isLeftAnimPlaying) {
+                this.flySound.play();
+                this.isLeftAnimPlaying = true;
+                this.animations.play("PlayerLeft");
+            }
+        }
+        else if (this.xAccelerometer > 0.25) {
+            if (!this.isRightAnimPlaying) {
+                this.flySound.play();
+                this.isRightAnimPlaying = true;
+                this.animations.play("PlayerRight");
+                }
+        }
+        else {
+            this.animations.play("PlayerNormal");
+            this.isRightAnimPlaying = false;
+            this.isLeftAnimPlaying = false;
+
+        }
+        // === X-AXIS ===
+        this.xSpeed += this.xAccelerometer * this.X_ACCELERATION * dt;
+        // === Y-AXIS ===
+        this.ySpeed += this.yAccelerometer * this.Y_ACCELERATION * dt;
+    }
+
+    updateForce(dt: number) {
+        if (this.accLeft) {
+            this.xSpeed -= this.X_ACCELERATION * dt;
+        } else if (this.accRight) {
+            this.xSpeed += this.X_ACCELERATION * dt;
+        }
+        if (this.accDown) {
+            this.ySpeed -= this.Y_ACCELERATION * dt;
+        } else if (this.accUp) {
+            this.ySpeed += this.Y_ACCELERATION * dt;
+        }
+    }
+
+    applyForce(dt) {
+        this.node.x += this.xSpeed * dt;
+        this.xSpeed *= this.DAMP;
+        this.node.y += this.ySpeed * dt;
+        this.ySpeed *= this.DAMP;
+    }
+
     onKeyDown(event: cc.Event.EventKeyboard) {
+        
         if (this.game.isPlayerAlive()) {
             switch(event.keyCode) {
                 case cc.macro.KEY.left:
@@ -165,13 +214,36 @@ export default class PlayerControl extends cc.Component {
         }
     }
 
+    onDeviceMotionEvent(event: any) {
+        this.xAccelerometer = event.acc.x;
+        this.yAccelerometer = event.acc.y;
+
+        // Cap it to 1 /  this.MOBILE_ACC_MULTIPLIER angle of the device
+        if (Math.abs(this.xAccelerometer) > 1 / this.MOBILE_ACC_MULTIPLIER) {
+            this.xAccelerometer = Math.sign(this.xAccelerometer) * (1 / this.MOBILE_ACC_MULTIPLIER);
+
+        }
+        if (Math.abs(this.yAccelerometer) > 1 / this.MOBILE_ACC_MULTIPLIER) {
+            this.yAccelerometer = Math.sign(this.yAccelerometer) * (1 / this.MOBILE_ACC_MULTIPLIER);
+        }
+
+        this.xAccelerometer *= this.MOBILE_ACC_MULTIPLIER;
+        this.yAccelerometer *= this.MOBILE_ACC_MULTIPLIER;
+}
+
     playBoundSound() {
         if (!this.justPlayedBoundSound) {
             this.justPlayedBoundSound = true;
             this.boundId = cc.audioEngine.play(this.upperBoundSound, false, 1);
             this.game.hitBound();
-            cc.audioEngine.setFinishCallback(this.boundId,
-                () => this.accUp ? this.justPlayedBoundSound = true : this.justPlayedBoundSound = false);
+            if (this.isMobile) {
+                cc.audioEngine.setFinishCallback(this.boundId,
+                    () => this.yAccelerometer > 0 ? this.justPlayedBoundSound = true : this.justPlayedBoundSound = false);
+            }
+            else {
+                cc.audioEngine.setFinishCallback(this.boundId,
+                    () => this.accUp ? this.justPlayedBoundSound = true : this.justPlayedBoundSound = false);
+            }
         }
     }
 

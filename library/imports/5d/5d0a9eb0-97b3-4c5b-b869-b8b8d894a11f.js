@@ -38,9 +38,11 @@ var Menu = /** @class */ (function (_super) {
         cc.audioEngine.play(this.buttonSound, false, 0.8);
         this.creditsLabel.enabled = true;
         this.creditsLabel.node.opacity = 0;
-        this.game.setMenuInteractable(false);
-        this.creditsLabel.node.runAction(cc.sequence(cc.fadeIn(0.75), cc.delayTime(2.5), cc.fadeOut(0.75)));
-        this.node.runAction(cc.sequence(cc.fadeOut(0.4), cc.delayTime(3.25), cc.fadeIn(0.4), cc.callFunc(function () { return _this.game.setMenuInteractable(true); })));
+        // this.game.setMenuInteractable(false);
+        this.node.active = false;
+        this.creditsLabel.node.runAction(cc.sequence(cc.fadeIn(0.75), cc.delayTime(2.5), cc.fadeOut(0.75), cc.callFunc(function () { return _this.node.active = true; })));
+        // this.node.runAction(cc.sequence(cc.fadeOut(0.4),cc.delayTime(3.25), cc.fadeIn(0.4),
+        //      cc.callFunc(()=> this.game.setMenuInteractable(true))));
     };
     Menu.prototype.exitCallback = function () {
         cc.audioEngine.stopAll();

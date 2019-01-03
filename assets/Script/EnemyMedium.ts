@@ -7,10 +7,10 @@ export default class EnemyMedium extends Enemy {
 
     private readonly FIRE_RATE = 2;
     private readonly BULLET_BURST = 2;
-    private readonly LASER_INTERVAL = 0.2;
+    private readonly LASER_INTERVAL = 0.15;
     private readonly X_ACCELERATION = 300;
     private readonly Y_SPEED = -60; 
-    private readonly LASER_SPEED = 250;
+    private readonly LASER_SPEED = 240;
 
     private laserSound: cc.AudioSource = null;
     private isBurstOn: boolean =  false;

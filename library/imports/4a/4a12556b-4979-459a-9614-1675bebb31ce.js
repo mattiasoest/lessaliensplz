@@ -11,10 +11,10 @@ var EnemyMedium = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.FIRE_RATE = 2;
         _this.BULLET_BURST = 2;
-        _this.LASER_INTERVAL = 0.2;
+        _this.LASER_INTERVAL = 0.15;
         _this.X_ACCELERATION = 300;
         _this.Y_SPEED = -60;
-        _this.LASER_SPEED = 250;
+        _this.LASER_SPEED = 240;
         _this.laserSound = null;
         _this.isBurstOn = false;
         _this.burstTimer = 0;

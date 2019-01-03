@@ -7,10 +7,10 @@ export default class EnemySmall extends Enemy {
 
     private readonly FIRE_RATE = 1.8;
     private readonly BULLET_BURST = 5;
-    private readonly LASER_INTERVAL = 0.05;
-    private readonly X_ACCELERATION = 1000;
+    private readonly LASER_INTERVAL = 0.04;
+    private readonly X_ACCELERATION = 850;
     private readonly Y_SPEED = -70; 
-    private readonly LASER_SPEED: number = 300;
+    private readonly LASER_SPEED: number = 270;
 
     private laserSound: cc.AudioSource = null;
     private isBurstOn: boolean =  false;

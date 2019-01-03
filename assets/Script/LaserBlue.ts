@@ -16,7 +16,7 @@ export default class LaserBlue extends cc.Component {
 
     update (dt) {
         if (cc.isValid(this.node)) {
-            if (this.node.y > cc.find("Canvas").height * 0.4) {
+            if (this.node.y > cc.find("Canvas").height * 0.5) {
                 this.node.destroy();
             }
         }
