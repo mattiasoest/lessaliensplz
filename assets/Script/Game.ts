@@ -307,7 +307,7 @@ export default class Game extends cc.Component {
             this.menu.active = true;
             this.menu.opacity = 0;
             this.menu.runAction(cc.fadeIn(0.45));
-        }, 1250 + delay);
+        }, 1200 + delay);
     }
 
     resetInvincibleCounter() {
@@ -330,7 +330,6 @@ export default class Game extends cc.Component {
 
     checkLocalHighScore() {
         let localBest = cc.sys.localStorage.getItem(this.BEST_TIME_KEY);
-        
         if (localBest !== null) {
             this.bestTime = Number(localBest);
             this.menu.getComponent("Menu").highScoreLabel.string = "High score: " + this.parseTime(this.bestTime, 2);

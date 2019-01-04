@@ -20,6 +20,9 @@ export default class Menu extends cc.Component {
     @property(cc.Label)
     highScoreLabel: cc.Label = null;
 
+    @property(cc.Label)
+    mainTitleLabel: cc.Label = null;
+
     @property(cc.AudioClip)
     buttonSound: cc.AudioClip = null;
 
@@ -35,8 +38,7 @@ export default class Menu extends cc.Component {
     }
 
     start () {
-        this.game.getMainCanvas().opacity = 0;
-        this.game.getMainCanvas().runAction(cc.fadeIn(0.5));
+        this.mainTitleLabel.node.runAction(cc.repeatForever(cc.sequence(cc.fadeIn(0.9),cc.delayTime(0.3), cc.fadeOut(0.9))));
     }
 
     update (dt) {
@@ -52,11 +54,9 @@ export default class Menu extends cc.Component {
     creditsCallback() {
         cc.audioEngine.play(this.buttonSound, false, 0.8);
         this.creditsLabel.enabled = true;
-        // this.game.setMenuInteractable(false);
         this.node.active = false;
-        this.creditsLabel.node.runAction(cc.sequence(cc.fadeIn(0.75),cc.delayTime(2.5), cc.fadeOut(0.75), cc.callFunc(()=> this.node.active = true)));
-        // this.node.runAction(cc.sequence(cc.fadeOut(0.4),cc.delayTime(3.25), cc.fadeIn(0.4),
-        //      cc.callFunc(()=> this.game.setMenuInteractable(true))));
+        this.creditsLabel.node.runAction(cc.sequence(cc.fadeIn(0.55),cc.delayTime(2.5), cc.fadeOut(0.55), cc.callFunc(()=> this.node.active = true)));
+
     }
 
     exitCallback() {
