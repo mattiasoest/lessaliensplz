@@ -132,6 +132,7 @@ export default class Game extends cc.Component {
         this.enableStatsLabels(false);
         this.newHighScoreLabel.node.opacity = 0;
         this.coinSound = this.getComponent(cc.AudioSource);
+        this.coinSound.volume = 0.45;
         this.scheduler = cc.director.getScheduler();
         this.menu.active = true;
         this.upperBound.active = false;
@@ -157,7 +158,7 @@ export default class Game extends cc.Component {
 
     startBgMusic() {
         this.menuMusicId = cc.audioEngine.playMusic(this.menuMusic, true);
-        cc.audioEngine.setMusicVolume(0.55);
+        cc.audioEngine.setMusicVolume(0.4);
     }
 
     update (dt) {
@@ -422,7 +423,7 @@ export default class Game extends cc.Component {
 
     addAmmo() {
         this.currentAmmo += this.AMMO_PER_BOX;
-        cc.audioEngine.play(this.ammoPickupSound, false, 1);
+        cc.audioEngine.play(this.ammoPickupSound, false, 0.55);
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
     }
 
@@ -457,7 +458,7 @@ export default class Game extends cc.Component {
             return;
         }
         if (this.currentAmmo <= 0) {
-            cc.audioEngine.play(this.noAmmoSound, false, 1);
+            cc.audioEngine.play(this.noAmmoSound, false, 0.8);
             return;
         }
         this.currentAmmo--;

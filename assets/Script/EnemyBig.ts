@@ -17,7 +17,7 @@ export default class EnemyBig extends Enemy {
         super.initialize()
         super.setLaserScheduler(this.FIRE_RATE, this.initiateLaser);
         this.laserSound = this.getComponent(cc.AudioSource);
-        this.laserSound.volume = 0.6;
+        this.laserSound.volume = 0.5;
         this.hitPoints = 1;
     }
 

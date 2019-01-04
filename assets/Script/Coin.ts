@@ -6,7 +6,6 @@ const {ccclass, property} = cc._decorator;
 export default class Coin extends cc.Component {
 
     private coinSpeed: number = 125;
-    private cvs: cc.Node = null;
     private lowerBound: number = 0;
     private hitBoxOffset: number = 15;
 
