@@ -23,21 +23,17 @@ export default class Menu extends cc.Component {
     @property(Game)
     game : Game = null;
 
-
-    private cvs : cc.Node = null;
-
     onLoad () {
         this.startButton.node.on('click', this.startCallback, this);
         this.creditsButton.node.on('click', this.creditsCallback, this);
         this.exitButton.node.on('click', this.exitCallback, this);
         this.creditsLabel.enabled = false;
         this.creditsLabel.node.opacity = 0;
-        this.cvs = cc.find("Canvas");
-        this.cvs.opacity = 0;
     }
 
     start () {
-        this.cvs.runAction(cc.fadeIn(0.5));
+        this.game.getMainCanvas().opacity = 0;
+        this.game.getMainCanvas().runAction(cc.fadeIn(0.5));
     }
 
     update (dt) {

@@ -12,15 +12,12 @@ export default class Coin extends cc.Component {
 
     private manager: cc.CollisionManager = cc.director.getCollisionManager();
     game: Game = null;
-    // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
-        this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.62;
-    }
+    // onLoad () {
+    // }
 
     start () {
-
+        this.lowerBound = -this.game.getMainCanvas().height * 0.62;
     }
 
     update (dt) {

@@ -5,16 +5,15 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Ammo extends cc.Component {
     private lowerBound: number = 0;
-    private cvs: cc.Node = null;
 
     game: Game = null;
-    onLoad () {
-        this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.62;
-    }
-
-    // start () {
+    
+    // onLoad () {
     // }
+
+    start () {
+        this.lowerBound = -this.game.getMainCanvas().height * 0.62;
+    }
 
     update (dt) {
         if (cc.isValid(this.node)) {

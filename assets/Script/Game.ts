@@ -169,6 +169,10 @@ export default class Game extends cc.Component {
         }
     }
 
+    getMainCanvas() {
+        return this.cvs;
+    }
+
     getPlayerObject() {
         return this.playerObject;
     }

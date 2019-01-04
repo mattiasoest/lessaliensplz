@@ -10,21 +10,18 @@ export default class LaserRed extends cc.Component {
     private rightBound: number = 0; 
     private upperBound: number = 0;
 
-
-    private cvs : cc.Node = null;
     game: Game = null;
 
     onLoad () {
         this.playerFireSound = this.getComponent(cc.AudioSource);
-        this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height;
-        this.leftBound = -this.cvs.width;
-        this.rightBound = this.cvs.width;
-        this.upperBound = this.cvs.height;
     }
 
-    // start () {
-    // }
+    start () {
+        this.lowerBound = -this.game.getMainCanvas().height;
+        this.leftBound = -this.game.getMainCanvas().width;
+        this.rightBound = this.game.getMainCanvas().width;
+        this.upperBound = this.game.getMainCanvas().height;
+    }
 
     update (dt) {
         if (cc.isValid(this.node)) {

@@ -18,7 +18,6 @@ export default class Player extends cc.Component {
     private ySpeed: number = 0;
 
     private flySound: cc.AudioSource = null;
-    private cvs: cc.Node  = null;
     private animations : cc.Animation = null;
     private isCurrentlyInvincible: boolean = false;
     private invincibleId = -1;
@@ -34,17 +33,16 @@ export default class Player extends cc.Component {
     private readonly DAMP: number = 0.8;
 
     onLoad () {
-        this.cvs = cc.find("Canvas");
         this.flySound = this.getComponent(cc.AudioSource);
         this.flySound.volume = 0.6;
         this.animations = this.getComponent(cc.Animation);
     }
 
     start () {
-        this.leftBound = -this.cvs.width / 2 + this.node.width / 2;
-        this.rightBound = this.cvs.width / 2 - this.node.width / 2;
+        this.leftBound = -this.game.getMainCanvas().width / 2 + this.node.width / 2;
+        this.rightBound = this.game.getMainCanvas().width / 2 - this.node.width / 2;
         this.upperBound = this.game.getPlayerUpperBound();
-        this.lowerBound = this.node.height / 2 -this.cvs.height / 2;
+        this.lowerBound = this.node.height / 2 -this.game.getMainCanvas().height / 2;
     }
 
     update (dt) {

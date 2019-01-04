@@ -9,24 +9,23 @@ export default class Asteroid extends cc.Component {
     private lowerBound: number = 0;
     private leftBound: number = 0;
     private rightBound: number = 0;
-    private cvs: cc.Node = null;
 
     game: Game = null;
 
     onLoad () {
-        this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.62;
-        this.leftBound = -this.cvs.width / 2 - 40;
-        this.rightBound = this.cvs.width / 2 + 40;
         this.node.setScale(0.3);
         this.rotationDir *= Math.random() < 0.5 ? -1 : 1;
     }
 
-    // start () {}
+    start () {
+        this.lowerBound = -this.game.getMainCanvas().height * 0.62;
+        this.leftBound = -this.game.getMainCanvas().width / 2 - 40;
+        this.rightBound = this.game.getMainCanvas().width / 2 + 40;
+    }
 
     update (dt) {
         if (cc.isValid(this.node)) {
-            this.node.rotation += this.rotationSpeed * dt * this.rotationDir;
+            this.node.angle += this.rotationSpeed * dt * this.rotationDir;
             if (this.node.y <= this.lowerBound) {
                 this.node.destroy();
             }

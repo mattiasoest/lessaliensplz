@@ -4,31 +4,28 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Enemy extends cc.Component {
-
     private readonly DAMP = 0.95;
 
     protected lowerBound: number = 0;
     protected leftBound: number = 0;
     protected rightBound: number = 0;
     protected isAllowedToFire: boolean = true;
-
+    protected game: Game = null;
     // Being set in the subclasses.
     protected hitPoints: number = 0;
-    private cvs: cc.Node = null;
     private applyForceLeft: boolean = false;
     private xSpeed = 0;
 
-    game: Game = null;
 
-    onLoad () {
-        this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.65;
-        this.leftBound = -this.cvs.width / 2;
-        this.rightBound = this.cvs.width / 2;
+    // Called from the subclasses
+    // When they are created.
+    initialize() {
+        // this.game = game;
+        this.lowerBound = -this.game.getMainCanvas().height * 0.65;
+        this.leftBound = -this.game.getMainCanvas().width / 2;
+        this.rightBound = this.game.getMainCanvas().width / 2;
         this.applyForceLeft = this.getComponent(cc.RigidBody).linearVelocity.x < 0 ? false : true;
     }
-
-    // start () {}
 
     update (dt) {
         if (cc.isValid(this.node)) {

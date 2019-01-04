@@ -18,9 +18,11 @@ export default class EnemyMedium extends Enemy {
     private numberOfBulletsFired = 0;
 
     start () {
+        super.initialize()
+        super.setLaserScheduler(this.FIRE_RATE, this.initiateLaser);
         this.laserSound = this.getComponent(cc.AudioSource);
         this.hitPoints = 1;
-        super.setLaserScheduler(this.FIRE_RATE, this.initiateLaser);
+        
     }
 
     update (dt) {
