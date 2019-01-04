@@ -41,9 +41,9 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
+      "x": 0.89453125,
+      "y": 0.89453125,
+      "z": 0.89453125
     },
     "_quat": {
       "__type__": "cc.Quat",
@@ -1077,12 +1077,12 @@
       }
     ],
     "_prefab": null,
-    "_opacity": 150,
+    "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 87,
+      "g": 228,
+      "b": 61,
       "a": 255
     },
     "_contentSize": {
@@ -2406,7 +2406,7 @@
       }
     ],
     "_prefab": null,
-    "_opacity": 235,
+    "_opacity": 210,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
