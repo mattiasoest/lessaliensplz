@@ -14,8 +14,14 @@ export default class Menu extends cc.Component {
     @property(cc.Button)
     exitButton: cc.Button = null;
 
+    @property(cc.Button)
+    howToButton: cc.Button = null;
+
     @property(cc.Label)
-    creditsLabel: cc.Button = null;
+    creditsLabel: cc.Label = null;
+
+    @property(cc.Label)
+    howToPlayLabel: cc.Label = null;
 
     @property(cc.Label)
     highScoreLabel: cc.Label = null;
@@ -29,15 +35,20 @@ export default class Menu extends cc.Component {
     @property(Game)
     game : Game = null;
 
-    private isCreditsRunning: boolean = false;
+    private isCreditsOpen: boolean = false;
+    private ishowToOpen: boolean = false;
     private creditsAction: cc.Action = null;
+    private howToAction: cc.Action = null;
 
     onLoad () {
         this.startButton.node.on('click', this.startCallback, this);
         this.creditsButton.node.on('click', this.creditsCallback, this);
         this.exitButton.node.on('click', this.exitCallback, this);
+        this.howToButton.node.on('click', this.howToCallback, this);
         this.creditsLabel.enabled = false;
         this.creditsLabel.node.opacity = 0;
+        this.howToPlayLabel.enabled = false;
+        this.howToPlayLabel.node.opacity = 0;
         
     }
 
@@ -52,31 +63,54 @@ export default class Menu extends cc.Component {
     startCallback() {
         cc.audioEngine.play(this.buttonSound, false, 0.8);
         this.creditsLabel.enabled = false;
+        this.howToPlayLabel.enabled = false;
         this.game.startGame();
     }
 
     creditsCallback() {
-        this.creditsLabel.node.on(cc.Node.EventType.TOUCH_START, () => this.creditsIsTouched());
-        this.isCreditsRunning = true;
+        this.creditsLabel.node.on(cc.Node.EventType.TOUCH_START, () => this.infoScreenIstouched());
+        this.isCreditsOpen = true;
         cc.audioEngine.play(this.buttonSound, false, 0.8);
         this.creditsLabel.enabled = true;
         this.node.active = false;
 
-        this.creditsAction = this.creditsLabel.node.runAction(cc.sequence(cc.fadeIn(0.75),cc.delayTime(5), cc.fadeOut(0.75), 
+        this.creditsAction = this.creditsLabel.node.runAction(cc.sequence(cc.fadeIn(0.75),cc.delayTime(6), cc.fadeOut(0.75), 
             cc.callFunc(()=> {
             this.creditsLabel.node.off(cc.Node.EventType.TOUCH_START);
-            this.isCreditsRunning = false;
+            this.isCreditsOpen = false;
             this.node.active = true
         })));
-
     }
 
-    creditsIsTouched() {
-        if (this.isCreditsRunning) {
+    howToCallback() {
+        this.howToPlayLabel.node.on(cc.Node.EventType.TOUCH_START, () => this.infoScreenIstouched());
+        this.ishowToOpen = true;
+        cc.audioEngine.play(this.buttonSound, false, 0.8);
+        this.howToPlayLabel.enabled = true;
+        this.node.active = false;
+
+        this.howToAction = this.howToPlayLabel.node.runAction(cc.sequence(cc.fadeIn(0.75),cc.delayTime(6), cc.fadeOut(0.75), 
+            cc.callFunc(()=> {
+            this.howToPlayLabel.node.off(cc.Node.EventType.TOUCH_START);
+            this.ishowToOpen = false;
+            this.node.active = true
+        })));
+    }
+
+    infoScreenIstouched() {
+        if (this.isCreditsOpen) {
+            this.isCreditsOpen = false;
             this.creditsLabel.node.stopAction(this.creditsAction);
             this.node.active = true
             this.creditsLabel.node.opacity = 0;
             this.creditsLabel.node.off(cc.Node.EventType.TOUCH_START);
+        }
+        else if (this.ishowToOpen) {
+            this.ishowToOpen = false;
+            this.howToPlayLabel.node.stopAction(this.howToAction);
+            this.node.active = true
+            this.howToPlayLabel.node.opacity = 0;
+            this.howToPlayLabel.node.off(cc.Node.EventType.TOUCH_START);
         }
     }
 
