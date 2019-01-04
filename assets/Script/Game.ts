@@ -233,7 +233,7 @@ export default class Game extends cc.Component {
 
     startGame() {
         this.setMenuInteractable(false);
-        this.menu.runAction(cc.sequence(cc.fadeOut(0.4), cc.callFunc(()=> this.menu.active = false)));
+        this.menu.active = false
         this.createPlayer();
         this.setupItemAutoGeneration();
 
@@ -290,7 +290,7 @@ export default class Game extends cc.Component {
             this.menu.getComponent("Menu").highScoreLabel.string = "High score: " + this.parseTime(this.bestTime, 2);
             this.saveLocalHighScore();
             setTimeout(() => {
-                cc.audioEngine.play(this.highScoreSound, false, 0.8);
+                cc.audioEngine.play(this.highScoreSound, false, 1);
                 // this.newHighScoreLabel.enabled = true;
                 this.newHighScoreLabel.string = "New high score: " + this.parseTime(this.bestTime, 2);
                 this.newHighScoreLabel.node.runAction(cc.sequence(cc.fadeIn(0.45),cc.delayTime(0.8), cc.fadeOut(0.45)));
@@ -305,8 +305,6 @@ export default class Game extends cc.Component {
             this.time = 0;
             this.setMenuInteractable(true);
             this.menu.active = true;
-            this.menu.opacity = 0;
-            this.menu.runAction(cc.fadeIn(0.45));
         }, 1200 + delay);
     }
 

@@ -127,7 +127,7 @@ export default class Player extends cc.Component {
     }
 
     makeInvincible() {
-        this.invincibleId = cc.audioEngine.play(this.invincibleSound, true, 0.4);
+        this.invincibleId = cc.audioEngine.play(this.invincibleSound, true, 0.75);
         this.isCurrentlyInvincible = true;
     }
 
