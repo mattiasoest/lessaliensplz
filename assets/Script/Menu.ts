@@ -17,6 +17,9 @@ export default class Menu extends cc.Component {
     @property(cc.Label)
     creditsLabel: cc.Button = null;
 
+    @property(cc.Label)
+    highScoreLabel: cc.Label = null;
+
     @property(cc.AudioClip)
     buttonSound: cc.AudioClip = null;
 

@@ -18,6 +18,9 @@ export default class Game extends cc.Component {
     ammoLabel: cc.Label = null;
 
     @property(cc.Label)
+    newHighScoreLabel: cc.Label = null;
+
+    @property(cc.Label)
     counterLabel: cc.Label = null;
 
     @property(cc.Prefab)
@@ -57,6 +60,9 @@ export default class Game extends cc.Component {
     rockExpSound: cc.AudioClip = null;
 
     @property(cc.AudioClip)
+    highScoreSound: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
     menuMusic: cc.AudioClip = null;
 
     @property(cc.AudioClip)
@@ -69,6 +75,7 @@ export default class Game extends cc.Component {
     upperBound: cc.Node = null;
 
     // CONSTANTS
+    private readonly BEST_TIME_KEY = "best_time";
     private readonly ASTEROID_SPAWN_RATE: number = 1.25;
     private readonly COIN_SPAWN_RATE: number = 1.5;
     private readonly AMMO_SPAWN_RATE: number = 7.1;
@@ -101,6 +108,7 @@ export default class Game extends cc.Component {
     private menuMusicId: number = -1;
     private gameMusicId: number = -1;
     private camera: cc.Camera = null;
+    private bestTime: number = 0;
 
     // Variables for player acceleration movement
     // Gets set depending on input from the user
@@ -120,14 +128,17 @@ export default class Game extends cc.Component {
         let physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
-        this.enableLabels(false);
+
+        this.enableStatsLabels(false);
+        this.newHighScoreLabel.node.opacity = 0;
         this.coinSound = this.getComponent(cc.AudioSource);
         this.scheduler = cc.director.getScheduler();
         this.menu.active = true;
         this.upperBound.active = false;
-        this.resetCounter();
+        this.resetInvincibleCounter();
         this.startBgMusic();
-        
+        this.checkLocalHighScore();
+
         // =========== DIFFERENT CONTROLS DEPENDING ON THE SYSTEM ===========
         if (this.isMobileDevice()) {
             cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this);
@@ -160,7 +171,7 @@ export default class Game extends cc.Component {
                     this.counterLabel.string = this.parseTime(this.invincibleTimer, 0);
                     if (this.invincibleTimer < 0) {
                         this.playerObject.makeNotInvincible();
-                        this.resetCounter();
+                        this.resetInvincibleCounter();
                     }
                 }
                 break;
@@ -226,7 +237,7 @@ export default class Game extends cc.Component {
         this.createPlayer();
         this.setupItemAutoGeneration();
 
-        this.enableLabels(true);
+        this.enableStatsLabels(true);
         this.scoreLabel.string = "Coins: " + this.coinScore;
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
 
@@ -259,7 +270,7 @@ export default class Game extends cc.Component {
     }
 
     resetGame() {
-        this.resetCounter();
+        this.resetInvincibleCounter();
         this.setGameState(this.GAME_STATE.MENU);
         this.playPlayerExplosionAnimation();
         this.player.getComponent(cc.RigidBody).enabledContactListener = false;
@@ -270,19 +281,36 @@ export default class Game extends cc.Component {
         this.isBoundAnimationPlaying = false;
         this.upperBound.opacity = 0;
 
+        let delay = 0;
+
+        if (this.time > this.bestTime) {
+            this.bestTime = this.time;
+            let timeout = 500;
+            delay = timeout + 1100;
+            this.menu.getComponent("Menu").highScoreLabel.string = "High score: " + this.parseTime(this.bestTime, 2);
+            this.saveLocalHighScore();
+            setTimeout(() => {
+                cc.audioEngine.play(this.highScoreSound, false, 0.8);
+                // this.newHighScoreLabel.enabled = true;
+                this.newHighScoreLabel.string = "New high score: " + this.parseTime(this.bestTime, 2);
+                this.newHighScoreLabel.node.runAction(cc.sequence(cc.fadeIn(0.45),cc.delayTime(0.8), cc.fadeOut(0.45)));
+                
+            }, timeout);
+        }
+
         // Let animation finish etc..
         setTimeout(() => {
             this.node.destroyAllChildren();
-            this.enableLabels(false);
+            this.enableStatsLabels(false);
             this.time = 0;
             this.setMenuInteractable(true);
             this.menu.active = true;
             this.menu.opacity = 0;
-            this.menu.runAction(cc.fadeIn(0.4));
-        }, 1250);
+            this.menu.runAction(cc.fadeIn(0.45));
+        }, 1250 + delay);
     }
 
-    resetCounter() {
+    resetInvincibleCounter() {
         this.invincibleTimer = this.getInvincibleDuration();
         this.counterLabel.enabled = false;
     }
@@ -298,6 +326,19 @@ export default class Game extends cc.Component {
     
     hitBound() {        
         this.isBoundHit = true;    
+    }
+
+    checkLocalHighScore() {
+        let localBest = cc.sys.localStorage.getItem(this.BEST_TIME_KEY);
+        
+        if (localBest !== null) {
+            this.bestTime = Number(localBest);
+            this.menu.getComponent("Menu").highScoreLabel.string = "High score: " + this.parseTime(this.bestTime, 2);
+        }
+    }
+
+    saveLocalHighScore() {
+        cc.sys.localStorage.setItem(this.BEST_TIME_KEY, this.bestTime);
     }
 
     playBoundSound() {
@@ -339,7 +380,7 @@ export default class Game extends cc.Component {
         }
     }
 
-    enableLabels(isEnabled: boolean) {
+    enableStatsLabels(isEnabled: boolean) {
         this.scoreLabel.enabled = isEnabled;
         this.timeLabel.enabled = isEnabled;
         this.ammoLabel.enabled = isEnabled;
