@@ -343,7 +343,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Background-1",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 6
     },
@@ -446,7 +446,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Background-2",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 6
     },
@@ -549,7 +549,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Background-3",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 6
     },
@@ -1276,7 +1276,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Game",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 2
     },
@@ -1353,7 +1353,7 @@
     "_mute": false,
     "_loop": false,
     "playOnLoad": false,
-    "preload": false,
+    "preload": true,
     "_id": "cft3zjzXFMMLqgfDV4IvBN"
   },
   {

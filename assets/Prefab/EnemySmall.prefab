@@ -8,7 +8,8 @@
       "__id__": 1
     },
     "optimizationPolicy": 0,
-    "asyncLoadAssets": false
+    "asyncLoadAssets": false,
+    "readonly": false
   },
   {
     "__type__": "cc.Node",
@@ -71,8 +72,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_quat": {
       "__type__": "cc.Quat",
       "x": 0,
@@ -83,7 +82,10 @@
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
+    "_is3DNode": false,
     "groupIndex": 0,
+    "_rotationX": 0,
+    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -131,10 +133,6 @@
       },
       {
         "__uuid__": "a7b14946-4770-4c92-9c2e-604a3c57d5f3"
-      },
-      null,
-      {
-        "__uuid__": "84db2c5e-4028-4271-9fa9-bcb0bb8a7439"
       }
     ],
     "playOnLoad": true,
@@ -198,9 +196,6 @@
       "__id__": 1
     },
     "_enabled": true,
-    "redLaser": {
-      "__uuid__": "49ef048f-1407-4b3c-bec2-d1d3afbb16be"
-    },
     "_id": ""
   },
   {
