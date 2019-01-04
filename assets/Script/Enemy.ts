@@ -83,7 +83,7 @@ export default class Enemy extends cc.Component {
             this.game.playRockExplosion();
             this.getComponent(cc.Animation).play("Explosion");
             let isAlive = this.game.isPlayerAlive();
-            if (!this.game.player.getComponent("PlayerControl").isInvincible() && isAlive) {
+            if (!this.game.getPlayerObject().isInvincible() && isAlive) {
                 // Will destroy itself after the animation.
                 this.game.resetGame();
             }

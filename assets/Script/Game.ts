@@ -1,44 +1,10 @@
 import InvincibleEffect from "./InvincibleEffect";
-import PlayerControl from "./PlayerControl";
+import Player from "./Player";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Game extends cc.Component {
-    // CONSTANTS
-    private readonly ASTEROID_SPAWN_RATE: number = 1.25;
-    private readonly COIN_SPAWN_RATE: number = 1.5;
-    private readonly AMMO_SPAWN_RATE: number = 7.1;
-    private readonly AMMO_PER_BOX: number = 12;
-    private readonly ENEMY_SPAWN_RATE: number = 8;
-    private readonly INVINCIBLE_DURATION: number = 5;
-    
-    public readonly GAME_STATE = { PLAY : 0, MENU : 1 }
-
-    currentState = this.GAME_STATE.MENU;
-
-    // NORMAL INSTANCE VARIABLES
-    private currentAmmo: number = this.AMMO_PER_BOX;
-    private coinScore: number = 0;
-    private coinSound: cc.AudioSource = null;
-    private time: number = 0;
-    private gravity: number = -70;
-    private cvs: cc.Node = null;
-    private scheduler: cc.Scheduler = null;
-    private invincibleParticleObject: InvincibleEffect = null;
-    private isAlive = true;
-    private isBoundHit = false;
-    private increaseOpacity = true;
-    private isBoundAnimationPlaying: boolean = false;
-    private invincibleTimer: number = this.INVINCIBLE_DURATION;
-    private menuMusicId = -1;
-    private gameMusicId = -1;
-    private playerObject: PlayerControl = null;
-
-    private camera: cc.Camera = null;
-
-    player: cc.Node = null;
-    
     @property(cc.Node)
     menu: cc.Node = null;
 
@@ -96,11 +62,59 @@ export default class Game extends cc.Component {
     @property(cc.AudioClip)
     gameplayMusic: cc.AudioClip = null;
 
+    @property(cc.AudioClip)
+    upperBoundSound: cc.AudioClip = null;
+
     @property(cc.Node)
     upperBound: cc.Node = null;
 
+    // CONSTANTS
+    private readonly ASTEROID_SPAWN_RATE: number = 1.25;
+    private readonly COIN_SPAWN_RATE: number = 1.5;
+    private readonly AMMO_SPAWN_RATE: number = 7.1;
+    private readonly AMMO_PER_BOX: number = 12;
+    private readonly ENEMY_SPAWN_RATE: number = 8;
+    private readonly INVINCIBLE_DURATION: number = 5;
+    private readonly MOBILE_ACC_MULTIPLIER = 2.7;
+    public readonly GAME_STATE = { PLAY : 0, MENU : 1 }
+
+    currentState = this.GAME_STATE.MENU;
+
+    // NORMAL INSTANCE VARIABLES
+    private currentAmmo: number = this.AMMO_PER_BOX;
+    private coinScore: number = 0;
+    private coinSound: cc.AudioSource = null;
+    private time: number = 0;
+    private gravity: number = -70;
+    private cvs: cc.Node = null;
+    private scheduler: cc.Scheduler = null;
+    private invincibleParticleObject: InvincibleEffect = null;
+    private isAlive = true;
+    private isBoundHit = false;
+    private increaseOpacity = true;
+    private isBoundAnimationPlaying: boolean = false;
+    private invincibleTimer: number = this.INVINCIBLE_DURATION;
+    private boundId = -1;
+    private justPlayedBoundSound: boolean = false;
+    private playerObject: Player = null;
+    private isMobile: boolean = false;
+    private menuMusicId: number = -1;
+    private gameMusicId: number = -1;
+    private camera: cc.Camera = null;
+
+    // Variables for player acceleration movement
+    // Gets set depending on input from the user
+    private accLeft: boolean = false;
+    private accRight: boolean = false;
+    private accUp: boolean = false;
+    private accDown: boolean = false;
+    private xAccelerometer: number = 0;
+    private yAccelerometer: number = 0;
+
+    player: cc.Node = null;
 
     onLoad () {
+        this.setisMobileDevice();
         this.cvs = cc.find("Canvas");
         // Setup physics engine.
         let physicsManager = cc.director.getPhysicsManager();
@@ -113,10 +127,17 @@ export default class Game extends cc.Component {
         this.upperBound.active = false;
         this.resetCounter();
         this.startBgMusic();
-
-        // MOBILE
-        // this.node.on('mousedown', () => this.spawnBlueLaser());
-        this.node.on(cc.Node.EventType.TOUCH_START, () => this.spawnBlueLaser());
+        
+        // =========== DIFFERENT CONTROLS DEPENDING ON THE SYSTEM ===========
+        if (this.isMobileDevice()) {
+            cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this);
+            cc.systemEvent.setAccelerometerEnabled(true);
+            this.node.on(cc.Node.EventType.TOUCH_START, () => this.spawnBlueLaser());
+        }
+        else {
+            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        }
     }
 
     start () {
@@ -148,10 +169,56 @@ export default class Game extends cc.Component {
         }
     }
 
+    getPlayerObject() {
+        return this.playerObject;
+    }
+    getInvincibleDuration() {
+        return this.INVINCIBLE_DURATION;
+    }
+
+    getPlayerUpperBound() {
+        return -this.cvs.height * 0.18;
+    }
+
+    isPlayerAlive() {
+        return this.isAlive;
+    }
+
+    isMobileDevice() {
+        return this.isMobile;
+    }
+
+    setisMobileDevice() {
+        this.isMobile = cc.sys.isMobile;
+    }
+
+    getAccelerometerX() {
+        return this.xAccelerometer
+    }
+
+    getAccelerometerY() {
+        return this.yAccelerometer
+    }
+
+    isAccUp() {
+        return this.accUp
+    }
+
+    isAccDown() {
+        return this.accDown;
+    }
+
+    isAccLeft() {
+        return this.accLeft
+    }
+
+    isAccRight() {
+        return this.accRight;
+    }
+
     startGame() {
         this.setMenuInteractable(false);
         this.menu.runAction(cc.sequence(cc.fadeOut(0.4), cc.callFunc(()=> this.menu.active = false)));
-        // this.menu.active = false
         this.createPlayer();
         this.setupItemAutoGeneration();
 
@@ -215,12 +282,37 @@ export default class Game extends cc.Component {
         this.invincibleTimer = this.getInvincibleDuration();
         this.counterLabel.enabled = false;
     }
+
+    resetInputAcceleration() {
+        this.accLeft = false;
+        this.accRight = false;
+        this.accUp = false;
+        this.accDown = false;
+        this.xAccelerometer = 0;
+        this.yAccelerometer = 0;
+    }
     
     hitBound() {        
         this.isBoundHit = true;    
     }
 
-    checkTopBoundAnimation(dt) {
+    playBoundSound() {
+        if (!this.justPlayedBoundSound) {
+            this.justPlayedBoundSound = true;
+            this.boundId = cc.audioEngine.play(this.upperBoundSound, false, 1);
+            this.hitBound();
+            if (this.isMobileDevice()) {
+                cc.audioEngine.setFinishCallback(this.boundId,
+                    () => this.yAccelerometer > 0 ? this.justPlayedBoundSound = true : this.justPlayedBoundSound = false);
+            }
+            else {
+                cc.audioEngine.setFinishCallback(this.boundId,
+                    () => this.isAccUp ? this.justPlayedBoundSound = true : this.justPlayedBoundSound = false);
+            }
+        }
+    }
+
+    checkTopBoundAnimation(dt: number) {
         if (this.isBoundHit) {
             this.isBoundHit = false;
             if (!this.isBoundAnimationPlaying) {
@@ -282,7 +374,6 @@ export default class Game extends cc.Component {
             if (!this.playerObject.isInvincible()) {
                 this.playerObject.makeInvincible();
             }
-
         }
         this.scoreLabel.string = "Coins: " + this.coinScore;
     }
@@ -298,11 +389,11 @@ export default class Game extends cc.Component {
     }
 
     // ========== DYNAMICALLY OBJECT CREATORS ==========
-
     createPlayer() {
+        this.resetInputAcceleration();
         this.player = cc.instantiate(this.playerFab);
         this.node.addChild(this.player);
-        this.playerObject = this.player.getComponent("PlayerControl");
+        this.playerObject = this.player.getComponent("Player");
         // Push reference of the game object
         this.playerObject.game = this;
         this.invincibleParticleObject = this.player.getChildByName("Particles").getComponent("InvincibleEffect");
@@ -402,20 +493,6 @@ export default class Game extends cc.Component {
         newEnemy.setPosition(this.generateRandomPos());
     }
 
-    getInvincibleDuration() {
-        return this.INVINCIBLE_DURATION;
-    }
-
-    getPlayerUpperBound() {
-        return -this.cvs.height * 0.18;
-    }
-
-
-    isPlayerAlive() {
-        return this.isAlive;
-    }
-
-
     setupItemAutoGeneration() {
         this.setCoinScheduler();
         this.setAsteroidScheduler();
@@ -451,5 +528,88 @@ export default class Game extends cc.Component {
 
     setEnemyScheduler() {
         this.scheduler.schedule(this.spawnRandomEnemy, this, this.ENEMY_SPAWN_RATE, false);
+    }
+
+    // ========== INPUT HANDLING ==========
+    onKeyDown(event: cc.Event.EventKeyboard) {
+        
+        if (this.isPlayerAlive()) {
+            switch(event.keyCode) {
+                case cc.macro.KEY.left:
+                    if (!this.playerObject.isTurnLeftAnimationPlaying()) {
+                        this.playerObject.playFlySound();
+                        this.playerObject.setTurnLeftAnimationPlaying(true);
+                        this.playerObject.getShipAnimations().play("PlayerLeft");
+                    }
+                    this.accLeft = true;
+                    break;
+                case cc.macro.KEY.right:
+                if (!this.playerObject.isTurnRightAnimationPlaying()) {
+                    this.playerObject.playFlySound();
+                    this.playerObject.setTurnRightAnimationPlaying(true);
+                    this.playerObject.getShipAnimations().play("PlayerRight");
+                    }
+                    this.accRight = true;
+                    break;
+                case cc.macro.KEY.up:
+                    this.accUp = true;
+                    break;
+                case cc.macro.KEY.down:
+                    this.justPlayedBoundSound = false;
+                    this.accDown = true;
+                    break;
+                case cc.macro.KEY.space:
+                    break;
+                case cc.macro.KEY.back:
+                    cc.audioEngine.stopAll();
+                    cc.game.end();
+                    break;
+            }
+        }
+    }
+
+    onKeyUp(event: cc.Event.EventKeyboard) {
+        if (this.isPlayerAlive()) {
+            switch(event.keyCode) {
+                case cc.macro.KEY.left:
+                    this.playerObject.setTurnLeftAnimationPlaying(false);
+                    this.playerObject.getShipAnimations().play("PlayerNormal");
+                    this.accLeft = false;
+                    break;
+                case cc.macro.KEY.right:
+                    this.playerObject.setTurnRightAnimationPlaying(false);
+                    this.playerObject.getShipAnimations().play("PlayerNormal");
+                    this.accRight = false;
+                    break;
+                case cc.macro.KEY.up:
+                    this.accUp = false;
+                    break;
+                case cc.macro.KEY.down:
+                    this.accDown = false;
+                    break;
+                case cc.macro.KEY.space:
+                    this.spawnBlueLaser();
+                    break;
+            }
+        }
+    }
+
+    onDeviceMotionEvent(event: any) {
+        this.xAccelerometer = event.acc.x;
+        this.yAccelerometer = event.acc.y;
+        // Normal player holds the device in a tilted state
+        // Adjust the y for better "feel"
+        let tiltOffset = 0.3;
+        this.yAccelerometer += tiltOffset;
+        // Cap it to 1 /  this.MOBILE_ACC_MULTIPLIER angle of the device
+        if (Math.abs(this.xAccelerometer) > (1 / this.MOBILE_ACC_MULTIPLIER)) {
+            this.xAccelerometer = Math.sign(this.xAccelerometer) * (1 / this.MOBILE_ACC_MULTIPLIER);
+
+        }
+        if (Math.abs(this.yAccelerometer) > (1 / this.MOBILE_ACC_MULTIPLIER)) {
+            this.yAccelerometer = Math.sign(this.yAccelerometer) * (1 / this.MOBILE_ACC_MULTIPLIER);
+        }
+        this.xAccelerometer *= this.MOBILE_ACC_MULTIPLIER;
+        this.yAccelerometer *= this.MOBILE_ACC_MULTIPLIER;
     }
 }

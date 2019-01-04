@@ -39,7 +39,6 @@ export default class Coin extends cc.Component {
                     this.node.destroy();
                 }
             }
-
             if (this.node.y <= this.lowerBound) {
                 this.node.destroy();
             }

@@ -30,8 +30,11 @@ export default class EnemyBig extends Enemy {
                 let angle = -37.5;
                 let offset = -20;
                 for (let i = 0; i < 7; i++) {
-                    this.game.spawnEnemyLaser(offset, this.node, cc.v2(Math.sin(angle /  (180 / Math.PI)) * this.LASER_SPEED,
-                                         Math.cos(angle / (180 / Math.PI)) * -this.LASER_SPEED));
+                    
+                    this.game.spawnEnemyLaser(offset, this.node,
+                         cc.v2(Math.sin(angle /  (180 / Math.PI)) * this.LASER_SPEED,
+                             Math.cos(angle / (180 / Math.PI)) * -this.LASER_SPEED));
+
                     angle += 12.5;
                     offset += 10;
                 }
