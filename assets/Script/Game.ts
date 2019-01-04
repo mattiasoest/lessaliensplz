@@ -79,8 +79,8 @@ export default class Game extends cc.Component {
 
     // CONSTANTS
     private readonly BEST_TIME_KEY = "best_time";
-    private readonly ASTEROID_SPAWN_RATE: number = 1.25;
-    private readonly COIN_SPAWN_RATE: number = 1.5;
+    private readonly ASTEROID_SPAWN_RATE: number = 1.2;
+    private readonly COIN_SPAWN_RATE: number = 1.45;
     private readonly AMMO_SPAWN_RATE: number = 7.1;
     private readonly AMMO_PER_BOX: number = 12;
     private readonly ENEMY_SPAWN_RATE: number = 8;

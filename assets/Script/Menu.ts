@@ -104,6 +104,7 @@ export default class Menu extends cc.Component {
             this.node.active = true
             this.creditsLabel.node.opacity = 0;
             this.creditsLabel.node.off(cc.Node.EventType.TOUCH_START);
+            this.creditsLabel.enabled = false;
         }
         else if (this.ishowToOpen) {
             this.ishowToOpen = false;
@@ -111,6 +112,7 @@ export default class Menu extends cc.Component {
             this.node.active = true
             this.howToPlayLabel.node.opacity = 0;
             this.howToPlayLabel.node.off(cc.Node.EventType.TOUCH_START);
+            this.howToPlayLabel.enabled = false;
         }
     }
 
