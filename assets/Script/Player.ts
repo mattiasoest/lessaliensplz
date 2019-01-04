@@ -68,12 +68,14 @@ export default class Player extends cc.Component {
         }
 
         // Y-Screen bounds
-        if (this.node.y <= this.lowerBound) {
+        if (this.node.y < this.lowerBound) {
+            this.game.playBoundEffect(false);
             this.node.y = this.lowerBound;
+            this.ySpeed = 0;
         }
         else if (this.node.y > this.upperBound) {
-            this.game.playBoundSound();
-            this.node.y = this.upperBound -1;
+            this.game.playBoundEffect(true);
+            this.node.y = this.upperBound;
             this.ySpeed = 0;
         }
     }

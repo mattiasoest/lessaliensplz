@@ -74,6 +74,9 @@ export default class Game extends cc.Component {
     @property(cc.Node)
     upperBound: cc.Node = null;
 
+    @property(cc.Node)
+    lowerBound: cc.Node = null;
+
     // CONSTANTS
     private readonly BEST_TIME_KEY = "best_time";
     private readonly ASTEROID_SPAWN_RATE: number = 1.25;
@@ -83,6 +86,7 @@ export default class Game extends cc.Component {
     private readonly ENEMY_SPAWN_RATE: number = 8;
     private readonly INVINCIBLE_DURATION: number = 5;
     private readonly MOBILE_ACC_MULTIPLIER = 2.7;
+    private readonly ACCELEROMETER_TILT_OFFSET: number = 0.32;
     public readonly GAME_STATE = { PLAY : 0, MENU : 1 }
 
     currentState = this.GAME_STATE.MENU;
@@ -97,12 +101,15 @@ export default class Game extends cc.Component {
     private scheduler: cc.Scheduler = null;
     private invincibleParticleObject: InvincibleEffect = null;
     private isAlive = true;
-    private isBoundHit = false;
+    private isUpperBoundHit = false;
+    private isLowerBoundHit = false;
     private increaseOpacity = true;
-    private isBoundAnimationPlaying: boolean = false;
+    private isUpperBoundAnimationPlaying: boolean = false;
+    private isLowerBoundAnimationPlaying: boolean = false;
     private invincibleTimer: number = this.INVINCIBLE_DURATION;
     private boundId = -1;
-    private justPlayedBoundSound: boolean = false;
+    private justPlayedUpperBoundSound: boolean = false;
+    private justPlayedLowerBoundSound: boolean = false;
     private playerObject: Player = null;
     private isMobile: boolean = false;
     private menuMusicId: number = -1;
@@ -136,6 +143,7 @@ export default class Game extends cc.Component {
         this.scheduler = cc.director.getScheduler();
         this.menu.active = true;
         this.upperBound.active = false;
+        this.lowerBound.active = false;
         this.resetInvincibleCounter();
         this.startBgMusic();
         this.checkLocalHighScore();
@@ -165,6 +173,7 @@ export default class Game extends cc.Component {
         switch (this.currentState) {
             case this.GAME_STATE.PLAY:
                 this.checkTopBoundAnimation(dt);
+                this.checkLowBoundAnimation(dt);
                 this.time += dt;
                 this.timeLabel.string = "Time: " + this.parseTime(this.time, 2);
                 if (this.playerObject.isInvincible()) {
@@ -246,6 +255,8 @@ export default class Game extends cc.Component {
         this.upperBound.y = this.upperBound.height / 2 + this.getPlayerUpperBound() + this.player.height / 2;
         this.upperBound.active = true;
         this.upperBound.opacity = 0;
+        this.lowerBound.active = true;
+        this.lowerBound.opacity = 0;
     }
 
     setMenuInteractable(value: boolean) {
@@ -279,11 +290,9 @@ export default class Game extends cc.Component {
         this.coinScore = 0;
         this.currentAmmo = this.AMMO_PER_BOX;
         this.endRandomGeneration();
-        this.isBoundAnimationPlaying = false;
-        this.upperBound.opacity = 0;
+        this.resetBoundEffectParameters()
 
         let delay = 0;
-
         if (this.time > this.bestTime) {
             this.bestTime = this.time;
             let timeout = 500;
@@ -309,6 +318,15 @@ export default class Game extends cc.Component {
         }, 1200 + delay);
     }
 
+    resetBoundEffectParameters() {
+        this.isUpperBoundAnimationPlaying = false;
+        this.isLowerBoundAnimationPlaying = false;
+        this.justPlayedLowerBoundSound = false;
+        this.justPlayedUpperBoundSound = false;
+        this.upperBound.opacity = 0;
+        this.lowerBound.opacity = 0;
+    }
+
     resetInvincibleCounter() {
         this.invincibleTimer = this.getInvincibleDuration();
         this.counterLabel.enabled = false;
@@ -323,8 +341,8 @@ export default class Game extends cc.Component {
         this.yAccelerometer = 0;
     }
     
-    hitBound() {        
-        this.isBoundHit = true;    
+    hitBound(isUpperBound: boolean) {
+        isUpperBound ? this.isUpperBoundHit = true : this.isLowerBoundHit = true;       
     }
 
     checkLocalHighScore() {
@@ -339,30 +357,48 @@ export default class Game extends cc.Component {
         cc.sys.localStorage.setItem(this.BEST_TIME_KEY, this.bestTime);
     }
 
-    playBoundSound() {
-        if (!this.justPlayedBoundSound) {
-            this.justPlayedBoundSound = true;
-            this.boundId = cc.audioEngine.play(this.upperBoundSound, false, 1);
-            this.hitBound();
-            if (this.isMobileDevice()) {
-                cc.audioEngine.setFinishCallback(this.boundId,
-                    () => this.yAccelerometer > 0 ? this.justPlayedBoundSound = true : this.justPlayedBoundSound = false);
+    playBoundEffect(isUpperBound: boolean) {
+        if (isUpperBound) {
+            if (!this.justPlayedUpperBoundSound) {
+                this.justPlayedUpperBoundSound = true;
+                this.boundId = cc.audioEngine.play(this.upperBoundSound, false, 1);
+                this.hitBound(isUpperBound);
+                    if (this.isMobileDevice()) {
+                        cc.audioEngine.setFinishCallback(this.boundId,
+                            () => this.yAccelerometer > 0 ? this.justPlayedUpperBoundSound = true : this.justPlayedUpperBoundSound = false);
+                    }
+                    else {
+                        cc.audioEngine.setFinishCallback(this.boundId,
+                            () => this.isAccUp ? this.justPlayedUpperBoundSound = true : this.justPlayedUpperBoundSound = false);
+                    }
+                }
             }
             else {
-                cc.audioEngine.setFinishCallback(this.boundId,
-                    () => this.isAccUp ? this.justPlayedBoundSound = true : this.justPlayedBoundSound = false);
+                if (!this.justPlayedLowerBoundSound) {
+                    this.justPlayedLowerBoundSound = true;
+                    this.boundId = cc.audioEngine.play(this.upperBoundSound, false, 1);
+                    this.hitBound(isUpperBound);
+                    //=============== TODO =============== 
+                    if (this.isMobileDevice()) {
+                        cc.audioEngine.setFinishCallback(this.boundId,
+                            () => this.yAccelerometer < 0 ? this.justPlayedLowerBoundSound = true : this.justPlayedLowerBoundSound = false);
+                    }
+                    else {
+                        cc.audioEngine.setFinishCallback(this.boundId,
+                            () => this.isAccDown ? this.justPlayedLowerBoundSound = true : this.justPlayedLowerBoundSound = false);
+                    }
+                }
             }
-        }
     }
 
     checkTopBoundAnimation(dt: number) {
-        if (this.isBoundHit) {
-            this.isBoundHit = false;
-            if (!this.isBoundAnimationPlaying) {
-                this.isBoundAnimationPlaying = true;
+        if (this.isUpperBoundHit) {
+            this.isUpperBoundHit = false;
+            if (!this.isUpperBoundAnimationPlaying) {
+                this.isUpperBoundAnimationPlaying = true;
             }
         }
-        else if (this.isBoundAnimationPlaying) {
+        else if (this.isUpperBoundAnimationPlaying) {
             if (this.increaseOpacity && this.upperBound.opacity < 220) {
                 this.upperBound.opacity += 950 * dt;
             }
@@ -373,7 +409,30 @@ export default class Game extends cc.Component {
             else {
                 this.upperBound.opacity = 0;
                 this.increaseOpacity = true;
-                this.isBoundAnimationPlaying = false;
+                this.isUpperBoundAnimationPlaying = false;
+            }
+        }
+    }
+
+    checkLowBoundAnimation(dt: number) {
+        if (this.isLowerBoundHit) {
+            this.isLowerBoundHit = false;
+            if (!this.isLowerBoundAnimationPlaying) {
+                this.isLowerBoundAnimationPlaying = true;
+            }
+        }
+        else if (this.isLowerBoundAnimationPlaying) {
+            if (this.increaseOpacity && this.lowerBound.opacity < 220) {
+                this.lowerBound.opacity += 950 * dt;
+            }
+            else if(this.lowerBound.opacity > 0) {
+                this.increaseOpacity = false;
+                this.lowerBound.opacity -= 950 * dt;
+            }
+            else {
+                this.lowerBound.opacity = 0;
+                this.increaseOpacity = true;
+                this.isLowerBoundAnimationPlaying = false;
             }
         }
     }
@@ -595,10 +654,11 @@ export default class Game extends cc.Component {
                     this.accRight = true;
                     break;
                 case cc.macro.KEY.up:
+                    this.justPlayedLowerBoundSound = false;
                     this.accUp = true;
                     break;
                 case cc.macro.KEY.down:
-                    this.justPlayedBoundSound = false;
+                    this.justPlayedUpperBoundSound = false;
                     this.accDown = true;
                     break;
                 case cc.macro.KEY.space:
@@ -642,8 +702,8 @@ export default class Game extends cc.Component {
         this.yAccelerometer = event.acc.y;
         // Normal player holds the device in a tilted state
         // Adjust the y for better "feel"
-        let tiltOffset = 0.3;
-        this.yAccelerometer += tiltOffset;
+
+        this.yAccelerometer += this.ACCELEROMETER_TILT_OFFSET;
         // Cap it to 1 /  this.MOBILE_ACC_MULTIPLIER angle of the device
         if (Math.abs(this.xAccelerometer) > (1 / this.MOBILE_ACC_MULTIPLIER)) {
             this.xAccelerometer = Math.sign(this.xAccelerometer) * (1 / this.MOBILE_ACC_MULTIPLIER);
@@ -654,5 +714,12 @@ export default class Game extends cc.Component {
         }
         this.xAccelerometer *= this.MOBILE_ACC_MULTIPLIER;
         this.yAccelerometer *= this.MOBILE_ACC_MULTIPLIER;
+
+        if (this.yAccelerometer < 0) {
+            this.justPlayedUpperBoundSound = false;
+        }
+        if (this.yAccelerometer > 0 ) {
+            this.justPlayedLowerBoundSound = false;
+        }
     }
 }
