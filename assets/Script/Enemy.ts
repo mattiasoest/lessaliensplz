@@ -21,9 +21,9 @@ export default class Enemy extends cc.Component {
     // When they are created.
     initialize() {
         // this.game = game;
-        this.lowerBound = -this.game.getMainCanvas().height * 0.65;
-        this.leftBound = -this.game.getMainCanvas().width / 2;
-        this.rightBound = this.game.getMainCanvas().width / 2;
+        this.lowerBound = -this.game.getMainCanvas().height * 0.6;
+        this.leftBound = -this.game.getMainCanvas().width * 0.5;
+        this.rightBound = this.game.getMainCanvas().width * 0.5;
         this.applyForceLeft = this.getComponent(cc.RigidBody).linearVelocity.x < 0 ? false : true;
     }
 
@@ -34,7 +34,7 @@ export default class Enemy extends cc.Component {
             if (this.node.y <= this.lowerBound * 0.6) {
                 this.isAllowedToFire = false;
             }
-            if (this.node.y <= this.lowerBound) {
+            if (this.node.y < this.lowerBound) {
                 this.node.destroy();
             }
         }

@@ -19,8 +19,10 @@ export default class Asteroid extends cc.Component {
 
     start () {
         this.lowerBound = -this.game.getMainCanvas().height * 0.62;
-        this.leftBound = -this.game.getMainCanvas().width / 2 - 40;
-        this.rightBound = this.game.getMainCanvas().width / 2 + 40;
+        this.leftBound = -this.game.getMainCanvas().width * 0.5 + this.node.width * 0.5 * this.node.scale;
+        this.rightBound = this.game.getMainCanvas().width * 0.5 - this.node.width * 0.5 * this.node.scale;
+        // this.leftBound = -this.game.getMainCanvas().width / 2 - 40;
+        // this.rightBound = this.game.getMainCanvas().width / 2 + 40;
     }
 
     update (dt) {

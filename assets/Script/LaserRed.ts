@@ -17,10 +17,10 @@ export default class LaserRed extends cc.Component {
     }
 
     start () {
-        this.lowerBound = -this.game.getMainCanvas().height;
-        this.leftBound = -this.game.getMainCanvas().width;
-        this.rightBound = this.game.getMainCanvas().width;
-        this.upperBound = this.game.getMainCanvas().height;
+        this.lowerBound = -this.game.getMainCanvas().height * 0.6;
+        this.leftBound = -this.game.getMainCanvas().width * 0.5;
+        this.rightBound = this.game.getMainCanvas().width * 0.5;
+        this.upperBound = this.game.getMainCanvas().height * 0.5;
     }
 
     update (dt) {
