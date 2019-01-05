@@ -9,16 +9,14 @@ var Ammo = /** @class */ (function (_super) {
     function Ammo() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.lowerBound = 0;
-        _this.cvs = null;
         _this.game = null;
         return _this;
     }
-    Ammo.prototype.onLoad = function () {
-        this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.62;
-    };
-    // start () {
+    // onLoad () {
     // }
+    Ammo.prototype.start = function () {
+        this.lowerBound = -this.game.getMainCanvas().height * 0.62;
+    };
     Ammo.prototype.update = function (dt) {
         if (cc.isValid(this.node)) {
             if (this.node.y <= this.lowerBound) {

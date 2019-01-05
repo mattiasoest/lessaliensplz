@@ -18,10 +18,11 @@ var EnemyBig = /** @class */ (function (_super) {
         return _this;
     }
     EnemyBig.prototype.start = function () {
-        this.laserSound = this.getComponent(cc.AudioSource);
-        this.laserSound.volume = 0.6;
-        this.hitPoints = 1;
+        _super.prototype.initialize.call(this);
         _super.prototype.setLaserScheduler.call(this, this.FIRE_RATE, this.initiateLaser);
+        this.laserSound = this.getComponent(cc.AudioSource);
+        this.laserSound.volume = 0.5;
+        this.hitPoints = 1;
     };
     EnemyBig.prototype.update = function (dt) {
         _super.prototype.update.call(this, dt);

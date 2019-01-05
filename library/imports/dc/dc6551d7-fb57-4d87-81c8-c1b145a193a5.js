@@ -22,9 +22,10 @@ var EnemySmall = /** @class */ (function (_super) {
         return _this;
     }
     EnemySmall.prototype.start = function () {
+        _super.prototype.initialize.call(this);
+        _super.prototype.setLaserScheduler.call(this, this.FIRE_RATE, this.initiateLaser);
         this.laserSound = this.getComponent(cc.AudioSource);
         this.hitPoints = 0;
-        _super.prototype.setLaserScheduler.call(this, this.FIRE_RATE, this.initiateLaser);
     };
     EnemySmall.prototype.update = function (dt) {
         _super.prototype.update.call(this, dt);
@@ -35,7 +36,6 @@ var EnemySmall = /** @class */ (function (_super) {
                 this.burstTimer += dt;
                 if (this.burstTimer >= this.LASER_INTERVAL && this.numberOfBulletsFired < this.BULLET_BURST) {
                     this.burstTimer = 0;
-                    // Local xPos (center)
                     this.game.spawnEnemyLaser(0, this.node, cc.v2(Math.sin(this.node.rotation / (-180 / Math.PI)) * this.LASER_SPEED, Math.cos(this.node.rotation / (-180 / Math.PI)) * -this.LASER_SPEED));
                     this.laserSound.play();
                     this.numberOfBulletsFired++;

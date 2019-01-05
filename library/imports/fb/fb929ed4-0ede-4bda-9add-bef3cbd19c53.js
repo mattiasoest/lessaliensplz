@@ -13,20 +13,18 @@ var LaserRed = /** @class */ (function (_super) {
         _this.leftBound = 0;
         _this.rightBound = 0;
         _this.upperBound = 0;
-        _this.cvs = null;
         _this.game = null;
         return _this;
     }
     LaserRed.prototype.onLoad = function () {
         this.playerFireSound = this.getComponent(cc.AudioSource);
-        this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height;
-        this.leftBound = -this.cvs.width;
-        this.rightBound = this.cvs.width;
-        this.upperBound = this.cvs.height;
     };
-    // start () {
-    // }
+    LaserRed.prototype.start = function () {
+        this.lowerBound = -this.game.getMainCanvas().height * 0.6;
+        this.leftBound = -this.game.getMainCanvas().width * 0.5;
+        this.rightBound = this.game.getMainCanvas().width * 0.5;
+        this.upperBound = this.game.getMainCanvas().height * 0.5;
+    };
     LaserRed.prototype.update = function (dt) {
         if (cc.isValid(this.node)) {
             if (this.isOutOfBounds()) {
@@ -43,8 +41,7 @@ var LaserRed = /** @class */ (function (_super) {
             this.game.playRockExplosion();
             selfCollider.node.destroy();
             var isAlive = this.game.isPlayerAlive();
-            if (!this.game.player.getComponent("PlayerControl").isInvincible() && isAlive) {
-                // this.game.player.getComponent(cc.RigidBody).enabledContactListener = false;
+            if (!this.game.getPlayerObject().isInvincible() && isAlive) {
                 this.game.resetGame();
             }
         }

@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "Credits",
+    "_name": "HowToPlay",
     "_objFlags": 0,
     "_native": "",
     "data": {
@@ -13,12 +13,12 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Credits",
+    "_name": "HowToPlay",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
     "_active": true,
-    "_level": 1,
+    "_level": 2,
     "_components": [
       {
         "__id__": 2
@@ -30,15 +30,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 87,
+      "g": 228,
+      "b": 61,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 240,
-      "height": 180
+      "width": 252,
+      "height": 440
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -47,8 +47,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 124,
-      "y": 200,
+      "x": 2,
+      "y": 0,
       "z": 0
     },
     "_scale": {
@@ -57,8 +57,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_quat": {
       "__type__": "cc.Quat",
       "x": 0,
@@ -69,7 +67,10 @@
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
+    "_is3DNode": false,
     "groupIndex": 0,
+    "_rotationX": 0,
+    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -83,13 +84,15 @@
     "_srcBlendFactor": 1,
     "_dstBlendFactor": 771,
     "_useOriginalSize": false,
-    "_string": "Graphics by\n  ansimuz.com\n  various artists @ opengameart.org\n\nMusic by\n  http://opengameart.org/users/joth\n  https://soundcloud.com/alexandr-zhelanov",
-    "_N$string": "Graphics by\n  ansimuz.com\n  various artists @ opengameart.org\n\nMusic by\n  http://opengameart.org/users/joth\n  https://soundcloud.com/alexandr-zhelanov",
-    "_fontSize": 12,
+    "_string": "Controls\n - Tilt the device to steer\n - Tap the screen to shoot\n\nGameplay\n - Collect 10 coins for invincibility\n - Ammo is a limited resource, ammo \n   boxes spawns througout the map\n  - Beat your high score =)\n\nTap the screen to go back",
+    "_N$string": "Controls\n - Tilt the device to steer\n - Tap the screen to shoot\n\nGameplay\n - Collect 10 coins for invincibility\n - Ammo is a limited resource, ammo \n   boxes spawns througout the map\n  - Beat your high score =)\n\nTap the screen to go back",
+    "_fontSize": 10,
     "_lineHeight": 20,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "c51048f4-86a5-4be6-b562-55a51a61aa85"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
@@ -105,7 +108,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "39R42eoNpPm4l+RD17iSsL",
+    "fileId": "39ZpxnPWdMJLqR78BaYR4J",
     "sync": false
   }
 ]

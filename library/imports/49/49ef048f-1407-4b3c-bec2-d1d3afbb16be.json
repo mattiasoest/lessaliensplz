@@ -7,7 +7,7 @@
     "data": {
       "__id__": 1
     },
-    "optimizationPolicy": 0,
+    "optimizationPolicy": 2,
     "asyncLoadAssets": false,
     "readonly": false
   },
@@ -153,7 +153,7 @@
     "_mute": false,
     "_loop": false,
     "playOnLoad": false,
-    "preload": false,
+    "preload": true,
     "_id": ""
   },
   {

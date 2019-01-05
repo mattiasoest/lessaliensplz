@@ -19,7 +19,7 @@ var LaserBlue = /** @class */ (function (_super) {
     // }
     LaserBlue.prototype.update = function (dt) {
         if (cc.isValid(this.node)) {
-            if (this.node.y > cc.find("Canvas").height * 0.5) {
+            if (this.node.y > this.game.getMainCanvas().height * 0.6) {
                 this.node.destroy();
             }
         }
@@ -28,7 +28,6 @@ var LaserBlue = /** @class */ (function (_super) {
         if (otherCollider.node.name === "Asteroid") {
             this.game.playRockExplosion();
             this.getComponent(cc.Animation).play("Explosion");
-            // selfCollider.node.destroy();
             otherCollider.node.destroy();
         }
     };

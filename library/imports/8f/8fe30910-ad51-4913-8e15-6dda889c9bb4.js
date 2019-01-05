@@ -9,19 +9,16 @@ var Coin = /** @class */ (function (_super) {
     function Coin() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.coinSpeed = 125;
-        _this.cvs = null;
         _this.lowerBound = 0;
         _this.hitBoxOffset = 15;
         _this.manager = cc.director.getCollisionManager();
         _this.game = null;
         return _this;
     }
-    // LIFE-CYCLE CALLBACKS:
-    Coin.prototype.onLoad = function () {
-        this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.62;
-    };
+    // onLoad () {
+    // }
     Coin.prototype.start = function () {
+        this.lowerBound = -this.game.getMainCanvas().height * 0.62;
     };
     Coin.prototype.update = function (dt) {
         // If it has not been destroyed and cocos trying to free its memory.

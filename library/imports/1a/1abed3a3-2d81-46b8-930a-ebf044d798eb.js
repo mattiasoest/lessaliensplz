@@ -13,22 +13,22 @@ var Enemy = /** @class */ (function (_super) {
         _this.leftBound = 0;
         _this.rightBound = 0;
         _this.isAllowedToFire = true;
+        _this.game = null;
         // Being set in the subclasses.
         _this.hitPoints = 0;
-        _this.cvs = null;
         _this.applyForceLeft = false;
         _this.xSpeed = 0;
-        _this.game = null;
         return _this;
     }
-    Enemy.prototype.onLoad = function () {
-        this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.65;
-        this.leftBound = -this.cvs.width / 2;
-        this.rightBound = this.cvs.width / 2;
+    // Called from the subclasses
+    // When they are created.
+    Enemy.prototype.initialize = function () {
+        // this.game = game;
+        this.lowerBound = -this.game.getMainCanvas().height * 0.6;
+        this.leftBound = -this.game.getMainCanvas().width * 0.5;
+        this.rightBound = this.game.getMainCanvas().width * 0.5;
         this.applyForceLeft = this.getComponent(cc.RigidBody).linearVelocity.x < 0 ? false : true;
     };
-    // start () {}
     Enemy.prototype.update = function (dt) {
         if (cc.isValid(this.node)) {
             // Stop the laser shooting after passing the lower part
@@ -36,7 +36,7 @@ var Enemy = /** @class */ (function (_super) {
             if (this.node.y <= this.lowerBound * 0.6) {
                 this.isAllowedToFire = false;
             }
-            if (this.node.y <= this.lowerBound) {
+            if (this.node.y < this.lowerBound) {
                 this.node.destroy();
             }
         }
@@ -78,7 +78,7 @@ var Enemy = /** @class */ (function (_super) {
             this.game.playRockExplosion();
             this.getComponent(cc.Animation).play("Explosion");
             var isAlive = this.game.isPlayerAlive();
-            if (!this.game.player.getComponent("PlayerControl").isInvincible() && isAlive) {
+            if (!this.game.getPlayerObject().isInvincible() && isAlive) {
                 // Will destroy itself after the animation.
                 this.game.resetGame();
             }

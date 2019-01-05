@@ -7,8 +7,9 @@
     "data": {
       "__id__": 1
     },
-    "optimizationPolicy": 0,
-    "asyncLoadAssets": false
+    "optimizationPolicy": 1,
+    "asyncLoadAssets": false,
+    "readonly": false
   },
   {
     "__type__": "cc.Node",
@@ -71,8 +72,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_quat": {
       "__type__": "cc.Quat",
       "x": 0,
@@ -83,7 +82,10 @@
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
+    "_is3DNode": false,
     "groupIndex": 0,
+    "_rotationX": 0,
+    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -211,7 +213,7 @@
     "_mute": false,
     "_loop": false,
     "playOnLoad": false,
-    "preload": false,
+    "preload": true,
     "_id": ""
   },
   {

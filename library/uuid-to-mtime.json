@@ -25,24 +25,19 @@
     "relativePath": "prefab"
   },
   "29f52784-2fca-467b-92e7-8fd9ef8c57b7": {
-    "asset": 1546409872395,
+    "asset": 1546588010469,
     "meta": 1546017408101,
     "relativePath": "Scene"
   },
   "4734c20c-0db8-4eb2-92ea-e692f4d70934": {
-    "asset": 1546453412965,
+    "asset": 1546675604885,
     "meta": 1546017408101,
     "relativePath": "Script"
   },
   "7b81d4e8-ec84-4716-968d-500ac1d78a54": {
-    "asset": 1546414880492,
+    "asset": 1546617352446,
     "meta": 1546017408101,
     "relativePath": "Texture"
-  },
-  "a8027877-d8d6-4645-97a0-52d4a0123dba": {
-    "asset": 1546017408109,
-    "meta": 1546509942611,
-    "relativePath": "Texture/singleColor.png"
   },
   "4a51102e-fa82-47c6-b07c-7b4bb7ca7648": {
     "asset": 1546017796684,
@@ -150,7 +145,7 @@
     "relativePath": "Animation/PlayerAnimation/PlayerLeftMax.anim"
   },
   "3fb23d99-af0e-4ede-a94e-82b910a4c1f4": {
-    "asset": 1546441355583,
+    "asset": 1546615382517,
     "meta": 1546072728626,
     "relativePath": "Prefab"
   },
@@ -161,7 +156,7 @@
   },
   "ece9f68d-958e-4769-b5a4-39561f7e0621": {
     "asset": 1546321594003,
-    "meta": 1546321594010,
+    "meta": 1546623979637,
     "relativePath": "Prefab/Coin.prefab"
   },
   "baebfd1b-6219-46d2-9641-89cf402e2c63": {
@@ -200,7 +195,7 @@
     "relativePath": "Animation/Coin.anim"
   },
   "64d99177-ce4b-4eae-a6f2-344559525d71": {
-    "asset": 1546490411081,
+    "asset": 1546591652846,
     "meta": 1546081835161,
     "relativePath": "Sound"
   },
@@ -235,8 +230,8 @@
     "relativePath": "Texture/Laser/laser-red-1.png"
   },
   "c2c060f6-110f-48fc-8839-80c55e9f45da": {
-    "asset": 1546321715092,
-    "meta": 1546321715105,
+    "asset": 1546623757514,
+    "meta": 1546624034570,
     "relativePath": "Prefab/LaserBlue.prefab"
   },
   "efcc48e5-8555-4f28-819b-ce3f363add77": {
@@ -250,8 +245,8 @@
     "relativePath": "Texture/asteroid.png"
   },
   "910e50b9-3abd-4325-8fcf-be6c99056f77": {
-    "asset": 1546329763729,
-    "meta": 1546329763737,
+    "asset": 1546630796027,
+    "meta": 1546630796038,
     "relativePath": "Prefab/Asteroid.prefab"
   },
   "b6462748-e88e-44c6-8695-66e6d18fb543": {
@@ -274,20 +269,10 @@
     "meta": 1546509942303,
     "relativePath": "Texture/Ammo/pow-up-blue-2.png"
   },
-  "69624197-38de-4a3c-bc95-238f0157897e": {
-    "asset": 1546321584511,
-    "meta": 1546321584523,
-    "relativePath": "Prefab/PlayerAmmo.prefab"
-  },
   "d1d6ba39-99e0-4855-9f5e-a9360903cf67": {
     "asset": 1546509942210,
     "meta": 1546509942212,
     "relativePath": "Animation/PlayerAmmo.anim"
-  },
-  "78ebf929-e657-483e-a7b6-478af6ef84bb": {
-    "asset": 1546523999341,
-    "meta": 1546523999347,
-    "relativePath": "Scene/Gameplay.fire"
   },
   "13e4222c-c03c-4527-a0ce-769fa0a5ea9c": {
     "asset": 1546160395043,
@@ -415,18 +400,18 @@
     "relativePath": "Animation/ExplosionLarger.anim"
   },
   "fdaed899-5fb3-47f7-8f8e-863ccbc3b797": {
-    "asset": 1546343202683,
-    "meta": 1546343202743,
+    "asset": 1546624184965,
+    "meta": 1546624184974,
     "relativePath": "Prefab/EnemyBig.prefab"
   },
   "0fe07dd6-1192-43ec-bc3d-e13d62993a90": {
-    "asset": 1546332111566,
-    "meta": 1546332111578,
+    "asset": 1546623857771,
+    "meta": 1546624013086,
     "relativePath": "Prefab/EnemySmall.prefab"
   },
   "a3d056de-95d0-4ba9-b52f-e4284060a032": {
-    "asset": 1546343494782,
-    "meta": 1546343494790,
+    "asset": 1546623875806,
+    "meta": 1546624001352,
     "relativePath": "Prefab/EnemyMedium.prefab"
   },
   "298a3f64-e0e4-4a43-ac05-2b41c46e1f4a": {
@@ -449,19 +434,14 @@
     "meta": 1546509942246,
     "relativePath": "Sound/fly.wav"
   },
-  "376bda4f-e55f-4f89-a51c-4dd2e6b18161": {
-    "asset": 1546189463446,
-    "meta": 1546189464766,
-    "relativePath": "Script/Ammo.ts"
-  },
   "84db2c5e-4028-4271-9fa9-bcb0bb8a7439": {
     "asset": 1546509942204,
     "meta": 1546509942205,
     "relativePath": "Animation/HitAnimation.anim"
   },
   "49ef048f-1407-4b3c-bec2-d1d3afbb16be": {
-    "asset": 1546524196609,
-    "meta": 1546524196615,
+    "asset": 1546623748806,
+    "meta": 1546624040278,
     "relativePath": "Prefab/LaserRed.prefab"
   },
   "378614e5-78ea-4965-9f44-9e8731f50894": {
@@ -486,7 +466,7 @@
   },
   "063f1d92-988b-4895-9fde-630100ab3aaa": {
     "asset": 1546363621055,
-    "meta": 1546363621061,
+    "meta": 1546624029617,
     "relativePath": "Prefab/InvincibleEffect.prefab"
   },
   "4d5610d2-5927-4527-b75a-a8ca14bd8a77": {
@@ -500,18 +480,13 @@
     "relativePath": "Sound/inv.wav"
   },
   "79da25bc-7510-406b-a85a-a0f32d8a2544": {
-    "asset": 1546524208455,
-    "meta": 1546524208460,
+    "asset": 1546623686239,
+    "meta": 1546624050494,
     "relativePath": "Prefab/Player.prefab"
   },
-  "8fe30910-ad51-4913-8e15-6dda889c9bb4": {
-    "asset": 1546368314968,
-    "meta": 1546368316948,
-    "relativePath": "Script/Coin.ts"
-  },
   "cd5e089b-53e4-4f5c-a5f4-81902a178b67": {
-    "asset": 1546439156391,
-    "meta": 1546439156401,
+    "asset": 1546592081340,
+    "meta": 1546624045063,
     "relativePath": "Prefab/Menu.prefab"
   },
   "dc3d5742-9336-4987-85d8-1ac41cc26155": {
@@ -523,26 +498,6 @@
     "asset": 1546414880486,
     "meta": 1546509942603,
     "relativePath": "Texture/upper-bound.png"
-  },
-  "fa2ea5b2-ad70-4e43-ad46-e63b205ed8e3": {
-    "asset": 1546509942225,
-    "meta": 1546509942226,
-    "relativePath": "Bound.anim"
-  },
-  "9acbca84-8a58-42d1-87d6-d3652b300875": {
-    "asset": 1546421932266,
-    "meta": 1546421935484,
-    "relativePath": "Script/Asteroid.ts"
-  },
-  "1abed3a3-2d81-46b8-930a-ebf044d798eb": {
-    "asset": 1546421933040,
-    "meta": 1546421935551,
-    "relativePath": "Script/Enemy.ts"
-  },
-  "fb929ed4-0ede-4bda-9add-bef3cbd19c53": {
-    "asset": 1546421933615,
-    "meta": 1546421935639,
-    "relativePath": "Script/LaserRed.ts"
   },
   "926e1938-1ba6-4bea-95be-1e6591594275": {
     "asset": 1546425054903,
@@ -561,13 +516,8 @@
   },
   "6e60d0cb-c90f-4301-82c8-f7ea093e60fa": {
     "asset": 1546441355579,
-    "meta": 1546441355583,
+    "meta": 1546623986129,
     "relativePath": "Prefab/Credits.prefab"
-  },
-  "9a919ea1-00b6-435c-aac6-8cee36ac3c7a": {
-    "asset": 1546455114477,
-    "meta": 1546455116218,
-    "relativePath": "Script/BgScroll.ts"
   },
   "4467ede8-4c42-4d40-bcc9-4ed3e3b8edf5": {
     "asset": 1546455121924,
@@ -779,16 +729,6 @@
     "meta": 1546509941909,
     "relativePath": "prefab/videoplayer.prefab"
   },
-  "8763edbe-720c-4f85-babd-2b7d19e3bafa": {
-    "asset": 1546509067603,
-    "meta": 1546509078280,
-    "relativePath": "Script/Camera.ts"
-  },
-  "05190984-c081-4536-a867-e96c363a6add": {
-    "asset": 1546509073975,
-    "meta": 1546509078350,
-    "relativePath": "Script/InvincibleEffect.ts"
-  },
   "edd215b9-2796-4a05-aaf5-81f96c9281ce": {
     "asset": 1543305034000,
     "meta": 1546509941453,
@@ -809,39 +749,104 @@
     "meta": 1546509941899,
     "relativePath": "prefab/tiledtile.prefab"
   },
-  "57af1582-6b03-4aa9-ad59-e96b88147507": {
-    "asset": 1546522137455,
-    "meta": 1546522142400,
-    "relativePath": "Script/LaserBlue.ts"
+  "69624197-38de-4a3c-bc95-238f0157897e": {
+    "asset": 1546623725644,
+    "meta": 1546624054664,
+    "relativePath": "Prefab/PlayerAmmo.prefab"
+  },
+  "78ebf929-e657-483e-a7b6-478af6ef84bb": {
+    "asset": 1546697118581,
+    "meta": 1546697118635,
+    "relativePath": "Scene/Gameplay.fire"
   },
   "4a12556b-4979-459a-9614-1675bebb31ce": {
-    "asset": 1546522219351,
-    "meta": 1546522224012,
+    "asset": 1546588626529,
+    "meta": 1546588633073,
     "relativePath": "Script/EnemyMedium.ts"
   },
+  "05190984-c081-4536-a867-e96c363a6add": {
+    "asset": 1546588620743,
+    "meta": 1546588633261,
+    "relativePath": "Script/InvincibleEffect.ts"
+  },
+  "8763edbe-720c-4f85-babd-2b7d19e3bafa": {
+    "asset": 1546588635335,
+    "meta": 1546588636963,
+    "relativePath": "Script/Camera.ts"
+  },
+  "376bda4f-e55f-4f89-a51c-4dd2e6b18161": {
+    "asset": 1546588644893,
+    "meta": 1546588646698,
+    "relativePath": "Script/Ammo.ts"
+  },
   "dc6551d7-fb57-4d87-81c8-c1b145a193a5": {
-    "asset": 1546522228648,
-    "meta": 1546522232175,
+    "asset": 1546588842567,
+    "meta": 1546588843643,
     "relativePath": "Script/EnemySmall.ts"
   },
-  "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
-    "asset": 1546523370589,
-    "meta": 1546523430872,
-    "relativePath": "Script/Game.ts"
+  "35ac1a37-bb20-430e-b0f0-3d1722f30f27": {
+    "asset": 1546591652836,
+    "meta": 1546591652866,
+    "relativePath": "Sound/high-score.wav"
   },
-  "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
-    "asset": 1546524290090,
-    "meta": 1546524293853,
-    "relativePath": "Script/PlayerControl.ts"
-  },
-  "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
-    "asset": 1546524663386,
-    "meta": 1546524725778,
-    "relativePath": "Script/Menu.ts"
+  "c51048f4-86a5-4be6-b562-55a51a61aa85": {
+    "asset": 1546598877268,
+    "meta": 1546598877287,
+    "relativePath": "visitor1.ttf"
   },
   "a0812d76-cad3-4bab-a034-b8fdcfb6aa58": {
-    "asset": 1546524752470,
-    "meta": 1546524753173,
+    "asset": 1546611365688,
+    "meta": 1546611369081,
     "relativePath": "Script/EnemyBig.ts"
+  },
+  "7215d290-0b93-49d3-aad3-f8520c7f242e": {
+    "asset": 1546615382515,
+    "meta": 1546624018072,
+    "relativePath": "Prefab/HowToPlay.prefab"
+  },
+  "8fe30910-ad51-4913-8e15-6dda889c9bb4": {
+    "asset": 1546621277311,
+    "meta": 1546621494834,
+    "relativePath": "Script/Coin.ts"
+  },
+  "8623e390-3217-45a9-9a9a-3ef1e34fafdf": {
+    "asset": 1546622051951,
+    "meta": 1546622145736,
+    "relativePath": "Script/Player.ts"
+  },
+  "9a919ea1-00b6-435c-aac6-8cee36ac3c7a": {
+    "asset": 1546624679038,
+    "meta": 1546624680277,
+    "relativePath": "Script/BgScroll.ts"
+  },
+  "1abed3a3-2d81-46b8-930a-ebf044d798eb": {
+    "asset": 1546626855285,
+    "meta": 1546626856569,
+    "relativePath": "Script/Enemy.ts"
+  },
+  "57af1582-6b03-4aa9-ad59-e96b88147507": {
+    "asset": 1546626839748,
+    "meta": 1546626856589,
+    "relativePath": "Script/LaserBlue.ts"
+  },
+  "fb929ed4-0ede-4bda-9add-bef3cbd19c53": {
+    "asset": 1546626851792,
+    "meta": 1546626856601,
+    "relativePath": "Script/LaserRed.ts"
+  },
+  "9acbca84-8a58-42d1-87d6-d3652b300875": {
+    "asset": 1546630788725,
+    "meta": 1546630792638,
+    "relativePath": "Script/Asteroid.ts"
+  },
+  "cd1ab3a0-6215-467a-aa08-0c3c60d98921": {
+    "asset": 1546675109635,
+    "meta": 1546675110796,
+    "relativePath": "Script/Game.ts"
+  },
+  "5d0a9eb0-97b3-4c5b-b869-b8b8d894a11f": {
+    "asset": 1546675108589,
+    "meta": 1546675110863,
+    "relativePath": "Script/Menu.ts"
   }
 }

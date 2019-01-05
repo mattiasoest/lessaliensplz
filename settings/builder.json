@@ -1,4 +1,12 @@
 {
+  "android-instant": {
+    "REMOTE_SERVER_ROOT": "",
+    "host": "",
+    "pathPattern": "",
+    "recordPath": "",
+    "scheme": "https",
+    "skipRecord": false
+  },
   "appKey": "",
   "appSecret": "",
   "encryptJs": true,
@@ -26,7 +34,7 @@
     "orientation": "portrait"
   },
   "startScene": "78ebf929-e657-483e-a7b6-478af6ef84bb",
-  "title": "SpaceShooter",
+  "title": "LessAliensPlz",
   "webOrientation": "auto",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
@@ -35,13 +43,5 @@
     "subContext": ""
   },
   "xxteaKey": "2015ac57-f680-42",
-  "zipCompressJs": true,
-  "android-instant": {
-    "REMOTE_SERVER_ROOT": "",
-    "pathPattern": "",
-    "scheme": "https",
-    "host": "",
-    "skipRecord": false,
-    "recordPath": ""
-  }
+  "zipCompressJs": true
 }

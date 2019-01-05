@@ -7,8 +7,9 @@
     "data": {
       "__id__": 1
     },
-    "optimizationPolicy": 0,
-    "asyncLoadAssets": false
+    "optimizationPolicy": 2,
+    "asyncLoadAssets": false,
+    "readonly": false
   },
   {
     "__type__": "cc.Node",

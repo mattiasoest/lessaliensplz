@@ -13,22 +13,23 @@ var Asteroid = /** @class */ (function (_super) {
         _this.lowerBound = 0;
         _this.leftBound = 0;
         _this.rightBound = 0;
-        _this.cvs = null;
         _this.game = null;
         return _this;
     }
     Asteroid.prototype.onLoad = function () {
-        this.cvs = cc.find("Canvas");
-        this.lowerBound = -this.cvs.height * 0.62;
-        this.leftBound = -this.cvs.width / 2 - 40;
-        this.rightBound = this.cvs.width / 2 + 40;
         this.node.setScale(0.3);
         this.rotationDir *= Math.random() < 0.5 ? -1 : 1;
     };
-    // start () {}
+    Asteroid.prototype.start = function () {
+        this.lowerBound = -this.game.getMainCanvas().height * 0.62;
+        this.leftBound = -this.game.getMainCanvas().width * 0.5 + this.node.width * 0.5 * this.node.scale - 2;
+        this.rightBound = this.game.getMainCanvas().width * 0.5 - this.node.width * 0.5 * this.node.scale + 2;
+        // this.leftBound = -this.game.getMainCanvas().width / 2 - 40;
+        // this.rightBound = this.game.getMainCanvas().width / 2 + 40;
+    };
     Asteroid.prototype.update = function (dt) {
         if (cc.isValid(this.node)) {
-            this.node.rotation += this.rotationSpeed * dt * this.rotationDir;
+            this.node.angle += this.rotationSpeed * dt * this.rotationDir;
             if (this.node.y <= this.lowerBound) {
                 this.node.destroy();
             }
@@ -57,7 +58,7 @@ var Asteroid = /** @class */ (function (_super) {
             this.game.playRockExplosion();
             this.node.getComponent(cc.RigidBody).enabledContactListener = false;
             var isAlive = this.game.isPlayerAlive();
-            if (!this.game.player.getComponent("PlayerControl").isInvincible() && isAlive) {
+            if (!this.game.getPlayerObject().isInvincible() && isAlive) {
                 // otherCollider.getComponent(cc.RigidBody).enabledContactListener = false;
                 this.game.resetGame();
             }

@@ -22,9 +22,10 @@ var EnemyMedium = /** @class */ (function (_super) {
         return _this;
     }
     EnemyMedium.prototype.start = function () {
+        _super.prototype.initialize.call(this);
+        _super.prototype.setLaserScheduler.call(this, this.FIRE_RATE, this.initiateLaser);
         this.laserSound = this.getComponent(cc.AudioSource);
         this.hitPoints = 1;
-        _super.prototype.setLaserScheduler.call(this, this.FIRE_RATE, this.initiateLaser);
     };
     EnemyMedium.prototype.update = function (dt) {
         _super.prototype.update.call(this, dt);
