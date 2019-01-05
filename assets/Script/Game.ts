@@ -148,20 +148,14 @@ export default class Game extends cc.Component {
         this.startBgMusic();
         this.checkLocalHighScore();
 
-        // =========== DIFFERENT CONTROLS DEPENDING ON THE SYSTEM ===========
+        // =========== ADD MORE CONTROLS IF WE ARE RUNNING ON A MOBILE ===========
         if (this.isMobileDevice()) {
             cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this);
             cc.systemEvent.setAccelerometerEnabled(true);
             this.node.on(cc.Node.EventType.TOUCH_START, () => this.spawnBlueLaser());
         }
-        else {
-            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-        }
-    }
-
-    start () {
-
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     }
 
     startBgMusic() {
