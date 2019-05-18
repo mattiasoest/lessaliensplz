@@ -1,12 +1,17 @@
 import InvincibleEffect from "./InvincibleEffect";
 import Player from "./Player";
+import Menu from "./Menu";
+import { GameEvent } from "./GameEvent";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Game extends cc.Component {
+    @property(Menu)
+    menu: Menu = null;
+
     @property(cc.Node)
-    menu: cc.Node = null;
+    statsNode: cc.Node = null;
 
     @property(cc.Label)
     scoreLabel: cc.Label = null;
@@ -136,18 +141,19 @@ export default class Game extends cc.Component {
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, this.gravity);
 
-        this.enableStatsLabels(false);
+        // this.enableStatsLabels(false);
         this.newHighScoreLabel.node.opacity = 0;
         this.coinSound = this.getComponent(cc.AudioSource);
         this.coinSound.volume = 0.45;
         this.scheduler = cc.director.getScheduler();
-        this.menu.active = true;
         this.upperBound.active = false;
         this.lowerBound.active = false;
         this.resetInvincibleCounter();
         this.startBgMusic();
         this.checkLocalHighScore();
 
+        this.menu.node.on(GameEvent.START_GAME, this.startGame, this);
+        
         // =========== ADD MORE CONTROLS IF WE ARE RUNNING ON A MOBILE ===========
         if (this.isMobileDevice()) {
             cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this);
@@ -236,8 +242,9 @@ export default class Game extends cc.Component {
     }
 
     startGame() {
+        this.statsNode.active = true,
         this.setMenuInteractable(false);
-        this.menu.active = false
+        this.menu.node.active = false
         this.createPlayer();
         this.setupItemAutoGeneration();
 
@@ -291,11 +298,11 @@ export default class Game extends cc.Component {
             this.bestTime = this.time;
             let timeout = 500;
             delay = timeout + 1100;
-            this.menu.getComponent("Menu").highScoreLabel.string = "High score: " + this.parseTime(this.bestTime, 2);
+            this.menu.highScoreLabel.string = "High score: " + this.parseTime(this.bestTime, 2);
             this.saveLocalHighScore();
             setTimeout(() => {
                 cc.audioEngine.play(this.highScoreSound, false, 1);
-                // this.newHighScoreLabel.enabled = true;
+                // this.newHighScoreLaぶっとnel.enabled = true;
                 this.newHighScoreLabel.string = "New high score: " + this.parseTime(this.bestTime, 2);
                 this.newHighScoreLabel.node.runAction(cc.sequence(cc.fadeIn(0.45),cc.delayTime(0.8), cc.fadeOut(0.45)));
                 
@@ -308,7 +315,7 @@ export default class Game extends cc.Component {
             this.enableStatsLabels(false);
             this.time = 0;
             this.setMenuInteractable(true);
-            this.menu.active = true;
+            this.menu.node.active = true;
         }, 1200 + delay);
     }
 
@@ -343,7 +350,7 @@ export default class Game extends cc.Component {
         let localBest = cc.sys.localStorage.getItem(this.BEST_TIME_KEY);
         if (localBest !== null) {
             this.bestTime = Number(localBest);
-            this.menu.getComponent("Menu").highScoreLabel.string = "High score: " + this.parseTime(this.bestTime, 2);
+            this.menu.highScoreLabel.string = "High score: " + this.parseTime(this.bestTime, 2);
         }
     }
 
