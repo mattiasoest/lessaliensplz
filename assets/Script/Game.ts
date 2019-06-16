@@ -11,6 +11,9 @@ export default class Game extends cc.Component {
     menu: Menu = null;
 
     @property(cc.Node)
+    topPart: cc.Node = null;
+
+    @property(cc.Node)
     statsNode: cc.Node = null;
 
     @property(cc.Label)
@@ -202,7 +205,11 @@ export default class Game extends cc.Component {
     }
 
     getPlayerUpperBound() {
-        return -this.cvs.height * 0.18;
+        return this.upperBound.y - this.upperBound.height * 0.5;
+    }
+
+    getPlayerLowerBound() {
+        return this.lowerBound.y + this.lowerBound.height * 0.5;
     }
 
     isPlayerAlive() {
@@ -245,6 +252,7 @@ export default class Game extends cc.Component {
         this.statsNode.active = true,
         this.setMenuInteractable(false);
         this.menu.node.active = false
+        this.topPart.active = false
         this.createPlayer();
         this.setupItemAutoGeneration();
 
@@ -316,6 +324,7 @@ export default class Game extends cc.Component {
             this.time = 0;
             this.setMenuInteractable(true);
             this.menu.node.active = true;
+            this.topPart.active = true;
         }, 1200 + delay);
     }
 
@@ -495,6 +504,8 @@ export default class Game extends cc.Component {
     createPlayer() {
         this.resetInputAcceleration();
         this.player = cc.instantiate(this.playerFab);
+        // this.player.setPosition(0, -40);
+        this.player.setPosition(0, this.lowerBound.y + 40);
         this.node.addChild(this.player);
         this.playerObject = this.player.getComponent("Player");
         // Push reference of the game object

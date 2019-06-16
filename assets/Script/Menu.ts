@@ -79,9 +79,7 @@ export default class Menu extends cc.Component {
         this.howToPlayLabel.node.on(cc.Node.EventType.TOUCH_START, () => this.infoScreenIstouched());
         this.ishowToOpen = true;
         cc.audioEngine.play(this.buttonSound, false, 0.8);
-        // this.howToPlayLabel.enabled = true;
         this.howToPlayLabel.node.active = true;
-        // this.node.active = false;
         this.showButtons(false);
 
         this.howToAction = this.howToPlayLabel.node.runAction(cc.sequence(cc.fadeIn(0.75),cc.delayTime(6), cc.fadeOut(0.75), 
@@ -98,7 +96,7 @@ export default class Menu extends cc.Component {
             this.isCreditsOpen = false;
             this.creditsLabel.node.stopAction(this.creditsAction);
             this.node.active = true
-            this.creditsLabel.node.opacity = 0;
+            // this.creditsLabel.node.opacity = 0;
             this.creditsLabel.node.off(cc.Node.EventType.TOUCH_START);
             // this.creditsLabel.enabled = false;
             this.creditsLabel.node.active = false;
@@ -107,7 +105,7 @@ export default class Menu extends cc.Component {
             this.ishowToOpen = false;
             this.howToPlayLabel.node.stopAction(this.howToAction);
             this.node.active = true
-            this.howToPlayLabel.node.opacity = 0;
+            // this.howToPlayLabel.node.opacity = 0;
             this.howToPlayLabel.node.off(cc.Node.EventType.TOUCH_START);
             // this.howToPlayLabel.enabled = false;
             this.howToPlayLabel.node.active = false;

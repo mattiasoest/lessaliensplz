@@ -41,8 +41,8 @@ export default class Player extends cc.Component {
     start () {
         this.leftBound = -this.game.getMainCanvas().width / 2 + this.node.width / 2;
         this.rightBound = this.game.getMainCanvas().width / 2 - this.node.width / 2;
-        this.upperBound = this.game.getPlayerUpperBound();
-        this.lowerBound = this.node.height / 2 -this.game.getMainCanvas().height / 2;
+        this.upperBound = this.game.getPlayerUpperBound()  - this.node.height;
+        this.lowerBound = this.game.getPlayerLowerBound() + this.node.height * 0.22;
     }
 
     update (dt) {

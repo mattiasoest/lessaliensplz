@@ -31,7 +31,7 @@ export default class Enemy extends cc.Component {
         if (cc.isValid(this.node)) {
             // Stop the laser shooting after passing the lower part
             // Of the canvas
-            if (this.node.y <= this.lowerBound * 0.6) {
+            if (this.node.y <= this.game.getPlayerLowerBound()) {
                 this.isAllowedToFire = false;
             }
             if (this.node.y < this.lowerBound) {
