@@ -63,7 +63,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -85,
+      "y": 0,
       "z": 0
     },
     "_scale": {
@@ -81,7 +81,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "_is3DNode": false,
     "groupIndex": 0,
     "_rotationX": 0,
@@ -96,6 +95,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "_materials": [],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
@@ -112,7 +112,6 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_state": 0,
     "_atlas": null,
     "_id": ""
   },
@@ -156,7 +155,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_type": 1,
+    "_type": 3,
     "_allowSleep": true,
     "_gravityScale": 0,
     "_linearDamping": 0,
@@ -167,9 +166,10 @@
       "y": 0
     },
     "_angularVelocity": 0,
-    "_fixedRotation": false,
+    "_fixedRotation": true,
     "enabledContactListener": true,
     "bullet": false,
+    "awakeOnLoad": true,
     "_id": ""
   },
   {
@@ -182,7 +182,7 @@
     "_enabled": true,
     "tag": 0,
     "_density": 1,
-    "_sensor": false,
+    "_sensor": true,
     "_friction": 0.2,
     "_restitution": 0,
     "body": null,

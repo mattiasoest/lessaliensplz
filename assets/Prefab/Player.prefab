@@ -85,7 +85,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "_is3DNode": false,
     "groupIndex": 0,
     "_rotationX": 0,
@@ -152,7 +151,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "_is3DNode": false,
     "groupIndex": 0,
     "_rotationX": 0,
@@ -167,6 +165,7 @@
       "__id__": 2
     },
     "_enabled": true,
+    "_materials": [],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 1,
     "_custom": true,
@@ -175,6 +174,9 @@
     },
     "_spriteFrame": {
       "__uuid__": "472df5d3-35e7-4184-9e6c-7f41bee65ee3"
+    },
+    "_texture": {
+      "__uuid__": "d0a82d39-bede-46c4-b698-c81ff0dedfff"
     },
     "_stopped": true,
     "playOnLoad": false,
@@ -232,6 +234,7 @@
       "x": 7,
       "y": 12
     },
+    "_positionType": 1,
     "positionType": 1,
     "emitterMode": 1,
     "gravity": {
@@ -284,6 +287,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "_materials": [],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
@@ -300,7 +304,6 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_state": 0,
     "_atlas": null,
     "_id": ""
   },
@@ -357,9 +360,10 @@
       "y": 0
     },
     "_angularVelocity": 0,
-    "_fixedRotation": false,
+    "_fixedRotation": true,
     "enabledContactListener": true,
     "bullet": false,
+    "awakeOnLoad": true,
     "_id": ""
   },
   {

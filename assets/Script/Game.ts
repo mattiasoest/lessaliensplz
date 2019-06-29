@@ -465,7 +465,7 @@ export default class Game extends cc.Component {
         let randomX = Math.random() * this.cvs.width / 2;
         // set sign value
         randomX *= this.generateRandomSign();
-        return cc.v2(randomX, this.cvs.height * 0.62);
+        return cc.v2(randomX, this.cvs.height * 0.6);
     }
 
     generateRandomSign() {
@@ -517,8 +517,8 @@ export default class Game extends cc.Component {
 
     spawnCoin() {
         const newCoin = cc.instantiate(this.coin);
-        this.node.addChild(newCoin);
         newCoin.setPosition(this.generateRandomPos());
+        this.node.addChild(newCoin);
 
         // Leave a reference to the game object.
         newCoin.getComponent('Coin').game = this;
@@ -564,17 +564,17 @@ export default class Game extends cc.Component {
 
     spawnAsteroid() {
         const newAsteroid = cc.instantiate(this.asteroid);
-        this.node.addChild(newAsteroid);
         let pos = this.generateRandomPos();
         pos.x *= 0.77;
         newAsteroid.setPosition(pos);
-
+        
         const body = newAsteroid.getComponent(cc.RigidBody)
         const yVel = -50 + Math.random() * -220;
         let xVel = (Math.random() + 1) * 20  * this.generateRandomSign();
         body.linearVelocity = cc.v2(xVel , yVel);
         // Leave a reference to the game object.
         newAsteroid.getComponent('Asteroid').game = this;
+        this.node.addChild(newAsteroid);
     }
 
     spawnAmmo() {
@@ -603,8 +603,8 @@ export default class Game extends cc.Component {
             newEnemy.getComponent('EnemyBig').game = this;
         }
 
-        this.node.addChild(newEnemy);
         newEnemy.setPosition(this.generateRandomPos());
+        this.node.addChild(newEnemy);
     }
 
     setupItemAutoGeneration() {
@@ -614,10 +614,10 @@ export default class Game extends cc.Component {
         this.setEnemyScheduler();
 
         // Spawn 1 set of each item without delay
-        this.spawnRandomEnemy();
-        this.spawnAmmo();
         this.spawnAsteroid();
         this.spawnCoin();
+        this.spawnAmmo();
+        this.spawnRandomEnemy();
     }
 
     endRandomGeneration() {
