@@ -38,13 +38,6 @@ export default class Menu extends cc.Component {
         this.startButton.node.on('click', this.startCallback, this);
         this.creditsButton.node.on('click', this.creditsCallback, this);
         this.howToButton.node.on('click', this.howToCallback, this);
-        this.creditsLabel.node.active = true;
-        this.howToPlayLabel.node.active = true;
-        // this.creditsLabel.enabled = false;
-        // this.creditsLabel.node.opacity = 0;
-        // this.howToPlayLabel.enabled = false;
-        // this.howToPlayLabel.node.opacity = 0;
-        
     }
 
     start () {
@@ -54,8 +47,6 @@ export default class Menu extends cc.Component {
     // Button event callbacks
     startCallback() {
         cc.audioEngine.play(this.buttonSound, false, 0.8);
-        // this.creditsLabel.enabled = false;
-        // this.howToPlayLabel.enabled = false;
         this.node.emit(GameEvent.START_GAME);
     }
 
@@ -63,19 +54,8 @@ export default class Menu extends cc.Component {
         this.creditsLabel.node.on(cc.Node.EventType.TOUCH_START, () => this.infoScreenIstouched());
         this.isCreditsOpen = true;
         cc.audioEngine.play(this.buttonSound, false, 0.8);
-        // this.creditsLabel.enabled = true;
         this.showButtons(false);
-        this.creditsLabel.node.opacity = 0;
         this.creditsLabel.node.active = true;
-        // this.node.active = false;
-
-        this.creditsAction = this.creditsLabel.node.runAction(cc.sequence(cc.fadeIn(0.75),cc.delayTime(6), cc.fadeOut(0.75), 
-            cc.callFunc(()=> {
-            this.creditsLabel.node.off(cc.Node.EventType.TOUCH_START);
-            this.isCreditsOpen = false;
-            this.node.active = true
-            this.showButtons(true);
-        })));
     }
 
     howToCallback() {
@@ -83,15 +63,8 @@ export default class Menu extends cc.Component {
         this.ishowToOpen = true;
         cc.audioEngine.play(this.buttonSound, false, 0.8);
         this.showButtons(false);
-        this.howToPlayLabel.node.opacity = 0;
         this.howToPlayLabel.node.active = true;
-        this.howToAction = this.howToPlayLabel.node.runAction(cc.sequence(cc.fadeIn(0.75),cc.delayTime(6), cc.fadeOut(0.75), 
-            cc.callFunc(() => {
-            this.howToPlayLabel.node.off(cc.Node.EventType.TOUCH_START);
-            this.ishowToOpen = false;
-            this.node.active = true
-            this.showButtons(true);
-        })));
+
     }
 
     infoScreenIstouched() {
@@ -99,18 +72,11 @@ export default class Menu extends cc.Component {
             this.isCreditsOpen = false;
             this.creditsLabel.node.stopAction(this.creditsAction);
             this.node.active = true
-            // this.creditsLabel.node.opacity = 0;
-            this.creditsLabel.node.off(cc.Node.EventType.TOUCH_START);
-            // this.creditsLabel.enabled = false;
             this.creditsLabel.node.active = false;
         }
         else if (this.ishowToOpen) {
             this.ishowToOpen = false;
-            this.howToPlayLabel.node.stopAction(this.howToAction);
             this.node.active = true
-            // this.howToPlayLabel.node.opacity = 0;
-            this.howToPlayLabel.node.off(cc.Node.EventType.TOUCH_START);
-            // this.howToPlayLabel.enabled = false;
             this.howToPlayLabel.node.active = false;
         }
         this.showButtons(true);
