@@ -161,7 +161,7 @@ export default class Game extends cc.Component {
         if (this.isMobileDevice()) {
             cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this);
             cc.systemEvent.setAccelerometerEnabled(true);
-            this.node.on(cc.Node.EventType.TOUCH_START, () => this.spawnBlueLaser());
+            this.cvs.on(cc.Node.EventType.TOUCH_START, () => this.spawnBlueLaser());
         }
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
@@ -261,7 +261,8 @@ export default class Game extends cc.Component {
         this.ammoLabel.string = "Ammo: " + this.currentAmmo;
 
         this.setGameState(this.GAME_STATE.PLAY);
-        this.upperBound.y = this.upperBound.height / 2 + this.getPlayerUpperBound() + this.player.height / 2;
+        // this.upperBound.y = this.upperBound.height / 2 + this.getPlayerUpperBound() + this.player.height / 2;
+        // this.upperBound.y = this.upperBound.height / 2 + this.getPlayerUpperBound();
         this.upperBound.active = true;
         this.upperBound.opacity = 0;
         this.lowerBound.active = true;
